@@ -1,0 +1,34 @@
+Aquabellum
+
+FUNCTIONNALITIES:
+3 modes de jeux:
+  practice (Player alone)
+  versus (Player vs bot)
+  multi (Plyaer vs Player)
+Plusieurs modes de tirs:
+  standard
+  AOE (L3:1)
+  Paralysis (L3:2 sub)
+  multi-shot (L4)
+  map-reveal (L5)
+Bonus/malus:
+  Abilities counts independants
+  +
+  critical (deactivated if both)
+  move ship (unhit only if 5 shots missed)
+  flare/map-reveal (if 5 shots missed)
+  shield (if 5 shits missed AND 2 boats remaining)
+  -
+  self-reveal if capa used by damaged ship (unless submarine)
+  Abilities cooldown reset when ship sunk
+  Ship ability deactivated 1 if hit
+  Ship abilities deactivated 1 if 5 hit
+  +-
+  berserk mode (double shot -> paralysis N if miss, paralysis 2 if deactivate) if 3 ships unhit (deactivated if 1 ship remaining)
+
+DATA STRUCTURES:
+
+
+
+IHM:
+
