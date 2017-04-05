@@ -84,7 +84,7 @@ class Block
         throw "impossible state: " + error;
       }
     } catch(error) {
-      throw Error("Block - " + error);
+      throw Error("Block (setState) - " + error);
     }
 
     this.state = blockStates[state];
@@ -105,22 +105,23 @@ class SpecialShot
 {
   constructor(length,silent)
   {
+    let str;
     try {
       try {
-        check.def(length);
+        Check.def(length);
         Check.proto(length, "Number");
         if(length<2) throw "too low";
         if(length>5) throw "too high";
       } catch(error) {
-        trhow "length: " + error;
+        throw "length: " + error;
       }
       try {
-        check.def(silent);
+        Check.def(silent);
         Check.proto(silent, "Boolean");
       } catch(error) {
         throw "silent: " + error;
       }
-      let str;
+      if(silent && length!=3) throw "impossible combination";
       switch(length) {
         case 2:
           str = "destroyer";
@@ -147,7 +148,7 @@ class SpecialShot
         throw "ship: " + error;
       }
     } catch(error) {
-      throw "SpecialShot - " + error;
+      throw "SpecialShot (constructor) - " + error;
     }
 
     this.limit = length;
@@ -175,22 +176,23 @@ class Ship
 {
   constructor(length, silent)
   {
+    let str;
     try {
       try {
-        check.def(length);
+        Check.def(length);
         Check.proto(length, "Number");
         if(length<2) throw "too low";
         if(length>5) throw "too high";
       } catch(error) {
-        trhow "length: " + error;
+        throw "length: " + error;
       }
       try {
-        check.def(silent);
+        Check.def(silent);
         Check.proto(silent, "Boolean");
       } catch(error) {
         throw "silent: " + error;
       }
-      let str;
+      if(silent && length!=3) throw "impossible combination";
       switch(length) {
         case 2:
           str = "destroyer";
@@ -217,11 +219,16 @@ class Ship
         throw "ship: " + error;
       }
     } catch(error) {
-      throw "Ship - " + error;
+      throw "Ship (constructor) - " + error;
     }
 
     this.name = str;
     this.length = length;
+    this.blocks = [];
+    for(let i=0; i<length; i++) {
+      this.blocks.push(null);
+    }
+    console.log(this.blocks);
     this.silent = silent;
     this.stayinAlive = true;
     this.specialShot = new SpecialShot(length, silent);
@@ -230,10 +237,14 @@ class Ship
   updateSpecialShot(up)
   {
     try {
-      Check.def(up);
-      Check.proto(up, "Boolean");
+      try {
+        Check.def(up);
+        Check.proto(up, "Boolean");
+      } catch(error) {
+        throw "up: " + error;
+      }
     } catch(error) {
-      throw "Ship - up: " + error;
+      throw "Ship (updateSpecialShot) - " + error;
     }
     if(up) {
       return this.specialShot.pumpItUp();
@@ -244,6 +255,23 @@ class Ship
   resetSpecialShot()
   {
     return this.specialShot.reset();
+  }
+  setBlocks(blocks)
+  {
+    try {
+      try {
+        Check.def(blocks);
+        Check.proto(blocks, "Array");
+        if(blocks.length!=this.length) throw "wrong size";
+      } catch(error) {
+        throw "blocks: " + error;
+      }
+    } catch(error) {
+      throw "Ship (setBlocks) - " + error;
+    }
+    for(let i in blocks){
+      this.blocks[i] = blocks[i];
+    }
   }
 }
 class Ships
@@ -262,11 +290,15 @@ class Ships
   searchShip(name)
   {
     try {
-      Check.def(name);
-      Check.proto(name, "String");
-      Check.list(ships, name);
+      try {
+        Check.def(name);
+        Check.proto(name, "String");
+        Check.list(ships, name);
+      } catch(error) {
+        throw "name: " + error;
+      }
     } catch(error) {
-      throw "Ships - name: " + error;
+      throw "Ships (searchShip) - " + error;
     }
     return this.ships.find(function(ship)
         {
@@ -283,10 +315,14 @@ class Ships
   updateSpecialShots(up)
   {
     try {
-      Check.def(up);
-      Check.proto(up, "Boolean");
+      try {
+        Check.def(up);
+        Check.proto(up, "Boolean");
+      } catch(error) {
+        throw "up: " + error;
+      }
     } catch(error) {
-      throw "Ships - up: " + error;
+      throw "Ships (updateSpecialShots) - " + error;
     }
     for(let i in this.ships) {
       this.specialShots[i] = this.ships[i].updateSpecialShot(up);
@@ -297,6 +333,27 @@ class Ships
     for(let i in this.ships) {
       this.specialShots[i] = this.ships[i].resetSpecialShot();
     }
+  }
+  setShipBlocks(name, blocks)
+  {
+    try {
+      try {
+        Check.def(name);
+        Check.proto(name, "String");
+        Check.list(ships, name);
+      } catch(error) {
+        throw "name: " + error;
+      }
+      try {
+        Check.def(blocks);
+        Check.proto(blocks, "Array");
+      } catch(error) {
+        throw "blocks: " + error;
+      }
+    } catch(error) {
+      throw "Ship (insertShip) - " + error;
+    }
+    this.searchShip(name).setBlocks(blocks);
   }
 }
 
@@ -310,4 +367,4 @@ class Grid
 }
 
 let tmp;
-tmp = new Block();
+tmp = new Ship(3,false);
