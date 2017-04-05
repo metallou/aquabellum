@@ -1,5 +1,12 @@
 "use strict"
 
+const types = {
+  Boolean: 1,
+  Number: 2,
+  Array: 3,
+  Object: 4,
+  Function: 5
+};
 const blockStates = {
   unknown: 1,
   empty: 2,
@@ -8,6 +15,48 @@ const blockStates = {
   hit: 5,
   sunk: 6
 };
+const ships = {
+  destroyer: 1,
+  cruiser: 2,
+  submarine: 3,
+  battleship: 4,
+  carrier: 5
+};
+class Check
+{
+  static list(list, object)
+  {
+    Check.def(list);
+    Check.def(object);
+    if(!(Object.prototype.toString.call(list)==="[object Object]")) throw "wrong list type"
+        +"\n"
+        +"(received " + Object.prototype.toString.call(list) + ")"
+        +"\n"
+        +"(expected " + Object.prototype.toString.call({}) + ")";
+    if(!(Object.prototype.toString.call(object)==="[object String]")) throw "wrong object type"
+        +"\n"
+        +"(received " + Object.prototype.toString.call(object) + ")"
+        +"\n"
+        +"(expected " + Object.prototype.toString.call("") + ")";
+    if(!list[object]) throw "object not in list"
+        +"\n"
+        +"(received \"" + object + "\")";
+  }
+  static def(object)
+  {
+    if(object===null) throw "null";
+    if(object===undefined) throw "undefined";
+  }
+  static proto(object, type)
+  {
+    Check.def(object);
+    Check.def(type);
+    if(!(Object.prototype.toString.call(type)==="[object String]")) throw "wrong type type";
+    Check.list(types, type);
+    if(!(Object.prototype.toString.call(object)==="[object "+type+"]")) throw "wrong object type";
+  }
+}
+
 class Block
 {
   constructor()
@@ -19,16 +68,26 @@ class Block
   {
     return this.state;
   }
-  setState(s)
+  setState(state)
   {
-    console.log(s);
-    console.log(blockStates[s]);
-    if(!s) throw Error('State not defined');
-    if(!blockStates[s]) throw Error('Not a state');
-    if(!this.hasShip && (s=="ship" || s=="hit" || s=="sunk")) throw Error('Not a valid state');
-    if(this.hasShip && (s=="miss" || s=="empty")) throw Error('Not a valid state 2');
+    try {
+      try {
+        Check.def(state);
+        Check.list(blockStates, state);
+      } catch(error) {
+        throw "state: " + error;
+      }
+      try {
+        if(!this.hasShip && (state=="ship" || state=="hit" || state=="sunk")) throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
+        if(this.hasShip && (state=="miss" || state=="empty")) throw "ship yet miss/empty";
+      } catch(error) {
+        throw "impossible state: " + error;
+      }
+    } catch(error) {
+      throw Error("Block - " + error);
+    }
 
-    this.state = blockStates[s];
+    this.state = blockStates[state];
     return true;
   }
   setShip()
@@ -42,75 +101,149 @@ class Block
   }
 }
 
-const specialShots = {
-  destroyer: 1,
-  cruiser: 2,
-  submarine: 3,
-  battleship: 4,
-  carrier: 5
-};
 class SpecialShot
 {
-  constructor(l,s)
+  constructor(length,silent)
   {
-    this.limit = l;
-    this.charge = 0;
-    this.ready = false;
-    switch(l) {
-      case 2:
-        this.specialShot = specialShots["destroyer"];
-        break;
-      case 3:
-        if(s) {
-          this.specialShot = specialShots["submarine"];
-        } else {
-          this.specialShot = specialShots["cruiser"];
-        }
-        break;
-      case 4:
-        this.specialShot = specialShots["battleship"];
-        break;
-      case 5:
-        this.specialShot = specialShots["carrier"];
-        break;
-      default:
-        throw Error("What the fuck ? Not supposed to go here");
+    try {
+      try {
+        check.def(length);
+        Check.proto(length, "Number");
+        if(length<2) throw "too low";
+        if(length>5) throw "too high";
+      } catch(error) {
+        trhow "length: " + error;
+      }
+      try {
+        check.def(silent);
+        Check.proto(silent, "Boolean");
+      } catch(error) {
+        throw "silent: " + error;
+      }
+      let str;
+      switch(length) {
+        case 2:
+          str = "destroyer";
+          break;
+        case 3:
+          if(silent) {
+            str = "submarine";
+          } else {
+            str = "cruiser";
+          }
+          break;
+        case 4:
+          str = "battleship";
+          break;
+        case 5:
+          str = "carrier";
+          break;
+        default:
+          throw Error("What the fuck ? Not supposed to go here");
+      }
+      try {
+        Check.list(ships, str);
+      } catch(error) {
+        throw "ship: " + error;
+      }
+    } catch(error) {
+      throw "SpecialShot - " + error;
     }
+
+    this.limit = length;
+    this.charge = 0;
+    this.specialShot = ships[str];
   }
   reset()
   {
     this.charge = 0;
-    this.ready = false;
+    return this.limit;
   }
-  pompItUp()
+  pumpItUp()
   {
-    this.charge++;
-    this.checkReady();
+    if(this.charge<this.limit) this.charge++;
+    return this.limit - this.charge;
   }
-  checkReady()
+  relaxMan()
   {
-    if(this.charge==this.limit) this.ready = true;
+    if(this.charge>0) this.charge--;
+    return this.limit - this.charge;
   }
 }
 
 class Ship
 {
-  constructor(l, s)
+  constructor(length, silent)
   {
-    //Check length
-    if(!l) throw Error('Length not defined');
-    if(!(typeof(l)==="number")) throw Error('Not a number');
-    if(l<2) throw Error('Number too low');
-    if(l>5) throw Error('Number too high');
-    //Check silent
-    if(s===null || s===undefined) throw Error('Silent not defined');
-    if(!(typeof(s)==="boolean")) throw Error('Not a boolean');
+    try {
+      try {
+        check.def(length);
+        Check.proto(length, "Number");
+        if(length<2) throw "too low";
+        if(length>5) throw "too high";
+      } catch(error) {
+        trhow "length: " + error;
+      }
+      try {
+        check.def(silent);
+        Check.proto(silent, "Boolean");
+      } catch(error) {
+        throw "silent: " + error;
+      }
+      let str;
+      switch(length) {
+        case 2:
+          str = "destroyer";
+          break;
+        case 3:
+          if(silent) {
+            str = "submarine";
+          } else {
+            str = "cruiser";
+          }
+          break;
+        case 4:
+          str = "battleship";
+          break;
+        case 5:
+          str = "carrier";
+          break;
+        default:
+          throw Error("What the fuck ? Not supposed to go here");
+      }
+      try {
+        Check.list(ships, str);
+      } catch(error) {
+        throw "ship: " + error;
+      }
+    } catch(error) {
+      throw "Ship - " + error;
+    }
 
-    this.length = l;
-    this.silent = s;
+    this.name = str;
+    this.length = length;
+    this.silent = silent;
     this.stayinAlive = true;
-    this.specialShot = new SpecialShot(l, s);
+    this.specialShot = new SpecialShot(length, silent);
     return true;
+  }
+  updateSpecialShot(up)
+  {
+    try {
+      Check.def(up);
+      Check.proto(up, "Boolean");
+    } catch(error) {
+      throw "Ship - up: " + error;
+    }
+    if(up) {
+      return this.specialShot.pumpItUp();
+    } else {
+      return this.specialShot.relaxMan();
+    }
+  }
+  resetSpecialShot()
+  {
+    return this.specialShot.reset();
   }
 }
 class Ships
@@ -123,21 +256,46 @@ class Ships
     this.ships.push(new Ship(3,true));
     this.ships.push(new Ship(4,false));
     this.ships.push(new Ship(5,false));
+    this.specialShotsCharge = [];
+    this.resetSpecialShot();
+  }
+  searchShip(name)
+  {
+    try {
+      Check.def(name);
+      Check.proto(name, "String");
+      Check.list(ships, name);
+    } catch(error) {
+      throw "Ships - name: " + error;
+    }
+    return this.ships.find(function(ship)
+        {
+          return ship.name===name;
+        });
   }
   stillAlive()
   {
-    for(let i in this.ships)
-    {
+    for(let i in this.ships) {
       if(this.ships[i].stayinAlive) return true;
     }
     return false;
   }
-  updateSpecialShots()
+  updateSpecialShots(up)
   {
-    for(let i in this.ships)
-    {
-      //Not defined yet
-      //this.ships[i].updateSpecialShot();
+    try {
+      Check.def(up);
+      Check.proto(up, "Boolean");
+    } catch(error) {
+      throw "Ships - up: " + error;
+    }
+    for(let i in this.ships) {
+      this.specialShots[i] = this.ships[i].updateSpecialShot(up);
+    }
+  }
+  resetSpecialShots()
+  {
+    for(let i in this.ships) {
+      this.specialShots[i] = this.ships[i].resetSpecialShot();
     }
   }
 }
@@ -150,3 +308,6 @@ class Grid
   }
 
 }
+
+let tmp;
+tmp = new Block();
