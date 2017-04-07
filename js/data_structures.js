@@ -1,5 +1,7 @@
 "use strict"
 
+const DEBUG = true;
+
 const types = {
   Boolean: 1,
   Number: 2,
@@ -23,6 +25,13 @@ const ships = {
   battleship: 4,
   carrier: 5
 };
+const players = {
+  self: 1,
+  other: 2,
+  botEasy: 3,
+  botMedium: 4,
+  botHard: 5
+};
 class Check
 {
   static def(object)
@@ -45,9 +54,9 @@ class Check
         comp = Object.prototype.toString.call({});
         if(!(str===comp)) throw "wrong type"
           +"\n"
-          +"(received " + str + ")"
-          +"\n"
-          +"(expected " + comp + ")";
+            +"(received " + str + ")"
+            +"\n"
+            +"(expected " + comp + ")";
         if(Object.keys(list).length===0) throw "empty set";
       } catch(error) {
         throw "list: " + error;
@@ -58,12 +67,12 @@ class Check
         comp = Object.prototype.toString.call("");
         if(!(str===comp)) throw "wrong type"
           +"\n"
-          +"(received " + str + ")"
-          +"\n"
-          +"(expected " + comp + ")";
+            +"(received " + str + ")"
+            +"\n"
+            +"(expected " + comp + ")";
         if(!list[object]) throw "not in list"
           +"\n"
-          +"(received \"" + object + "\")";
+            +"(received \"" + object + "\")";
       } catch(error) {
         throw "object: " + error;
       }
@@ -82,9 +91,9 @@ class Check
         comp = Object.prototype.toString.call("");
         if(!(str===comp)) throw "wrong type"
           +"\n"
-          +"(received " + str + ")"
-          +"\n"
-          +"(expected " + comp + ")";
+            +"(received " + str + ")"
+            +"\n"
+            +"(expected " + comp + ")";
         Check.list(types, type);
       } catch(error) {
         throw "type: " + error;
@@ -94,9 +103,9 @@ class Check
         str = Object.prototype.toString.call(object);
         if(!(Object.prototype.toString.call(object)==="[object "+type+"]")) throw "wrong type"
           +"\n"
-          +"(received " + str + ")"
-          +"\n"
-          +"(expected " + "[object "+type+"]" + ")";
+            +"(received " + str + ")"
+            +"\n"
+            +"(expected " + "[object "+type+"]" + ")";
       } catch(error) {
         throw "object: " + error;
       }
@@ -121,7 +130,7 @@ class Check
       }
       if(number<limit) throw "too low"
         +"\n"
-        +"(received "+number+"<"+limit+")"
+          +"(received "+number+"<"+limit+")"
     } catch(error) {
       throw "Check.sup - " + error;
     }
@@ -143,7 +152,7 @@ class Check
       }
       if(number>limit) throw "too high"
         +"\n"
-        +"(received "+number+">"+limit+")"
+          +"(received "+number+">"+limit+")"
     } catch(error) {
       throw "Check.inf - " + error;
     }
@@ -165,7 +174,7 @@ class Check
       }
       if(number<=limit) throw "too low"
         +"\n"
-        +"(received "+number+"<="+limit+")"
+          +"(received "+number+"<="+limit+")"
     } catch(error) {
       throw "Check.esup - " + error;
     }
@@ -187,7 +196,7 @@ class Check
       }
       if(number>=limit) throw "too high"
         +"\n"
-        +"(received "+number+">="+limit+")"
+          +"(received "+number+">="+limit+")"
     } catch(error) {
       throw "Check.einf - " + error;
     }
@@ -209,7 +218,7 @@ class Check
       }
       if(!(number===limit)) throw "not equal"
         +"\n"
-        +"(received "+number+"!="+limit+")"
+          +"(received "+number+"!="+limit+")"
     } catch(error) {
       throw "Check.eq - " + error;
     }
@@ -231,7 +240,7 @@ class Check
       }
       if(number===limit) throw "equal"
         +"\n"
-        +"(received "+number+"=="+limit+")"
+          +"(received "+number+"=="+limit+")"
     } catch(error) {
       throw "Check.neq - " + error;
     }
@@ -240,57 +249,82 @@ class Check
 
 class Block
 {
-  constructor(x, y)
+  constructor(row, column)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(x);
-        Check.proto(x, "Number");
-        Check.sup(x, 0);
-        Check.inf(x, 9);
+        try {
+          Check.def(row);
+          Check.proto(row, "Number");
+          Check.sup(row, 0);
+          Check.inf(row, 9);
+        } catch(error) {
+          throw "row: " + error;
+        }
+        try {
+          Check.def(column);
+          Check.proto(column, "Number");
+          Check.sup(column, 0);
+          Check.inf(column, 9);
+        } catch(error) {
+          throw "column: " + error;
+        }
       } catch(error) {
-        throw "x: " + error;
+        throw Error("Block (constructor) - " + error);
       }
-      try {
-        Check.def(y);
-        Check.proto(y, "Number");
-        Check.sup(y, 0);
-        Check.inf(y, 9);
-      } catch(error) {
-        throw "y: " + error;
-      }
-    } catch(error) {
-      throw Error("Block (constructor) - " + error);
     }
 
     this.state = blockStates["unknown"];
     this.hasShip = false;
+    this.row = row;
+    this.column = column;
   }
   getState()
   {
     return this.state;
   }
+  getRow()
+  {
+    return this.row;
+  }
+  getColumn()
+  {
+    return this.column;
+  }
+  getPos()
+  {
+    let block = {};
+    block.row = this.getRow();
+    block.column = this.getColumn();
+    return block;
+  }
   setState(state)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(state);
-        Check.list(blockStates, state);
+        try {
+          Check.def(state);
+          Check.list(blockStates, state);
+        } catch(error) {
+          throw "state: " + error;
+        }
+        try {
+          if(!this.hasShip && (state=="ship" || state=="hit" || state=="sunk")) throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
+          if(this.hasShip && (state=="miss" || state=="empty")) throw "ship yet miss/empty";
+        } catch(error) {
+          throw "impossible state: " + error;
+        }
       } catch(error) {
-        throw "state: " + error;
+        throw Error("Block (setState) - " + error);
       }
-      try {
-        if(!this.hasShip && (state=="ship" || state=="hit" || state=="sunk")) throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
-        if(this.hasShip && (state=="miss" || state=="empty")) throw "ship yet miss/empty";
-      } catch(error) {
-        throw "impossible state: " + error;
-      }
-    } catch(error) {
-      throw Error("Block (setState) - " + error);
     }
 
     this.state = blockStates[state];
     return true;
+  }
+  hasShip()
+  {
+    return this.hasShip;
   }
   setShip()
   {
@@ -308,22 +342,52 @@ class SpecialShot
   constructor(length,silent)
   {
     let str;
-    try {
+    if(DEBUG) {
       try {
-        Check.def(length);
-        Check.proto(length, "Number");
-        Check.sup(length, 2);
-        Check.inf(length, 5);
+        try {
+          Check.def(length);
+          Check.proto(length, "Number");
+          Check.sup(length, 2);
+          Check.inf(length, 5);
+        } catch(error) {
+          throw "length: " + error;
+        }
+        try {
+          Check.def(silent);
+          Check.proto(silent, "Boolean");
+        } catch(error) {
+          throw "silent: " + error;
+        }
+        if(silent && length!=3) throw "impossible combination";
+        switch(length) {
+          case 2:
+            str = "destroyer";
+            break;
+          case 3:
+            if(silent) {
+              str = "submarine";
+            } else {
+              str = "cruiser";
+            }
+            break;
+          case 4:
+            str = "battleship";
+            break;
+          case 5:
+            str = "carrier";
+            break;
+          default:
+            throw Error("What the fuck ? Not supposed to go here");
+        }
+        try {
+          Check.list(ships, str);
+        } catch(error) {
+          throw "ship: " + error;
+        }
       } catch(error) {
-        throw "length: " + error;
+        throw "SpecialShot (constructor) - " + error;
       }
-      try {
-        Check.def(silent);
-        Check.proto(silent, "Boolean");
-      } catch(error) {
-        throw "silent: " + error;
-      }
-      if(silent && length!=3) throw "impossible combination";
+    } else {
       switch(length) {
         case 2:
           str = "destroyer";
@@ -344,13 +408,6 @@ class SpecialShot
         default:
           throw Error("What the fuck ? Not supposed to go here");
       }
-      try {
-        Check.list(ships, str);
-      } catch(error) {
-        throw "ship: " + error;
-      }
-    } catch(error) {
-      throw "SpecialShot (constructor) - " + error;
     }
 
     this.limit = length;
@@ -379,22 +436,52 @@ class Ship
   constructor(length, silent)
   {
     let str;
-    try {
+    if(DEBUG) {
       try {
-        Check.def(length);
-        Check.proto(length, "Number");
-        Check.sup(length, 2);
-        Check.inf(length, 2);
+        try {
+          Check.def(length);
+          Check.proto(length, "Number");
+          Check.sup(length, 2);
+          Check.inf(length, 2);
+        } catch(error) {
+          throw "length: " + error;
+        }
+        try {
+          Check.def(silent);
+          Check.proto(silent, "Boolean");
+        } catch(error) {
+          throw "silent: " + error;
+        }
+        if(silent && length!=3) throw "impossible combination";
+        switch(length) {
+          case 2:
+            str = "destroyer";
+            break;
+          case 3:
+            if(silent) {
+              str = "submarine";
+            } else {
+              str = "cruiser";
+            }
+            break;
+          case 4:
+            str = "battleship";
+            break;
+          case 5:
+            str = "carrier";
+            break;
+          default:
+            throw Error("What the fuck ? Not supposed to go here");
+        }
+        try {
+          Check.list(ships, str);
+        } catch(error) {
+          throw "ship: " + error;
+        }
       } catch(error) {
-        throw "length: " + error;
+        throw "Ship (constructor) - " + error;
       }
-      try {
-        Check.def(silent);
-        Check.proto(silent, "Boolean");
-      } catch(error) {
-        throw "silent: " + error;
-      }
-      if(silent && length!=3) throw "impossible combination";
+    } else {
       switch(length) {
         case 2:
           str = "destroyer";
@@ -415,13 +502,6 @@ class Ship
         default:
           throw Error("What the fuck ? Not supposed to go here");
       }
-      try {
-        Check.list(ships, str);
-      } catch(error) {
-        throw "ship: " + error;
-      }
-    } catch(error) {
-      throw "Ship (constructor) - " + error;
     }
 
     this.name = str;
@@ -438,20 +518,22 @@ class Ship
   }
   updateSpecialShot(up)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(up);
-        Check.proto(up, "Boolean");
+        try {
+          Check.def(up);
+          Check.proto(up, "Boolean");
+        } catch(error) {
+          throw "up: " + error;
+        }
       } catch(error) {
-        throw "up: " + error;
+        throw "Ship (updateSpecialShot) - " + error;
       }
-    } catch(error) {
-      throw "Ship (updateSpecialShot) - " + error;
-    }
-    if(up) {
-      return this.specialShot.pumpItUp();
-    } else {
-      return this.specialShot.relaxMan();
+      if(up) {
+        return this.specialShot.pumpItUp();
+      } else {
+        return this.specialShot.relaxMan();
+      }
     }
   }
   resetSpecialShot()
@@ -460,19 +542,21 @@ class Ship
   }
   setBlocks(blocks)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(blocks);
-        Check.proto(blocks, "Array");
-        if(blocks.length!=this.length) throw "wrong size";
+        try {
+          Check.def(blocks);
+          Check.proto(blocks, "Array");
+          if(blocks.length!=this.length) throw "wrong size";
+        } catch(error) {
+          throw "blocks: " + error;
+        }
       } catch(error) {
-        throw "blocks: " + error;
+        throw "Ship (setBlocks) - " + error;
       }
-    } catch(error) {
-      throw "Ship (setBlocks) - " + error;
-    }
-    for(let i in blocks){
-      this.blocks[i] = blocks[i];
+      for(let i in blocks){
+        this.blocks[i] = blocks[i];
+      }
     }
   }
 }
@@ -491,17 +575,20 @@ class Ships
   }
   searchShip(name)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(name);
-        Check.proto(name, "String");
-        Check.list(ships, name);
+        try {
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
+        } catch(error) {
+          throw "name: " + error;
+        }
       } catch(error) {
-        throw "name: " + error;
+        throw "Ships (searchShip) - " + error;
       }
-    } catch(error) {
-      throw "Ships (searchShip) - " + error;
     }
+
     return this.ships.find(function(ship)
         {
           return ship.name===name;
@@ -516,16 +603,19 @@ class Ships
   }
   updateSpecialShots(up)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(up);
-        Check.proto(up, "Boolean");
+        try {
+          Check.def(up);
+          Check.proto(up, "Boolean");
+        } catch(error) {
+          throw "up: " + error;
+        }
       } catch(error) {
-        throw "up: " + error;
+        throw "Ships (updateSpecialShots) - " + error;
       }
-    } catch(error) {
-      throw "Ships (updateSpecialShots) - " + error;
     }
+
     for(let i in this.ships) {
       this.specialShots[i] = this.ships[i].updateSpecialShot(up);
     }
@@ -538,32 +628,58 @@ class Ships
   }
   setShipBlocks(name, blocks)
   {
-    try {
+    if(DEBUG) {
       try {
-        Check.def(name);
-        Check.proto(name, "String");
-        Check.list(ships, name);
+        try {
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
+        } catch(error) {
+          throw "name: " + error;
+        }
+        try {
+          Check.def(blocks);
+          Check.proto(blocks, "Array");
+        } catch(error) {
+          throw "blocks: " + error;
+        }
       } catch(error) {
-        throw "name: " + error;
+        throw "Ship (insertShip) - " + error;
       }
-      try {
-        Check.def(blocks);
-        Check.proto(blocks, "Array");
-      } catch(error) {
-        throw "blocks: " + error;
-      }
-    } catch(error) {
-      throw "Ship (insertShip) - " + error;
     }
+
     this.searchShip(name).setBlocks(blocks);
   }
 }
 
 class Grid
 {
-  constructor()
+  constructor(owner)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(owner);
+          Check.proto(owner, "String");
+          Check.list(players, owner);
+        } catch(error) {
+          throw "owner: " + error;
+        }
+      } catch(error) {
+        throw Error("Grid (constructor) - " + error);
+      }
+    }
 
+    this.owner = players[owner];
+    this.ships = new Ships();
+    this.grid = [];
+    let tmp;
+    for(let i=0; i<10; i++) {
+      tmp = [];
+      for(let j=0; j<10; j++) {
+        tmp.push(new Block(i,j));
+      }
+      this.grid.push(tmp);
+    }
   }
-
 }
