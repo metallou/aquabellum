@@ -7,10 +7,11 @@ FUNCTIONNALITIES:
   multi (Plyaer vs Player)
 Plusieurs modes de tirs:
   standard
+  Multi-shot (L2)
   AOE (L3:1)
   Paralysis (L3:2 sub)
-  multi-shot (L4)
-  map-reveal (L5)
+  Heat-seeking (L4)
+  Map-reveal (L5)
 Bonus/malus:
   Abilities counts independants
   +
@@ -31,4 +32,4 @@ DATA STRUCTURES:
 
 
 IHM:
-
+Quelle police ?
