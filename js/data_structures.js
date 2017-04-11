@@ -320,7 +320,6 @@ class Block
     }
 
     this.state = blockStates[state];
-    return true;
   }
   hasShip()
   {
@@ -329,11 +328,10 @@ class Block
   setShip()
   {
     this.hasShip = true;
-    return true;
   }
   unsetShip()
   {
-    return true;
+    this.hasShip = false;
   }
 }
 
@@ -510,7 +508,6 @@ class Ship
     for(let i=0; i<length; i++) {
       this.blocks.push(null);
     }
-    console.log(this.blocks);
     this.silent = silent;
     this.stayinAlive = true;
     this.specialShot = new SpecialShot(length, silent);
@@ -529,12 +526,12 @@ class Ship
       } catch(error) {
         throw "Ship (updateSpecialShot) - " + error;
       }
+    }
       if(up) {
         return this.specialShot.pumpItUp();
       } else {
         return this.specialShot.relaxMan();
       }
-    }
   }
   resetSpecialShot()
   {
@@ -554,10 +551,10 @@ class Ship
       } catch(error) {
         throw "Ship (setBlocks) - " + error;
       }
+    }
       for(let i in blocks){
         this.blocks[i] = blocks[i];
       }
-    }
   }
 }
 class Ships
