@@ -275,13 +275,50 @@ class Block
     }
 
     this.state = blockStates["unknown"];
-    this.hasShip = false;
+    this.ship = false;
+    this.shipName = null;
     this.row = row;
     this.column = column;
+    this.proba = 0;
   }
-  getState()
+  getProba()
   {
-    return this.state;
+    return this.proba;
+  }
+  addProba()
+  {
+    this.proba++;
+  }
+  resetProba()
+  {
+    this.proba = 0;
+  }
+  hasShip()
+  {
+    return this.ship;
+  }
+  setShip(name)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
+        } catch(error) {
+          throw "name: " + error;
+        }
+      } catch(error) {
+        throw Error("Block (setShip) - " + error);
+      }
+    }
+
+    this.shipName = name;
+    this.ship = true;
+  }
+  unsetShip()
+  {
+    this.ship = false;
   }
   getRow()
   {
@@ -298,6 +335,25 @@ class Block
     block.column = this.getColumn();
     return block;
   }
+  canBeShotAt()
+  {
+    if(this.getState()===blockStates["unknown"] || this.getState()===blockStates["ship"]) return true;
+    return false;
+  }
+  mustBeLookedAt()
+  {
+    if(this.getState()===blockStates["hit"] || this.getState()===blockStates["ship"]) return true;
+    return false;
+  }
+  shouldNotBeLookedAt()
+  {
+    if(this.getState()===blockStates["miss"] || this.getState()===blockStates["sunk"]) return true;
+    return false;
+  }
+  getState()
+  {
+    return this.state;
+  }
   setState(state)
   {
     if(DEBUG) {
@@ -309,8 +365,8 @@ class Block
           throw "state: " + error;
         }
         try {
-          if(!this.hasShip && (state=="ship" || state=="hit" || state=="sunk")) throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
-          if(this.hasShip && (state=="miss" || state=="empty")) throw "ship yet miss/empty";
+          if(!this.hasShip() && (state=="ship" || state=="hit" || state=="sunk")) throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
+          if(this.hasShip() && (state=="miss" || state=="empty")) throw "ship yet miss/empty";
         } catch(error) {
           throw "impossible state: " + error;
         }
@@ -320,18 +376,6 @@ class Block
     }
 
     this.state = blockStates[state];
-  }
-  hasShip()
-  {
-    return this.hasShip;
-  }
-  setShip()
-  {
-    this.hasShip = true;
-  }
-  unsetShip()
-  {
-    this.hasShip = false;
   }
 }
 
@@ -440,7 +484,7 @@ class Ship
           Check.def(length);
           Check.proto(length, "Number");
           Check.sup(length, 2);
-          Check.inf(length, 2);
+          Check.inf(length, 5);
         } catch(error) {
           throw "length: " + error;
         }
@@ -508,10 +552,15 @@ class Ship
     for(let i=0; i<length; i++) {
       this.blocks.push(null);
     }
+    this.onGrid = false;
     this.silent = silent;
     this.stayinAlive = true;
     this.specialShot = new SpecialShot(length, silent);
     return true;
+  }
+  getLength()
+  {
+    return this.length;
   }
   updateSpecialShot(up)
   {
@@ -527,17 +576,37 @@ class Ship
         throw "Ship (updateSpecialShot) - " + error;
       }
     }
-      if(up) {
-        return this.specialShot.pumpItUp();
-      } else {
-        return this.specialShot.relaxMan();
-      }
+    if(up) {
+      return this.specialShot.pumpItUp();
+    } else {
+      return this.specialShot.relaxMan();
+    }
   }
   resetSpecialShot()
   {
     return this.specialShot.reset();
   }
-  setBlocks(blocks)
+  kill()
+  {
+    for(let i in this.blocks) {
+      this.blocks[i].setState("sunk");
+    }
+    this.stayinAlive = false;
+  }
+  updateState()
+  {
+    let dead = true;
+    for(let i in this.blocks) {
+      if(!(this.blocks[i].getState()===blockStates["hit"])) dead = false;
+    }
+    if(dead) this.kill();
+  }
+  stillAlive()
+  {
+    if(this.stayinAlive) return true;
+    return false;
+  }
+  setBlocks(name, blocks)
   {
     if(DEBUG) {
       try {
@@ -552,9 +621,15 @@ class Ship
         throw "Ship (setBlocks) - " + error;
       }
     }
-      for(let i in blocks){
+    if(this.onGrid) {
+      throw Error("Ship Already set");
+    } else {
+      this.onGrid = true;
+      for(let i in blocks) {
+        blocks[i].setShip(name);
         this.blocks[i] = blocks[i];
       }
+    }
   }
 }
 class Ships
@@ -568,7 +643,7 @@ class Ships
     this.ships.push(new Ship(4,false));
     this.ships.push(new Ship(5,false));
     this.specialShotsCharge = [];
-    this.resetSpecialShot();
+    this.resetSpecialShots();
   }
   searchShip(name)
   {
@@ -594,7 +669,7 @@ class Ships
   stillAlive()
   {
     for(let i in this.ships) {
-      if(this.ships[i].stayinAlive) return true;
+      if(this.ships[i].stillAlive()) return true;
     }
     return false;
   }
@@ -620,7 +695,7 @@ class Ships
   resetSpecialShots()
   {
     for(let i in this.ships) {
-      this.specialShots[i] = this.ships[i].resetSpecialShot();
+      this.specialShotsCharge[i] = this.ships[i].resetSpecialShot();
     }
   }
   setShipBlocks(name, blocks)
@@ -645,7 +720,7 @@ class Ships
       }
     }
 
-    this.searchShip(name).setBlocks(blocks);
+    this.searchShip(name).setBlocks(name, blocks);
   }
 }
 
@@ -678,5 +753,121 @@ class Grid
       }
       this.grid.push(tmp);
     }
+  }
+  placeShip(name, rotation, row, column)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
+        } catch(error) {
+          throw "name: " + error;
+        }
+        try {
+          Check.def(rotation);
+          Check.proto(rotation, "Boolean");
+        } catch(error) {
+          throw "rotation: " + error;
+        }
+        try {
+          Check.def(row);
+          Check.proto(row, "Number");
+          Check.sup(row, 0);
+          Check.inf(row, 9);
+        } catch(error) {
+          throw "row: " + error;
+        }
+        try {
+          Check.def(column);
+          Check.proto(column, "Number");
+          Check.sup(column, 0);
+          Check.inf(column, 9);
+        } catch(error) {
+          throw "column: " + error;
+        }
+      } catch(error) {
+        throw Error("Grid (placeShip) - " + error);
+      }
+    }
+
+    let ship = this.ships.searchShip(name);
+    let blocks = [];
+    for(let i=0; i<ship.getLength(); i++) {
+      if(rotation) {
+        blocks.push(this.grid[row][column+i])
+      } else {
+        blocks.push(this.grid[row+i][column])
+      }
+    }
+
+    this.ships.setShipBlocks(name, blocks);
+
+  }
+  searchTarget()
+  {
+    for(let i in this.grid) {
+      for(let j in this.grid[i]) {
+        if(this.grid[i][j].mustBeLookedAt()) return this.grid[i][j];
+      }
+    }
+    return null;
+  }
+  fireAt(block)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+        } catch(error) {
+          throw "block: " + error;
+        }
+      } catch(error) {
+        throw Error("Grid (fireAt) - " + error);
+      }
+    }
+
+    if(block.hasShip()) {
+      block.setState("hit");
+      grid.ships.searchShip(block.shipName).updateState();
+      this.visualise();
+      return this.ships.stillAlive();
+    } else {
+      block.setState("miss");
+      this.visualise();
+      return true;
+    }
+  }
+  visualise()
+  {
+    let str = "";
+    for(let i in this.grid) {
+      for(let j in this.grid[i]) {
+        switch(this.grid[i][j].getState()) {
+          case blockStates["unknown"]:
+            str += ".";
+            break;
+          case blockStates["empty"]:
+            str += " ";
+            break;
+          case blockStates["miss"]:
+            str += "m";
+            break;
+          case blockStates["ship"]:
+            str += "S";
+            break;
+          case blockStates["hit"]:
+            str += "H";
+            break;
+          case blockStates["sunk"]:
+            str += "X";
+            break;
+        }
+      }
+      str += "\n";
+    }
+    console.log(str);
   }
 }
