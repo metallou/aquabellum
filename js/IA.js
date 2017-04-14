@@ -424,13 +424,12 @@ class IA {
       } while(!placed);
     }
   }
-
-
-
-
-
+}
+class Bot extends IA
+{
   constructor(difficulty)
   {
+    super();
     if(DEBUG) {
       try {
         try {
@@ -464,7 +463,7 @@ class IA {
         this.hunt = IA.huntTargetMedium;
     }
   }
-  attack(grid)
+  attack(grid, attackMode)
   {
     if(DEBUG) {
       try {
@@ -475,8 +474,14 @@ class IA {
         } catch(error) {
           throw "grid : " + error;
         }
+        try {
+          Check.def(attackMode);
+          Check.proto(attackMode, "Function");
+        } catch(error) {
+          throw "attackMode : " + error;
+        }
       } catch(error) {
-        throw Error("IA (bot) - " + error);
+        throw Error("IA (attack) - " + error);
       }
     }
 
@@ -491,7 +496,8 @@ class IA {
         target = this.hunt(grid, block);
       }
     }
-    return grid.fireAt(target);
+
+    return grid.fireAt(target, attackMode);
   }
 }
 
@@ -500,15 +506,15 @@ class IA {
 let grid;
 let nbShots;
 let life;
-let bot = new IA("hard");
-for(let l=0; l<1; l++) {
+let bot = new Bot("hard");
+for(let l=0; l<1000; l++) {
   nbShots = 0;
   life = true;
   grid = new Grid("self");
   IA.placeShips(grid);
   for(let i=0; i<100 && life; i++) {
     nbShots++;
-    life = bot.attack(grid);
+    life = bot.attack(grid, Shot.carrierShot);
   }
   console.info(nbShots);
   grid = null;

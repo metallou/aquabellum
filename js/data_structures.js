@@ -369,6 +369,14 @@ class Block
     if(this.getState()===blockStates["unknown"]) return true;
     return false;
   }
+  canGoThrough()
+  {
+    if(this.getState()===blockStates["unknown"]) return true;
+    if(this.getState()===blockStates["empty"]) return true;
+    if(this.getState()===blockStates["miss"]) return true;
+    if(this.getState()===blockStates["ship"]) return true;
+    return false;
+  }
   canBeShotAt()
   {
     if(this.getState()===blockStates["unknown"]) return true;
@@ -388,6 +396,12 @@ class Block
   shouldNotBeLookedAt()
   {
     if(this.getState()===blockStates["miss"]) return true;
+    if(this.getState()===blockStates["sunk"]) return true;
+    return false;
+  }
+  onHighwayToHell()
+  {
+    if(this.getState()===blockStates["hit"]) return true;
     if(this.getState()===blockStates["sunk"]) return true;
     return false;
   }
@@ -427,36 +441,282 @@ class Block
   }
 }
 
-class SpecialShot
+class Shot
 {
-  static spe1()
+  static normalShot(grid, block)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (normalShot) - " + error);
+      }
+    }
 
+    if(block.hasShip()) {
+      block.setState("hit");
+      grid.ships.searchShip(block.shipName).updateState();
+    } else {
+      block.setState("miss");
+    }
   }
-  static spe2()
+  static flareShot(grid, block)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (flareShot) - " + error);
+      }
+    }
 
+    if(block.hasShip()) {
+      block.setState("ship");
+    } else {
+      block.setState("empty");
+    }
   }
-  static spe3()
+  static destroyerShot(grid, block)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (destroyerShot) - " + error);
+      }
+    }
 
+    let blocks = [];
+    let pos = block.getPos();
+    for(let y=pos.row-1; y<=(pos.row+1); y++) {
+      if(y>=0 && y<=9) {
+        for(let x=(pos.column-1); x<=(pos.column+1); x++) {
+          if(x>=0 && x<=9) {
+            if(grid.grid[y][x] && grid.grid[y][x].canBeShotAt()) {
+              if(grid.grid[y][x]!=block) blocks.push(grid.grid[y][x]);
+            }
+          }
+        }
+      }
+    }
+
+    Shot.normalShot(grid, block);
+    if(blocks.length>0) {
+      const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+      Shot.flareShot(grid, blocks[i]);
+    }
   }
-  static spe4()
+  static cruiserShot(grid, block)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (cruiserShot) - " + error);
+      }
+    }
 
+    let blocks = [];
+    let pos = block.getPos();
+    for(let y=pos.row-1; y<=(pos.row+1); y++) {
+      if(y>=0 && y<=9) {
+        for(let x=(pos.column-1); x<=(pos.column+1); x++) {
+          if(x>=0 && x<=9) {
+            if(grid.grid[y][x] && grid.grid[y][x].canBeShotAt()) {
+              if(grid.grid[y][x]!=block) blocks.push(grid.grid[y][x]);
+            }
+          }
+        }
+      }
+    }
+
+    Shot.normalShot(grid, block);
+    if(blocks.length>0) {
+      const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+      Shot.normalShot(grid, blocks[i]);
+    }
   }
-  static spe5()
+  static submarineShot(grid, block)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (submarineShot) - " + error);
+      }
+    }
 
+    let blocks = [];
+    let pos = block.getPos();
+    let tmpblock;
+    for(let y=pos.row; y>=0; y--) {
+      tmpblock = grid.grid[y][pos.column];
+      if(tmpblock.canGoThrough()) {
+        blocks.push(tmpblock);
+      } else {
+        break;
+      }
+    }
+
+    for(let i in blocks) {
+      Shot.normalShot(grid, blocks[i]);
+      if(blocks[i].hasShip()) break;
+    }
   }
-
-
-
-
-
-  constructor(length,silent)
+  static battleshipShot(grid, block)
   {
-    let str;
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (battleshipShot) - " + error);
+      }
+    }
+
+    let blocks = [];
+    let pos = block.getPos();
+    for(let y=pos.row-1; y<=(pos.row+1); y++) {
+      if(y>=0 && y<=9) {
+        for(let x=(pos.column-1); x<=(pos.column+1); x++) {
+          if(x>=0 && x<=9) {
+            if(grid.grid[y][x] && grid.grid[y][x].canBeShotAt()) {
+              blocks.push(grid.grid[y][x]);
+            }
+          }
+        }
+      }
+    }
+
+    for(let i in blocks) {
+      Shot.flareShot(grid, blocks[i]);
+    }
+    Shot.normalShot(grid, block);
+  }
+  static carrierShot(grid, block)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("Shot (carrierShot) - " + error);
+      }
+    }
+
+    let blocks = [];
+    let pos = block.getPos();
+    for(let y=pos.row-1; y<=(pos.row+1); y++) {
+      if(y>=0 && y<=9) {
+        for(let x=(pos.column-1); x<=(pos.column+1); x++) {
+          if(x>=0 && x<=9) {
+            if(grid.grid[y][x] && grid.grid[y][x].canBeShotAt()) {
+              blocks.push(grid.grid[y][x]);
+            }
+          }
+        }
+      }
+    }
+
+    for(let i in blocks) {
+      Shot.normalShot(grid, blocks[i]);
+    }
+  }
+}
+class SpecialShot extends Shot
+{
+  constructor(name, length)
+  {
+    super();
     if(DEBUG) {
       try {
         try {
@@ -468,66 +728,38 @@ class SpecialShot
           throw "length: " + error;
         }
         try {
-          Check.def(silent);
-          Check.proto(silent, "Boolean");
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
         } catch(error) {
-          throw "silent: " + error;
-        }
-        if(silent && length!=3) throw "impossible combination";
-        switch(length) {
-          case 2:
-            str = "destroyer";
-            break;
-          case 3:
-            if(silent) {
-              str = "submarine";
-            } else {
-              str = "cruiser";
-            }
-            break;
-          case 4:
-            str = "battleship";
-            break;
-          case 5:
-            str = "carrier";
-            break;
-          default:
-            throw Error("What the fuck ? Not supposed to go here");
-        }
-        try {
-          Check.list(ships, str);
-        } catch(error) {
-          throw "ship: " + error;
+          throw "name: " + error;
         }
       } catch(error) {
         throw "SpecialShot (constructor) - " + error;
-      }
-    } else {
-      switch(length) {
-        case 2:
-          str = "destroyer";
-          break;
-        case 3:
-          if(silent) {
-            str = "submarine";
-          } else {
-            str = "cruiser";
-          }
-          break;
-        case 4:
-          str = "battleship";
-          break;
-        case 5:
-          str = "carrier";
-          break;
-        default:
-          throw Error("What the fuck ? Not supposed to go here");
       }
     }
 
     this.limit = length;
     this.charge = 0;
-    this.specialShot = ships[str];
+    switch(name) {
+      case "destroyer":
+        this.specialShot = Shot.destroyerShot;
+        break;
+      case "cruiser":
+        this.specialShot = Shot.cruiserShot;
+        break;
+      case "submarine":
+        this.specialShot = Shot.submarineShot;
+        break;
+      case "battleship":
+        this.specialShot = Shot.battleshipShot;
+        break;
+      case "carrier":
+        this.specialShot = Shot.carrierShot;
+        break;
+      default:
+        throw Error("What the fuck ? Not supposed to go here");
+    }
   }
   reset()
   {
@@ -548,88 +780,56 @@ class SpecialShot
 
 class Ship
 {
-  constructor(length, silent)
+  constructor(name)
   {
     let str;
     if(DEBUG) {
       try {
         try {
-          Check.def(length);
-          Check.proto(length, "Number");
-          Check.sup(length, 2);
-          Check.inf(length, 5);
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
         } catch(error) {
-          throw "length: " + error;
-        }
-        try {
-          Check.def(silent);
-          Check.proto(silent, "Boolean");
-        } catch(error) {
-          throw "silent: " + error;
-        }
-        if(silent && length!=3) throw "impossible combination";
-        switch(length) {
-          case 2:
-            str = "destroyer";
-            break;
-          case 3:
-            if(silent) {
-              str = "submarine";
-            } else {
-              str = "cruiser";
-            }
-            break;
-          case 4:
-            str = "battleship";
-            break;
-          case 5:
-            str = "carrier";
-            break;
-          default:
-            throw Error("What the fuck ? Not supposed to go here");
-        }
-        try {
-          Check.list(ships, str);
-        } catch(error) {
-          throw "ship: " + error;
+          throw "name: " + error;
         }
       } catch(error) {
         throw "Ship (constructor) - " + error;
       }
-    } else {
-      switch(length) {
-        case 2:
-          str = "destroyer";
-          break;
-        case 3:
-          if(silent) {
-            str = "submarine";
-          } else {
-            str = "cruiser";
-          }
-          break;
-        case 4:
-          str = "battleship";
-          break;
-        case 5:
-          str = "carrier";
-          break;
-        default:
-          throw Error("What the fuck ? Not supposed to go here");
-      }
     }
 
-    this.name = str;
-    this.length = length;
+    this.name = name;
+    switch(this.name) {
+      case "destroyer":
+        this.length = 2;
+        this.silent = false;
+        break;
+      case "cruiser":
+        this.length = 3;
+        this.silent = false;
+        break;
+      case "submarine":
+        this.length = 3;
+        this.silent = true;
+        break;
+      case "battleship":
+        this.length = 4;
+        this.silent = false;
+        break;
+      case "carrier":
+        this.length = 5;
+        this.silent = false;
+        break;
+      default:
+        throw Error("What the fuck ? Not supposed to go here");
+    };
     this.blocks = [];
     for(let i=0; i<length; i++) {
       this.blocks.push(null);
     }
     this.rotation = false;
     this.onGrid = false;
-    this.silent = silent;
     this.stayinAlive = true;
-    this.specialShot = new SpecialShot(length, silent);
+    this.specialShot = new SpecialShot(this.name, this.length);
     return true;
   }
   getLength()
@@ -703,7 +903,7 @@ class Ship
   {
     let dead = true;
     for(let i in this.blocks) {
-      if(!(this.blocks[i].getState()===blockStates["hit"])) dead = false;
+      if(!this.blocks[i].onHighwayToHell()) dead = false;
     }
     if(dead) this.kill();
   }
@@ -758,11 +958,11 @@ class Ships
   constructor()
   {
     this.ships = [];
-    this.ships.push(new Ship(2,false));
-    this.ships.push(new Ship(3,false));
-    this.ships.push(new Ship(3,true));
-    this.ships.push(new Ship(4,false));
-    this.ships.push(new Ship(5,false));
+    this.ships.push(new Ship("destroyer"));
+    this.ships.push(new Ship("cruiser"));
+    this.ships.push(new Ship("submarine"));
+    this.ships.push(new Ship("battleship"));
+    this.ships.push(new Ship("carrier"));
     this.specialShotsCharge = [];
     this.resetSpecialShots();
   }
@@ -982,7 +1182,7 @@ class Grid
     }
     return null;
   }
-  fireAt(block)
+  fireAt(block, attackMode)
   {
     if(DEBUG) {
       try {
@@ -993,42 +1193,19 @@ class Grid
         } catch(error) {
           throw "block: " + error;
         }
+        try {
+          Check.def(attackMode);
+          Check.proto(attackMode, "Function");
+        } catch(error) {
+          throw "attackMode: " + error;
+        }
       } catch(error) {
         throw Error("Grid (fireAt) - " + error);
       }
     }
 
-    if(block.hasShip()) {
-      block.setState("hit");
-      grid.ships.searchShip(block.shipName).updateState();
-    } else {
-      block.setState("miss");
-    }
+    attackMode(this, block);
     //this.visualise();
-    return this.ships.stillAlive();
-  }
-  revealAt(block)
-  {
-    if(DEBUG) {
-      try {
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block: " + error;
-        }
-      } catch(error) {
-        throw Error("Grid (fireAt) - " + error);
-      }
-    }
-
-    if(block.hasShip()) {
-      block.setState("ship");
-    } else {
-      block.setState("empty");
-    }
-    this.visualise();
     return this.ships.stillAlive();
   }
   visualise()
@@ -1041,7 +1218,7 @@ class Grid
             str += ".";
             break;
           case blockStates["empty"]:
-            str += " ";
+            str += ":";
             break;
           case blockStates["miss"]:
             str += "m";
@@ -1050,7 +1227,7 @@ class Grid
             str += "S";
             break;
           case blockStates["hit"]:
-            str += "H";
+            str += "x";
             break;
           case blockStates["sunk"]:
             str += "X";
