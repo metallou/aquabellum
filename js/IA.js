@@ -1,144 +1,514 @@
-const selectTargetEasy = function(grid)
-{
-  let i;
-  let j;
-  let target = null;
-  do {
-    i = parseInt(Math.random()*1000*10)%10;
-    j = parseInt(Math.random()*1000*10)%10;
-    if(grid.grid[i][j].canBeShotAt()) target = grid.grid[i][j];
-  } while(target===null);
-  return target;
-}
-const selectTargetMedium = function(grid)
-{
-  let i;
-  let j;
-  let target = null;
-  do {
-    do {
-      i = parseInt(Math.random()*1000*10)%10;
-      j = parseInt(Math.random()*1000*10)%10;
-    } while((i+j)%2===1);
-    if(grid.grid[i][j].canBeShotAt()) target = grid.grid[i][j];
-  } while(target===null);
-  return target;
-}
-const selectTargetHard = function(grid)
-{
-  let possible;
-  let blocks;
+const difficulties = {
+  easy: 1,
+  medium: 2,
+  hard: 3
+};
+class IA {
+  static selectTargetEasy(grid)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (selectTargetEasy) - " + error);
+      }
+    }
 
-  for(let s in grid.ships.ships) {
-    if(grid.ships.ships[s].stillAlive()) {
-      for(let x=0; x<=(10-grid.ships.ships[s].getLength()); x++) {
-        for(let y=0; y<10; y++) {
-          blocks = [];
-          for(let i=0; i<grid.ships.ships[s].getLength(); i++) {
-            blocks.push(grid.grid[x+i][y]);
-          }
-          possible = true;
-          for(let item in blocks) {
-            if(!blocks[item].canBeShotAt()) possible = false;
-          }
-          if(possible) {
+    let blocks = [];
+    let row;
+    for(let y in grid.grid) {
+      row = [];
+      for(let x in grid.grid[y]) {
+        if(grid.grid[y][x].canBeShotAt()) row.push(grid.grid[y][x]);
+      }
+      if(row.length>0) blocks.push(row);
+    }
+
+    const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+    const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
+
+    return blocks[i][j];
+  }
+  static selectTargetMedium(grid)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (selectTargetMedium) - " + error);
+      }
+    }
+
+    let blocks = [];
+    let row;
+    for(let y in grid.grid) {
+      row = [];
+      for(let x in grid.grid[y]) {
+        if((parseInt(x)+parseInt(y))%2===0 && grid.grid[y][x].canBeShotAt()) {
+          row.push(grid.grid[y][x]);
+        }
+      }
+      if(row.length>0) blocks.push(row);
+    }
+
+    const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+    const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
+
+    return blocks[i][j];
+  }
+  static selectTargetHard(grid)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (selectTargetHard) - " + error);
+      }
+    }
+
+    let possible;
+    let blocks;
+    let length;
+
+    for(let s in grid.ships.ships) {
+      if(grid.ships.ships[s].stillAlive()) {
+        length = grid.ships.ships[s].getLength();
+        for(let x=0; x<=(10-length); x++) {
+          for(let y=0; y<10; y++) {
+            blocks = [];
+            for(let i=0; i<length; i++) {
+              blocks.push(grid.grid[x+i][y]);
+            }
+            possible = true;
             for(let item in blocks) {
-              blocks[item].addProba();
+              if(!blocks[item].canBeShotAt()) possible = false;
+            }
+            if(possible) {
+              for(let item in blocks) {
+                blocks[item].addProba();
+              }
+            }
+          }
+        }
+        for(let y=0; y<=(10-length); y++) {
+          for(let x=0; x<10; x++) {
+            blocks = [];
+            for(let i=0; i<length; i++) {
+              blocks.push(grid.grid[x][y+i]);
+            }
+            possible = true;
+            for(let item in blocks) {
+              if(!blocks[item].canBeShotAt()) possible = false;
+            }
+            if(possible) {
+              for(let item in blocks) {
+                blocks[item].addProba();
+              }
             }
           }
         }
       }
-      for(let y=0; y<=(10-grid.ships.ships[s].getLength()); y++) {
+    }
+
+    let target;
+    let proba = 0;
+    let tmpproba;
+    for(let i in grid.grid) {
+      for(let j in grid.grid[i]) {
+        tmpproba = grid.grid[i][j].getProba();
+        if(tmpproba>proba) {
+          proba = tmpproba;
+          target = grid.grid[i][j];
+        }
+      }
+    }
+    grid.resetProbas();
+
+    return target;
+  }
+
+  static huntTargetEasy(grid, block)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (huntTargetHard) - " + error);
+      }
+    }
+
+    let target;
+    const pos = block.getPos();
+
+    target = block;
+    for(let y=pos.row; y>=0 && !target.shouldNotBeLookedAt(); y--) {
+      target = grid.grid[y][pos.column];
+      if(target.canBeShotAt()) return target;
+    }
+    target = block;
+    for(let y=pos.row; y<10 && !target.shouldNotBeLookedAt(); y++) {
+      target = grid.grid[y][pos.column];
+      if(target.canBeShotAt()) return target;
+    }
+    target = block;
+    for(let x=pos.column; x>=0 && !target.shouldNotBeLookedAt(); x--) {
+      target = grid.grid[pos.row][x];
+      if(target.canBeShotAt()) return target;
+    }
+    target = block;
+    for(let x=pos.column; x<10 && !target.shouldNotBeLookedAt(); x++) {
+      target = grid.grid[pos.row][x];
+      if(target.canBeShotAt()) return target;
+    }
+  }
+  static huntTargetMedium(grid, block)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (huntTargetHard) - " + error);
+      }
+    }
+
+    return huntTargetEasy(grid, block);
+  }
+  static huntTargetHard(grid, block)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (huntTargetHard) - " + error);
+      }
+    }
+
+    let pos = block.getPos();
+    let possible;
+    let blocks;
+    let length;
+
+    for(let s in grid.ships.ships) {
+      if(grid.ships.ships[s].stillAlive()) {
+        length = grid.ships.ships[s].getLength();
+        for(let x=(pos.row-length); x<=(pos.row+length); x++) {
+          if(x>=0 && x<=(10-length)) {
+            blocks = [];
+            for(let i=0; i<length; i++) {
+              blocks.push(grid.grid[x+i][pos.column]);
+            }
+            possible = true;
+            for(let item in blocks) {
+              if(!blocks[item].canWelcomeShip()) possible = false;
+            }
+            if(possible) {
+              for(let item in blocks) {
+                blocks[item].addProba();
+              }
+            }
+          }
+        }
+        for(let y=(pos.column-length); y<=(pos.column+length); y++) {
+          if(y>=0 && y<=(10-length)) {
+            blocks = [];
+            for(let i=0; i<length; i++) {
+              blocks.push(grid.grid[pos.row][y+i]);
+            }
+            possible = true;
+            for(let item in blocks) {
+              if(!blocks[item].canWelcomeShip()) possible = false;
+            }
+            if(possible) {
+              for(let item in blocks) {
+                blocks[item].addProba();
+              }
+            }
+          }
+        }
+      }
+    }
+
+    let target;
+    let tmptarget;
+    let proba = 0;
+    let tmpproba;
+    let x;
+    let y;
+
+    tmptarget = block;
+    for(let y=pos.row; y>=0 && !tmptarget.shouldNotBeLookedAt(); y--) {
+      tmptarget = grid.grid[y][pos.column];
+      if(tmptarget.canBeShotAt()) {
+        tmpproba = tmptarget.getProba();
+        if(tmpproba>proba) {
+          proba = tmpproba;
+          target = tmptarget;
+        }
+        break;
+      }
+    }
+    tmptarget = block;
+    for(let y=pos.row; y<10 && !tmptarget.shouldNotBeLookedAt(); y++) {
+      tmptarget = grid.grid[y][pos.column];
+      if(tmptarget.canBeShotAt()) {
+        tmpproba = tmptarget.getProba();
+        if(tmpproba>proba) {
+          proba = tmpproba;
+          target = tmptarget;
+        }
+        break;
+      }
+    }
+    tmptarget = block;
+    for(let x=pos.column; x>=0 && !tmptarget.shouldNotBeLookedAt(); x--) {
+      tmptarget = grid.grid[pos.row][x];
+      if(tmptarget.canBeShotAt()) {7
+        tmpproba = tmptarget.getProba();
+        if(tmpproba>proba) {
+          proba = tmpproba;
+          target = tmptarget;
+        }
+        break;
+      }
+    }
+    tmptarget = block;
+    for(let x=pos.column; x<10 && !tmptarget.shouldNotBeLookedAt(); x++) {
+      tmptarget = grid.grid[pos.row][x];
+      if(tmptarget.canBeShotAt()) {
+        tmpproba = tmptarget.getProba();
+        if(tmpproba>proba) {
+          proba = tmpproba;
+          target = tmptarget;
+        }
+        break;
+      }
+    }
+
+    grid.resetProbas();
+
+    return target;
+  }
+
+  static selectPlace(ship)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(ship);
+          Check.proto(ship, "Object");
+          Check.instance(ship, Ship);
+        } catch(error) {
+          throw "ship : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (selectPlace) - " + error);
+      }
+    }
+
+    let blocks = [];
+    let row;
+    let length = ship.getLength();
+    let rotation = ship.getRotation();
+    if(ship.getRotation()) {
+      for(let y=0; y<10; y++) {
+        row = [];
+        for(let x=0; x<=(10-length); x++) {
+          if(grid.grid[y][x].canPlaceShipAt()) row.push(grid.grid[y][x]);
+        }
+        if(row.length>0) blocks.push(row);
+      }
+    } else {
+      for(let y=0; y<=(10-length); y++) {
+        row = [];
         for(let x=0; x<10; x++) {
-          blocks = [];
-          for(let i=0; i<grid.ships.ships[s].getLength(); i++) {
-            blocks.push(grid.grid[x][y+i]);
-          }
-          possible = true;
-          for(let item in blocks) {
-            if(!blocks[item].canBeShotAt()) possible = false;
-          }
-          if(possible) {
-            for(let item in blocks) {
-              blocks[item].addProba();
-            }
-          }
+          if(grid.grid[y][x].canPlaceShipAt()) row.push(grid.grid[y][x]);
         }
+        if(row.length>0) blocks.push(row);
       }
+    }
+
+    const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+    const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
+
+    return blocks[i][j];
+  }
+  static selectRotation()
+  {
+    if(parseInt(Math.random()*1000)%2===0) return true;
+    return false;
+  }
+  static placeShips(grid)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (placeShips) - " + error);
+      }
+    }
+
+    let placed;
+    let pos;
+    for(let i in grid.ships.ships) {
+      do {
+        if(IA.selectRotation()) grid.ships.ships[i].setRotation();
+        pos = IA.selectPlace(grid.ships.ships[i]).getPos();
+        placed = grid.placeShip(
+            grid.ships.ships[i].name,
+            grid.ships.ships[i].getRotation(),
+            pos.row,
+            pos.column);
+      } while(!placed);
     }
   }
 
-  let block;
-  let proba = 0;
-  for(let i in grid.grid) {
-    for(let j in grid.grid[i]) {
-      if(grid.grid[i][j].getProba()>proba) {
-        proba = grid.grid[i][j].getProba();
-        block = grid.grid[i][j];
+
+
+
+
+  constructor(difficulty)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(difficulty);
+          Check.proto(difficulty, "String");
+          Check.list(difficulties, difficulty);
+        } catch(error) {
+          throw "difficulty : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (constructor) - " + error);
       }
-      grid.grid[i][j].resetProba();
+    }
+
+    this.difficulty = difficulty;
+    switch(difficulty) {
+      case "easy":
+        this.select = IA.selectTargetEasy;
+        this.hunt = IA.huntTargetEasy;
+        break;
+      case "medium":
+        this.select = IA.selectTargetMedium;
+        this.hunt = IA.huntTargetMedium;
+        break;
+      case "hard":
+        this.select = IA.selectTargetHard;
+        this.hunt = IA.huntTargetHard;
+        break;
+      default:
+        this.select = IA.selectTargetMedium;
+        this.hunt = IA.huntTargetMedium;
     }
   }
+  attack(grid)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (bot) - " + error);
+      }
+    }
 
-  return block;
-}
-
-const huntTargetEasyMedium = function(grid, block)
-{
-  let target;
-  const pos = block.getPos();
-  for(let y=pos.row, target=block; y>=0 && !target.shouldNotBeLookedAt(); y--) {
-    target = grid.grid[y][pos.column];
-    if(target.canBeShotAt()) return target;
-  }
-  for(let y=pos.row, target=block; y<10 && !target.shouldNotBeLookedAt(); y++) {
-    target = grid.grid[y][pos.column];
-    if(target.canBeShotAt()) return target;
-  }
-  for(let x=pos.column, target=block; x>=0 && !target.shouldNotBeLookedAt(); x--) {
-    target = grid.grid[pos.row][x];
-    if(target.canBeShotAt()) return target;
-  }
-  for(let x=pos.column, target=block; x<10 && !target.shouldNotBeLookedAt(); x++) {
-    target = grid.grid[pos.row][x];
-    if(target.canBeShotAt()) return target;
+    const block = grid.searchTarget();
+    let target;
+    if(block===null) {
+      target = this.select(grid);
+    } else {
+      if(block.mustBeShotAt()) {
+        target = block;
+      } else {
+        target = this.hunt(grid, block);
+      }
+    }
+    return grid.fireAt(target);
   }
 }
-const huntTargetHard = function(grid, block)
-{
-  return huntTargetEasyMedium(grid, block);
-}
-
-const bot = function(grid, select, hunt)
-{
-  const block = grid.searchTarget();
-  let target;
-  if(block===null) {
-    target = select(grid);
-  } else {
-    target = hunt(grid, block);
-  }
-  return grid.fireAt(target);
-}
-
 
 
 
 let grid;
 let nbShots;
 let life;
-for(let l=0; l<1000; l++) {
+let bot = new IA("hard");
+for(let l=0; l<1; l++) {
   nbShots = 0;
   life = true;
   grid = new Grid("self");
-  grid.placeShip("destroyer", true, 1,1);
-  grid.placeShip("cruiser", true, 3,1);
-  grid.placeShip("submarine", true, 5,1);
-  grid.placeShip("battleship", true, 7,1);
-  grid.placeShip("carrier", true, 9,1);
+  IA.placeShips(grid);
   for(let i=0; i<100 && life; i++) {
     nbShots++;
-    life = bot(grid, selectTargetHard, huntTargetEasyMedium);
+    life = bot.attack(grid);
   }
   console.info(nbShots);
   grid = null;

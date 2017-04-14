@@ -7,11 +7,11 @@ FUNCTIONNALITIES:
   multi (Plyaer vs Player)
 Plusieurs modes de tirs:
   standard
-  Multi-shot (L2)
-  AOE (L3:1)
-  Paralysis (L3:2 sub)
-  Heat-seeking (L4)
-  Map-reveal (L5)
+  echo (L2) (if shot missed, reveal 1 surrounding block)
+  Torpedo (L3:2 sub) (reveal whole column blocks until hit or edge of grid)
+  Heat-seeking (L3:1) (if shot missed, shot 1 surrounding block)
+  Map-reveal (L4) (reveal all surrounding blocks)
+  Nuke (L5) (shoot all surrounding blocks)
 Bonus/malus:
   Abilities counts independants
   +

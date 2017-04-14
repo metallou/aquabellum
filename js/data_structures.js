@@ -101,16 +101,38 @@ class Check
       try {
         this.def(object);
         str = Object.prototype.toString.call(object);
-        if(!(Object.prototype.toString.call(object)==="[object "+type+"]")) throw "wrong type"
-          +"\n"
+        if(!(Object.prototype.toString.call(object)==="[object "+type+"]")) {
+          throw "wrong type"
+            +"\n"
             +"(received " + str + ")"
             +"\n"
             +"(expected " + "[object "+type+"]" + ")";
+        }
       } catch(error) {
         throw "object: " + error;
       }
     } catch(error) {
       throw "Check.proto - " + error;
+    }
+  }
+  static instance(object, objectClass)
+  {
+    try {
+      try {
+        this.def(object);
+        this.proto(object, "Object");
+      } catch(error) {
+        throw "object: " + error;
+      }
+      try {
+        this.def(objectClass);
+        this.proto(objectClass, "Function");
+      } catch(error) {
+        throw "objectClass: " + error;
+      }
+      if(!(object instanceof objectClass)) throw "wrong instance";
+    } catch(error) {
+      throw "Check.instance - " + error;
     }
   }
   static sup(number, limit)
@@ -335,19 +357,38 @@ class Block
     block.column = this.getColumn();
     return block;
   }
+  canPlaceShipAt()
+  {
+    if(this.hasShip()) return false;
+    return true;
+  }
+  canWelcomeShip()
+  {
+    if(this.getState()===blockStates["ship"]) return true;
+    if(this.getState()===blockStates["hit"]) return true;
+    if(this.getState()===blockStates["unknown"]) return true;
+    return false;
+  }
   canBeShotAt()
   {
-    if(this.getState()===blockStates["unknown"] || this.getState()===blockStates["ship"]) return true;
+    if(this.getState()===blockStates["unknown"]) return true;
+    if(this.getState()===blockStates["ship"]) return true;
+    return false;
+  }
+  mustBeShotAt()
+  {
+    if(this.getState()===blockStates["ship"]) return true;
     return false;
   }
   mustBeLookedAt()
   {
-    if(this.getState()===blockStates["hit"] || this.getState()===blockStates["ship"]) return true;
+    if(this.getState()===blockStates["hit"]) return true;
     return false;
   }
   shouldNotBeLookedAt()
   {
-    if(this.getState()===blockStates["miss"] || this.getState()===blockStates["sunk"]) return true;
+    if(this.getState()===blockStates["miss"]) return true;
+    if(this.getState()===blockStates["sunk"]) return true;
     return false;
   }
   getState()
@@ -360,13 +401,20 @@ class Block
       try {
         try {
           Check.def(state);
+          Check.proto(state, "String");
           Check.list(blockStates, state);
         } catch(error) {
           throw "state: " + error;
         }
         try {
-          if(!this.hasShip() && (state=="ship" || state=="hit" || state=="sunk")) throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
-          if(this.hasShip() && (state=="miss" || state=="empty")) throw "ship yet miss/empty";
+          if(!this.hasShip() &&
+              (state=="ship" || state=="hit" || state=="sunk")) {
+            throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
+          }
+          if(this.hasShip() &&
+              (state=="miss" || state=="empty")) {
+            throw "ship yet miss/empty";
+          }
         } catch(error) {
           throw "impossible state: " + error;
         }
@@ -381,6 +429,31 @@ class Block
 
 class SpecialShot
 {
+  static spe1()
+  {
+
+  }
+  static spe2()
+  {
+
+  }
+  static spe3()
+  {
+
+  }
+  static spe4()
+  {
+
+  }
+  static spe5()
+  {
+
+  }
+
+
+
+
+
   constructor(length,silent)
   {
     let str;
@@ -552,6 +625,7 @@ class Ship
     for(let i=0; i<length; i++) {
       this.blocks.push(null);
     }
+    this.rotation = false;
     this.onGrid = false;
     this.silent = silent;
     this.stayinAlive = true;
@@ -586,6 +660,38 @@ class Ship
   {
     return this.specialShot.reset();
   }
+  isOnGrid()
+  {
+    return this.onGrid;
+  }
+  setOnGrid()
+  {
+    this.onGrid = true;
+  }
+  setOffGrid()
+  {
+    this.onGrid = false;
+  }
+  getRotation()
+  {
+    return this.rotation;
+  }
+  rotate()
+  {
+    if(this.getRotation()) {
+      this.unsetRotation();
+    } else {
+      this.setRotation();
+    }
+  }
+  setRotation()
+  {
+    this.rotation = true;
+  }
+  unsetRotation()
+  {
+    this.rotation = false;
+  }
   kill()
   {
     for(let i in this.blocks) {
@@ -611,9 +717,19 @@ class Ship
     if(DEBUG) {
       try {
         try {
+          Check.def(name);
+          Check.proto(name, "String");
+          Check.list(ships, name);
+        } catch(error) {
+          throw "name: " + error;
+        }
+        try {
           Check.def(blocks);
           Check.proto(blocks, "Array");
-          if(blocks.length!=this.length) throw "wrong size";
+          if(blocks.length!=this.getLength()) throw "wrong size";
+          for(let i in blocks) {
+            Check.instance(blocks[i], Block);
+          }
         } catch(error) {
           throw "blocks: " + error;
         }
@@ -621,14 +737,19 @@ class Ship
         throw "Ship (setBlocks) - " + error;
       }
     }
-    if(this.onGrid) {
+    if(this.isOnGrid()) {
       throw Error("Ship Already set");
     } else {
-      this.onGrid = true;
+      for(let i in blocks) {
+        if(blocks[i].hasShip()) return false;
+      }
       for(let i in blocks) {
         blocks[i].setShip(name);
         this.blocks[i] = blocks[i];
       }
+
+      this.setOnGrid();
+      return true;
     }
   }
 }
@@ -698,6 +819,13 @@ class Ships
       this.specialShotsCharge[i] = this.ships[i].resetSpecialShot();
     }
   }
+  allShipsPlaces()
+  {
+    for(let i in this.ships) {
+      if(!this.ships[i].isOnGrid) return false;
+    }
+    return true;
+  }
   setShipBlocks(name, blocks)
   {
     if(DEBUG) {
@@ -712,6 +840,12 @@ class Ships
         try {
           Check.def(blocks);
           Check.proto(blocks, "Array");
+          if(blocks.length!=this.searchShip(name).getLength()) {
+            throw "wrong size";
+          }
+          for(let i in blocks) {
+            Check.instance(blocks[i], Block);
+          }
         } catch(error) {
           throw "blocks: " + error;
         }
@@ -720,7 +854,7 @@ class Ships
       }
     }
 
-    this.searchShip(name).setBlocks(name, blocks);
+    return this.searchShip(name).setBlocks(name, blocks);
   }
 }
 
@@ -743,6 +877,7 @@ class Grid
     }
 
     this.owner = players[owner];
+    this.login = "";
     this.ships = new Ships();
     this.grid = [];
     let tmp;
@@ -753,6 +888,27 @@ class Grid
       }
       this.grid.push(tmp);
     }
+  }
+  readyToBegin()
+  {
+    return this.ships.allShipsPlaced();
+  }
+  setLogin(login)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(owner);
+          Check.proto(owner, "String");
+        } catch(error) {
+          throw "name: " + error;
+        }
+      } catch(error) {
+        throw Error("Grid (setLogin) - " + error);
+      }
+    }
+
+    this.login = login;
   }
   placeShip(name, rotation, row, column)
   {
@@ -802,11 +958,23 @@ class Grid
       }
     }
 
-    this.ships.setShipBlocks(name, blocks);
-
+    return this.ships.setShipBlocks(name, blocks);
+  }
+  resetProbas()
+  {
+    for(let i in this.grid) {
+      for(let j in this.grid[i]) {
+        this.grid[i][j].resetProba();
+      }
+    }
   }
   searchTarget()
   {
+    for(let i in this.grid) {
+      for(let j in this.grid[i]) {
+        if(this.grid[i][j].mustBeShotAt()) return this.grid[i][j];
+      }
+    }
     for(let i in this.grid) {
       for(let j in this.grid[i]) {
         if(this.grid[i][j].mustBeLookedAt()) return this.grid[i][j];
@@ -821,6 +989,7 @@ class Grid
         try {
           Check.def(block);
           Check.proto(block, "Object");
+          Check.instance(block, Block);
         } catch(error) {
           throw "block: " + error;
         }
@@ -832,13 +1001,35 @@ class Grid
     if(block.hasShip()) {
       block.setState("hit");
       grid.ships.searchShip(block.shipName).updateState();
-      this.visualise();
-      return this.ships.stillAlive();
     } else {
       block.setState("miss");
-      this.visualise();
-      return true;
     }
+    //this.visualise();
+    return this.ships.stillAlive();
+  }
+  revealAt(block)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(block);
+          Check.proto(block, "Object");
+          Check.instance(block, Block);
+        } catch(error) {
+          throw "block: " + error;
+        }
+      } catch(error) {
+        throw Error("Grid (fireAt) - " + error);
+      }
+    }
+
+    if(block.hasShip()) {
+      block.setState("ship");
+    } else {
+      block.setState("empty");
+    }
+    this.visualise();
+    return this.ships.stillAlive();
   }
   visualise()
   {
