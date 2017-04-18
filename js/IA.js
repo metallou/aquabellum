@@ -211,11 +211,11 @@ class IA {
           throw "block : " + error;
         }
       } catch(error) {
-        throw Error("IA (huntTargetHard) - " + error);
+        throw Error("IA (huntTargetMedium) - " + error);
       }
     }
 
-    return huntTargetEasy(grid, block);
+    return IA.huntTargetEasy(grid, block);
   }
   static huntTargetHard(grid, block)
   {
@@ -346,10 +346,17 @@ class IA {
     return target;
   }
 
-  static selectPlace(ship)
+  static selectPlace(grid, ship)
   {
     if(DEBUG) {
       try {
+        try {
+          Check.def(grid);
+          Check.proto(grid, "Object");
+          Check.instance(grid, Grid);
+        } catch(error) {
+          throw "grid : " + error;
+        }
         try {
           Check.def(ship);
           Check.proto(ship, "Object");
@@ -415,7 +422,7 @@ class IA {
     for(let i in grid.ships.ships) {
       do {
         if(IA.selectRotation()) grid.ships.ships[i].setRotation();
-        pos = IA.selectPlace(grid.ships.ships[i]).getPos();
+        pos = IA.selectPlace(grid, grid.ships.ships[i]).getPos();
         placed = grid.placeShip(
             grid.ships.ships[i].name,
             grid.ships.ships[i].getRotation(),
@@ -503,19 +510,31 @@ class Bot extends IA
 
 
 
-let grid;
+let grid1;
+let grid2;
 let nbShots;
-let life;
-let bot = new Bot("hard");
-for(let l=0; l<1000; l++) {
+let life1;
+let life2;
+let bot1 = new Bot("medium");
+let bot2 = new Bot("hard");
+for(let l=0; l<1; l++) {
   nbShots = 0;
-  life = true;
-  grid = new Grid("self");
-  IA.placeShips(grid);
-  for(let i=0; i<100 && life; i++) {
+  life1 = true;
+  life2 = true;
+  grid1 = new Grid("botMedium");
+  grid2 = new Grid("botHard");
+  IA.placeShips(grid1);
+  IA.placeShips(grid2);
+  for(let i=0; i<100 && life1 && life2; i++) {
     nbShots++;
-    life = bot.attack(grid, Shot.carrierShot);
+    life1 = bot1.attack(grid2, Shot.normalShot);
+    life2 = bot2.attack(grid1, Shot.normalShot);
   }
-  console.info(nbShots);
-  grid = null;
+  if(life1) {
+    console.info("bot1 : " + nbShots);
+  } else {
+    console.info("bot2 : " + nbShots);
+  }
+  grid1 = null;
+  grid2 = null;
 }
