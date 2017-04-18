@@ -1022,7 +1022,7 @@ class Ships
   allShipsPlaces()
   {
     for(let i in this.ships) {
-      if(!this.ships[i].isOnGrid) return false;
+      if(!this.ships[i].isOnGrid()) return false;
     }
     return true;
   }
