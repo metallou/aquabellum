@@ -30,13 +30,14 @@ svg
   /*background-color: blue;*/
   margin-right: auto;
   margin-left: auto;
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .grid .row {
   /*background: rgba(255, 0, 0, 0.5);*/
   width: 600px;
   height: 60px;
-  /*border: 1px solid black;*/
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -64,10 +65,10 @@ svg
 
 .boat {
   padding: 5px;
-  background: lightblue;
+  background-color: #ADD8E6;
 }
 
 .boat.selected {
   box-shadow: inset 0 0 5px black;
-  background: black;
+  background-color: #76D8E6;
 }

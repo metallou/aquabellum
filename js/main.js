@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 const launchGame = {};
 
@@ -19,7 +19,6 @@ launchGame.playerVsEasy = function() {
 	let gridP1 = new Grid("self"),
 	    gridP2 = new Grid("botEasy");
 
-
 	console.log(gridP1.visualise());
 	console.log(gridP2);
 }
@@ -33,4 +32,5 @@ const mainReady = function()
 	        .addEventListener('click', launchGame.playerVsEasy);
 
 }
+
 document.addEventListener("DOMContentLoaded", mainReady);
