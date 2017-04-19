@@ -31,12 +31,12 @@ section
 {
   width: 100vw;
 }
-article
+section
 {
   display: flex;
   flex-direction: column;
 }
-article p
+section p
 {
   text-align: center;
   margin: 0;
@@ -51,7 +51,7 @@ span
 {
   display: flex;
 }
-#bonusmalus article
+#bonusmalus section
 {
   flex: 1;
 }
