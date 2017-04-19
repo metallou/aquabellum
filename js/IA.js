@@ -1,8 +1,3 @@
-const difficulties = {
-  easy: 1,
-  medium: 2,
-  hard: 3
-};
 class IA {
   static selectTargetEasy(grid)
   {
@@ -442,7 +437,7 @@ class Bot extends IA
         try {
           Check.def(difficulty);
           Check.proto(difficulty, "String");
-          Check.list(difficulties, difficulty);
+          Check.list(difficulty, DIFFICULTIES);
         } catch(error) {
           throw "difficulty : " + error;
         }
@@ -469,8 +464,9 @@ class Bot extends IA
         this.select = IA.selectTargetMedium;
         this.hunt = IA.huntTargetMedium;
     }
+    this.grid = null;
   }
-  attack(grid, attackMode)
+  setGrid(grid)
   {
     if(DEBUG) {
       try {
@@ -480,6 +476,24 @@ class Bot extends IA
           Check.instance(grid, Grid);
         } catch(error) {
           throw "grid : " + error;
+        }
+      } catch(error) {
+        throw Error("IA (setGrid) - " + error);
+      }
+    }
+
+    this.grid = grid;
+  }
+  attack(gridE, attackMode)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(gridE);
+          Check.proto(gridE, "Object");
+          Check.instance(gridE, Grid);
+        } catch(error) {
+          throw "gridE : " + error;
         }
         try {
           Check.def(attackMode);
@@ -492,24 +506,78 @@ class Bot extends IA
       }
     }
 
-    const block = grid.searchTarget();
+    const block = gridE.searchTarget();
     let target;
     if(block===null) {
-      target = this.select(grid);
+      target = this.select(gridE);
     } else {
-      if(block.mustBeShotAt()) {
+      if(block.isEqualTo("ship")) {
         target = block;
       } else {
-        target = this.hunt(grid, block);
+        target = this.hunt(gridE, block);
       }
     }
 
-    return grid.fireAt(target, attackMode);
+    this.grid.ships.updateSpecialShots(true);
+    return gridE.fireAt(target, attackMode);
   }
 }
 
 
 
+function visualize(grid1, grid2)
+{
+  let str = "";
+    for(let i in grid1.grid) {
+      for(let j in grid1.grid[i]) {
+        switch(grid1.grid[i][j].getState()) {
+          case "unknown":
+            str += ".";
+            break;
+          case "empty":
+            str += " ";
+            break;
+          case "miss":
+            str += " ";
+            break;
+          case "ship":
+            str += "S";
+            break;
+          case "hit":
+            str += "x";
+            break;
+          case "sunk":
+            str += "X";
+            break;
+        }
+      }
+      str += "\t";
+      for(let j in grid2.grid[i]) {
+        switch(grid2.grid[i][j].getState()) {
+          case "unknown":
+            str += ".";
+            break;
+          case "empty":
+            str += " ";
+            break;
+          case "miss":
+            str += " ";
+            break;
+          case "ship":
+            str += "S";
+            break;
+          case "hit":
+            str += "x";
+            break;
+          case "sunk":
+            str += "X";
+            break;
+        }
+      }
+    str += "\n";
+  }
+  console.log(str);
+}
 let grid1;
 let grid2;
 let nbShots;
@@ -518,22 +586,22 @@ let life2;
 let bot1 = new Bot("medium");
 let bot2 = new Bot("hard");
 for(let l=0; l<1; l++) {
-  nbShots = 0;
   life1 = true;
   life2 = true;
-  grid1 = new Grid("botMedium");
-  grid2 = new Grid("botHard");
-  IA.placeShips(grid1);
-  IA.placeShips(grid2);
+  bot1.setGrid(new Grid("botEasy"));
+  bot2.setGrid(new Grid("botHard"));
+  IA.placeShips(bot1.grid);
+  IA.placeShips(bot2.grid);
   for(let i=0; i<100 && life1 && life2; i++) {
-    nbShots++;
-    life1 = bot1.attack(grid2, Shot.normalShot);
-    life2 = bot2.attack(grid1, Shot.normalShot);
+    nbShots = i;
+    life1 = bot1.attack(bot2.grid, Shot.normalShot);
+    if(life1) life2 = bot2.attack(bot1.grid, Shot.normalShot);
+    visualize(bot1.grid, bot2.grid);
   }
   if(life1) {
-    console.info("bot1 : " + nbShots);
+    console.info("22222 " + nbShots);
   } else {
-    console.info("bot2 : " + nbShots);
+    console.info("1 " + nbShots);
   }
   grid1 = null;
   grid2 = null;

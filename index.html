@@ -2,531 +2,598 @@
 <html>
   <head>
     <meta
-      charset="utf-8"
+    charset="utf-8"
     />
     <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1"
+    name="viewport"
+    content="width=device-width, initial-scale=1"
     />
     <meta
-      name="description"
-      content="Projet SIMPLonMARS3 - Afterwork"
+    name="description"
+    content="Projet SIMPLonMARS3 - Afterwork"
     />
     <meta
-      name="author"
-      content="Felix, Kevin, Samuel"
+    name="author"
+    content="Felix, Kevin, Samuel"
     />
     <title>
       Aqua Bellum
     </title>
     <link
-      rel="icon"
-      type="image/x-icon"
-      href="media/img/favicon.ico"
+    rel="icon"
+    type="image/x-icon"
+    href="media/img/favicon.ico"
     />
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="css/style.css"
+    rel="stylesheet"
+    type="text/css"
+    href="css/style.css"
     />
     <script
-      type="text/javascript"
-      src="js/data_structures.js"
+    type="text/javascript"
+    src="js/def.js"
     >
     </script>
     <script
-      type="text/javascript"
-      src="js/IA.js"
+    type="text/javascript"
+    src="js/data_structures.js"
     >
     </script>
-      <script
-      type="text/javascript"
-      src="js/main.js"
-    >
-    </script>
-    <!--
     <script
-      type="text/javascript"
-      src="js/unitary.js"
+    type="text/javascript"
+    src="js/IA.js"
     >
     </script>
-    -->
+    <script
+    type="text/javascript"
+    src="js/main.js"
+    >
+    </script>
+    <script
+    type="text/javascript"
+    src="js/options.js"
+    >
+    </script>
+    <script
+    type="text/javascript"
+    src="js/stats.js"
+    >
+    </script>
+    <script
+    type="text/javascript"
+    src="js/events.js"
+    >
+    </script>
   </head>
   <body>
-    <div id="">
-      
-    </div>
-    <div class="svg">
-      <svg width="320px" height="500px">
-        <rect width="320" height="500" x="0" y="0" fill="rgb(255,255,255)" />
-        <text x="160" y="100" font-size="50" text-anchor="middle" alignment-baseline="central">
-          AquaBellum
-        </text>
+    <div id="wrapper">
+      <div id="container">
+        <main>
+          <button id="PLAY">
+            Play
+          </button>
+          <button id="OPTIONS">
+            Options
+          </button>
+          <button id="STATS">
+            Stats
+          </button>
+          <button id="CREDITS">
+            Credits
+          </button>
+        </main>
+        <aside id="OPTIONSPAGE">
+          <span id="score"></span>
+          <span id="score2"></span>
+          <div id="bonusmalus">
+          <article id="bonus">
+            <p>
+              Bonus
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="BONUSmove"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="BONUSrepair"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="BONUSshield"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="BONUScritical"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+          </article>
+          <article id="malus">
+            <p>
+              Malus
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="MALUSreveal"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="MALUSrevealblock"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="MALUSrevealship"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Move A Ship
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+          </article>
+          </div>
+          <article>
+            <p>
+              Special Shots
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="SHOTdestroyer"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Destroyer Special Shot
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="SHOTcruiser"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Cruiser Special Shot
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="SHOTsubmarine"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Submarine Special Shot
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="SHOTbattleship"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Battleship Special SHot
+              </strong>
+              <sub>
+                i
+              </sub>
+            </p>
+            <p class="OPTIONKEY">
+              <span class="KOO" id="SHOTcarrier"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <strong>
+                Carrier Special Shot
+              </strong>
+              <sub>
+                i
+              </sub>
+            </button>
+          </article>
+          <button class="MENU">
+            MENU
+          </button>
+          <div class="info" id="infoBONUSmove">
+            <p>
+              <strong>
+                Move A Ship
+              </strong>
+              <br>
+              This bonus allows you to move a ship
+              <br>
+              (cannot be used on a damaged ship)
+              <br>
+              <u>
+                (can only be used once)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoBONUSrepair">
+            <p>
+              <strong>
+                Repair A Ship
+              </strong>
+              <br>
+              This bonus allows you to fully repair a ship
+              <br>
+              <u>
+                (can only be used once)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoBONUSshield">
+            <p>
+              <strong>
+                Shield All Ships
+              </strong>
+              <br>
+              This bonus allows you to shield all your ships
+              <br>
+              from the next attack
+              <br>
+              (will remain active until hit)
+              <br>
+              <u>
+                (can only be used once)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoBONUScritical">
+            <p>
+              <strong>
+                Critical Shot
+              </strong>
+              <br>
+              This bonus allows to sink any ship with one hit
+              <br>
+              (used on tour next shot only)
+              <br>
+              (cannot use a Special Shot with this bonus)
+              <br>
+              <u>
+                (can only be used once)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoMALUSreveal">
+            <p>
+              <strong>
+                Damaged Ship Revelation
+              </strong>
+              <br>
+              If you use the Special Shot of a damaged ship,
+              <br>
+              this ship will be revealed
+              <br>
+              (Submarine not affected)
+              <br>
+              <u>
+                (passive effect)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoMALUSrevealblock">
+            <p>
+              <strong>
+                Unlucky Block Revelation
+              </strong>
+              <br>
+              You have a 10% chance on each turn to see
+              <br>
+              a random block revealed
+              <br>
+              <u>
+                (passive effect)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoMALUSrevealship">
+            <p>
+              <strong>
+                Unlucky Ship Block Revelation
+              </strong>
+              <br>
+              You have a 5% chance on each turn to see
+              <br>
+              a random block containing a ship revealed
+              <br>
+              <u>
+                (passive effect)
+              </u>
+            </p>
+          </div>
+          <div class="info" id="infoSHOTdestroyer">
+            <p>
+              <strong>
+                Destroyer Special Shot
+              </strong>
+            </p>
+          </div>
+          <div class="info" id="infoSHOTcruiser">
+            <p>
+              <strong>
+                Cruiser Special Shot
+              </strong>
+            </p>
+          </div>
+          <div class="info" id="infoSHOTsubmarine">
+            <p>
+              <strong>
+                Submarine Special Shot
+              </strong>
+            </p>
+          </div>
+          <div class="info" id="infoSHOTbattleship">
+            <p>
+              <strong>
+                Battleship Special Shot
+              </strong>
+            </p>
+          </div>
+          <div class="info" id="infoSHOTcarrier">
+            <p>
+              <strong>
+                Carrier Special Shot
+              </strong>
+            </p>
+          </div>
+        </aside>
+        <aside id="STATSPAGE">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  GENERAL STATS
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Total Games Played :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Total Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Highest Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Average Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Last Score :
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  BOSS STATS
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Total Boss Waves :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Total Boss Total Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Total Boss Highest Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Total Boss Average Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Total Boss Last Score :
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  RISING BOSS STATS
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Total Rising Boss Waves :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Rising Boss Total Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Rising Boss Highest Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Rising Boss Average Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Rising Boss Last Score :
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  FALLING BOSS STATS
+                </th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  Total Falling Boss Waves :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Falling Boss Total Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Falling Boss Highest Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Falling Boss Average Score :
+                </td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  Falling Boss Last Score :
+                </td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div>
+            <button id="PREV">
+              Prev
+            </button>
+            <button class="MENU">
+              Return to Menu
+            </button>
+            <button id="NEXT">
+              Next
+            </button>
+          </div>
+        </aside>
+        <aside>
 
-        <rect width="160" height="50" x="80" y="200" fill="rgb(200,200,200)" />
-        <rect width="160" height="50" x="80" y="260" fill="rgb(200,200,200)" />
-        <rect width="160" height="50" x="80" y="320" fill="rgb(200,200,200)" />
-        <text x="160" y="225" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Practice
-        </text>
-        <text x="160" y="285" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Versus
-        </text>
-        <text x="160" y="345" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Multi
-        </text>
-
-        <rect width="100" height="50" x="0" y="400" fill="rgb(200,200,200)" />
-        <rect width="100" height="50" x="110" y="450" fill="rgb(200,200,200)" />
-        <rect width="100" height="50" x="220" y="400" fill="rgb(200,200,200)" />
-        <text x="50" y="425" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Options
-        </text>
-        <text x="160" y="475" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Credits
-        </text>
-        <text x="270" y="425" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Statistics
-        </text>
-      </svg>
-    </div>
-    <div class="svg">
-      <svg width="320px" height="500px">
-        <rect width="320" height="500" x="0" y="0" fill="rgb(255,255,255)" />
-
-        <g transform="translate(20,150)">
-          <g transform="translate(0,0)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,20)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,40)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(255,255,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(255,255,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,60)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,80)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,100)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,120)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(0,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(0,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(0,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,140)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,160)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,180)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-        </g>
-
-        <g transform="translate(290,30)">
-          <circle cx="0" cy="0" r="20" fill="rgb(255,255,255)" stroke="rgb(128,0,0)" stroke-width="6"/>
-          <path d="M-15,-15 L-13,-17 L0,-4 L13,-17 L15,-15 L17,-13 L4,0 L17,13 L15,15 L13,17 L0,4 L-13,17 L-15,15 L-17,13 L-4,0 L-17,-13 Z" fill="rgb(128,0,0)" />
-        </g>
-
-        <g transform="translate(270,0)">
-          <g transform="translate(0,100)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-width="6"/>
-            <text x="0" y="0" font-size="50" text-anchor="middle" alignment-baseline="central">
-              2
-            </text>
-            <rect x="-30" y="20" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,175)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-width="6"/>
-            <path d="M-20,-20 L-18,-22 L0,-4 L18,-22 L20,-20 L22,-18 L4,0 L22,18 L20,20 L18,22 L0,4 L-18,22 L-20,20 L-22,18 L-4,0 L-22,-18 Z" fill="rgb(128,0,0)" />
-            <rect x="-30" y="20" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="0" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,250)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,128)" stroke-width="6"/>
-            <rect x="-30" y="20" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="0" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,325)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,128)" stroke-width="6"/>
-            <rect x="-30" y="20" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="0" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="-10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,400)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(255,255,0)" stroke-width="6"/>
-            <rect x="-30" y="20" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="0" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="-10" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect x="-30" y="-20" width="10" height="10" fill="rgb(128,128,128)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-        </g>
-
-        <g transform="translate(0,450)">
-          <g transform="translate(30,0)">
-            <rect x="0" y="0" width="40" height="40" fill="rgb(255,255,0)" stroke="rgb(0,0,0)" stroke-width="3" />
-            <path d="M20,35 L10,25 L15,25 L15,5 L25,5 L25,25 L30,25 Z" fill="rgb(0,128,0)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(250,0)">
-            <rect x="0" y="0" width="40" height="40" fill="rgb(128,0,0)" stroke="rgb(0,0,0)" stroke-width="3" />
-            <g transform="translate(20,20)">
-              <circle cx="0" cy="0" r="14" fill="rgb(0,0,0)" />
-              <circle cx="0" cy="0" r="12" fill="rgb(255,255,255)" />
-              <circle cx="0" cy="0" r="10" fill="rgb(0,0,0)" />
-              <circle cx="0" cy="0" r="8" fill="rgb(255,255,255)" />
-              <circle cx="0" cy="0" r="4" fill="rgb(0,0,0)" />
-              <line x1="0" y1="-16" x2="0" y2="16" stroke="rgb(0,0,0)" stroke-width="2"/>
-              <line x1="-16" y1="0" x2="16" y2="0" stroke="rgb(0,0,0)" stroke-width="2"/>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <div class="svg">
-      <svg width="320px" height="500px">
-        <rect width="320" height="500" x="0" y="0" fill="rgb(255,255,255)" />
-
-        <g transform="translate(20,150)">
-          <g transform="translate(0,0)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,20)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,40)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,0,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(255,255,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(255,255,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,60)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,80)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,100)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,120)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(0,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(0,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(0,0,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,140)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,160)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(0,180)">
-            <rect width="18" height="18" x="0" y="0" fill="rgba(0,128,0, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="20" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="40" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="60" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="80" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="100" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="120" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="140" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="160" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-            <rect width="18" height="18" x="180" y="0" fill="rgba(128,128,128, 1)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-        </g>
-
-        <g transform="translate(290,30)">
-          <circle cx="0" cy="0" r="20" fill="rgb(255,255,255)" stroke="rgb(128,0,0)" stroke-width="6"/>
-          <path d="M-15,-15 L-13,-17 L0,-4 L13,-17 L15,-15 L17,-13 L4,0 L17,13 L15,15 L13,17 L0,4 L-13,17 L-15,15 L-17,13 L-4,0 L-17,-13 Z" fill="rgb(128,0,0)" />
-        </g>
-
-        <g transform="translate(270,0)">
-          <g transform="translate(0,100)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,128)" stroke-width="6"/>
-          </g>
-          <g transform="translate(0,175)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-width="6"/>
-            <path d="M-20,-20 L-18,-22 L0,-4 L18,-22 L20,-20 L22,-18 L4,0 L22,18 L20,20 L18,22 L0,4 L-18,22 L-20,20 L-22,18 L-4,0 L-22,-18 Z" fill="rgb(128,0,0)" />
-          </g>
-          <g transform="translate(0,250)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,128)" stroke-width="6"/>
-          </g>
-          <g transform="translate(0,325)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(255,255,0)" stroke-width="6"/>
-          </g>
-        </g>
-
-        <g transform="translate(160,420)">
-          <g transform="translate(-35,-35)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(128,0,0)" stroke-width="6"/>
-          </g>
-          <g transform="translate(-35,35)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(0,0,0)" stroke-width="6"/>
-            <path d="M-20,-20 L-18,-22 L0,-4 L18,-22 L20,-20 L22,-18 L4,0 L22,18 L20,20 L18,22 L0,4 L-18,22 L-20,20 L-22,18 L-4,0 L-22,-18 Z" fill="rgb(128,0,0)" />
-          </g>
-          <g transform="translate(35,-35)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(128,0,0)" stroke-width="6"/>
-          </g>
-          <g transform="translate(35,35)">
-            <circle cx="0" cy="0" r="27" fill="rgb(255,255,255)" stroke="rgb(128,0,0)" stroke-width="6"/>
-          </g>
-        </g>
-
-        <g transform="translate(0,450)">
-          <g transform="translate(30,0)">
-            <rect x="0" y="0" width="40" height="40" fill="rgb(255,255,0)" stroke="rgb(0,0,0)" stroke-width="3" />
-            <path d="M20,5 L10,15 L15,15 L15,35 L25,35 L25,15 L30,15 Z" fill="rgb(0,128,0)" stroke="rgb(0,0,0)" stroke-width="2" />
-          </g>
-          <g transform="translate(250,0)">
-            <rect x="0" y="0" width="40" height="40" fill="rgb(128,0,0)" stroke="rgb(0,0,0)" stroke-width="3" />
-            <g transform="translate(20,20)">
-              <line x1="0" y1="-16" x2="0" y2="16" stroke="rgb(0,128,0)" stroke-width="10"/>
-              <line x1="-16" y1="0" x2="16" y2="0" stroke="rgb(0,128,0)" stroke-width="10"/>
-            </g>
-          </g>
-        </g>
-      </svg>
-    </div>
-    <div class="svg">
-      <svg width="320px" height="500px">
-        <rect width="320" height="500" x="0" y="0" fill="rgb(255,255,255)" />
-        <text x="160" y="100" font-size="50" text-anchor="middle" alignment-baseline="central">
-          AquaBellum
-        </text>
-
-        <rect width="160" height="50" x="80" y="200" fill="rgb(200,200,200)" />
-        <rect width="160" height="50" x="80" y="260" fill="rgb(200,200,200)" />
-        <rect width="160" height="50" x="80" y="320" fill="rgb(200,200,200)" />
-        <text x="160" y="225" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Practice
-        </text>
-        <text x="160" y="285" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Versus
-        </text>
-        <text x="160" y="345" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Multi
-        </text>
-
-        <rect width="100" height="50" x="0" y="400" fill="rgb(200,200,200)" />
-        <rect width="100" height="50" x="110" y="450" fill="rgb(200,200,200)" />
-        <rect width="100" height="50" x="220" y="400" fill="rgb(200,200,200)" />
-        <text x="50" y="425" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Options
-        </text>
-        <text x="160" y="475" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Credits
-        </text>
-        <text x="270" y="425" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Statistics
-        </text>
-      </svg>
-    </div>
-    <div class="svg">
-      <svg width="320px" height="500px">
-        <rect width="320" height="500" x="0" y="0" fill="rgb(255,255,255)" />
-        <text x="160" y="100" font-size="50" text-anchor="middle" alignment-baseline="central">
-          AquaBellum
-        </text>
-
-        <rect width="160" height="50" x="80" y="200" fill="rgb(200,200,200)" />
-        <rect width="160" height="50" x="80" y="260" fill="rgb(200,200,200)" />
-        <rect width="160" height="50" x="80" y="320" fill="rgb(200,200,200)" />
-        <text x="160" y="225" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Practice
-        </text>
-        <text x="160" y="285" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Versus
-        </text>
-        <text x="160" y="345" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Multi
-        </text>
-
-        <rect width="100" height="50" x="0" y="400" fill="rgb(200,200,200)" />
-        <rect width="100" height="50" x="110" y="450" fill="rgb(200,200,200)" />
-        <rect width="100" height="50" x="220" y="400" fill="rgb(200,200,200)" />
-        <text x="50" y="425" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Options
-        </text>
-        <text x="160" y="475" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Credits
-        </text>
-        <text x="270" y="425" font-size="20" text-anchor="middle" alignment-baseline="central">
-          Statistics
-        </text>
-      </svg>
+          <button class="MENU">
+            MENU
+          </button>
+        </aside>
+      </div>
     </div>
   </body>
 </html>
