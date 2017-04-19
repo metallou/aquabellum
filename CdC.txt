@@ -17,15 +17,12 @@ Bonus/malus:
   +
   critical (deactivated if both)
   move ship (unhit only if 5 shots missed)
-  flare/map-reveal (if 5 shots missed)
-  shield (if 5 shits missed AND 2 boats remaining)
+  repair ship (if 5 shots missed)
+  shield ships (if 5 shits missed AND 2 boats remaining)
   -
-  self-reveal if capa used by damaged ship (unless submarine)
-  Abilities cooldown reset when ship sunk
-  Ship ability deactivated 1 if hit
-  Ship abilities deactivated 1 if 5 hit
-  +-
-  berserk mode (double shot -> paralysis N if miss, paralysis 2 if deactivate) if 3 ships unhit (deactivated if 1 ship remaining)
+  self-reveal if special used by damaged ship (unless submarine)
+  block reaveal 10%
+  ship reveal 5%
 
 DATA STRUCTURES:
 

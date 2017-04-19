@@ -1,273 +1,31 @@
 "use strict"
 
-const DEBUG = true;
-
-const types = {
-  Boolean: 1,
-  Number: 2,
-  String: 3,
-  Array: 4,
-  Object: 5,
-  Function: 6
-};
-const blockStates = {
-  unknown: 1,
-  empty: 2,
-  ship: 3,
-  miss: 4,
-  hit: 5,
-  sunk: 6
-};
-const ships = {
-  destroyer: 1,
-  cruiser: 2,
-  submarine: 3,
-  battleship: 4,
-  carrier: 5
-};
-const players = {
-  self: 1,
-  other: 2,
-  botEasy: 3,
-  botMedium: 4,
-  botHard: 5
-};
-class Check
+const affectedBy = function(owner, key)
 {
-  static def(object)
-  {
-    try {
-      if(object===null) throw "null";
-      if(object===undefined) throw "undefined";
-    } catch(error) {
-      throw "Check.def - " + error;
-    }
-  }
-  static list(list, object)
-  {
-    let str;
-    let comp;
-    try {
+    if(DEBUG) {
       try {
-        this.def(list);
-        str = Object.prototype.toString.call(list);
-        comp = Object.prototype.toString.call({});
-        if(!(str===comp)) throw "wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")";
-        if(Object.keys(list).length===0) throw "empty set";
-      } catch(error) {
-        throw "list: " + error;
-      }
-      try {
-        this.def(object);
-        str = Object.prototype.toString.call(object);
-        comp = Object.prototype.toString.call("");
-        if(!(str===comp)) throw "wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")";
-        if(!list[object]) throw "not in list"
-          +"\n"
-            +"(received \"" + object + "\")";
-      } catch(error) {
-        throw "object: " + error;
-      }
-    } catch(error) {
-      throw "Check.list - " + error;
-    }
-  }
-  static proto(object, type)
-  {
-    let str;
-    let comp;
-    try {
-      try {
-        this.def(type);
-        str = Object.prototype.toString.call(type);
-        comp = Object.prototype.toString.call("");
-        if(!(str===comp)) throw "wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")";
-        Check.list(types, type);
-      } catch(error) {
-        throw "type: " + error;
-      }
-      try {
-        this.def(object);
-        str = Object.prototype.toString.call(object);
-        if(!(Object.prototype.toString.call(object)==="[object "+type+"]")) {
-          throw "wrong type"
-            +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + "[object "+type+"]" + ")";
+        try {
+          Check.def(owner);
+          Check.proto(owner, "String");
+          Check.list(owner, PLAYERS);
+        } catch(error) {
+          throw "owner: " + error;
+        }
+        try {
+          Check.def(key);
+          Check.proto(key, "String");
+        } catch(error) {
+          throw "key: " + error;
         }
       } catch(error) {
-        throw "object: " + error;
+        throw Error("Function (affectedBy) - " + error);
       }
-    } catch(error) {
-      throw "Check.proto - " + error;
     }
-  }
-  static instance(object, objectClass)
-  {
-    try {
-      try {
-        this.def(object);
-        this.proto(object, "Object");
-      } catch(error) {
-        throw "object: " + error;
-      }
-      try {
-        this.def(objectClass);
-        this.proto(objectClass, "Function");
-      } catch(error) {
-        throw "objectClass: " + error;
-      }
-      if(!(object instanceof objectClass)) throw "wrong instance";
-    } catch(error) {
-      throw "Check.instance - " + error;
-    }
-  }
-  static sup(number, limit)
-  {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number<limit) throw "too low"
-        +"\n"
-          +"(received "+number+"<"+limit+")"
-    } catch(error) {
-      throw "Check.sup - " + error;
-    }
-  }
-  static inf(number, limit)
-  {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number>limit) throw "too high"
-        +"\n"
-          +"(received "+number+">"+limit+")"
-    } catch(error) {
-      throw "Check.inf - " + error;
-    }
-  }
-  static esup(number, limit)
-  {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number<=limit) throw "too low"
-        +"\n"
-          +"(received "+number+"<="+limit+")"
-    } catch(error) {
-      throw "Check.esup - " + error;
-    }
-  }
-  static einf(number, limit)
-  {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number>=limit) throw "too high"
-        +"\n"
-          +"(received "+number+">="+limit+")"
-    } catch(error) {
-      throw "Check.einf - " + error;
-    }
-  }
-  static eq(number, limit)
-  {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(!(number===limit)) throw "not equal"
-        +"\n"
-          +"(received "+number+"!="+limit+")"
-    } catch(error) {
-      throw "Check.eq - " + error;
-    }
-  }
-  static neq(number, limit)
-  {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number===limit) throw "equal"
-        +"\n"
-          +"(received "+number+"=="+limit+")"
-    } catch(error) {
-      throw "Check.neq - " + error;
-    }
-  }
+
+  return (owner==="self" || owner==="other") && localStorage.getItem(key)==="on";
 }
+
+
 
 class Block
 {
@@ -296,7 +54,7 @@ class Block
       }
     }
 
-    this.state = blockStates["unknown"];
+    this.state = "unknown";
     this.ship = false;
     this.shipName = null;
     this.row = row;
@@ -326,7 +84,7 @@ class Block
         try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -362,47 +120,62 @@ class Block
     if(this.hasShip()) return false;
     return true;
   }
+  isEqualTo(state)
+  {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(state);
+          Check.proto(state, "String");
+          Check.list(state, STATES);
+        } catch(error) {
+          throw "state: " + error;
+        }
+      } catch(error) {
+        throw Error("Block (isEqualTo) - " + error);
+      }
+    }
+
+    if(this.getState()===state) return true;
+    return false;
+  }
   canWelcomeShip()
   {
-    if(this.getState()===blockStates["ship"]) return true;
-    if(this.getState()===blockStates["hit"]) return true;
-    if(this.getState()===blockStates["unknown"]) return true;
+    if(this.getState()==="ship") return true;
+    if(this.getState()==="hit") return true;
+    if(this.getState()==="unknown") return true;
     return false;
   }
   canGoThrough()
   {
-    if(this.getState()===blockStates["unknown"]) return true;
-    if(this.getState()===blockStates["empty"]) return true;
-    if(this.getState()===blockStates["miss"]) return true;
-    if(this.getState()===blockStates["ship"]) return true;
+    if(this.getState()==="unknown") return true;
+    if(this.getState()==="empty") return true;
+    if(this.getState()==="miss") return true;
+    if(this.getState()==="ship") return true;
     return false;
   }
   canBeShotAt()
   {
-    if(this.getState()===blockStates["unknown"]) return true;
-    if(this.getState()===blockStates["ship"]) return true;
-    return false;
-  }
-  mustBeShotAt()
-  {
-    if(this.getState()===blockStates["ship"]) return true;
+    if(this.getState()=="unknown") return true;
+    if(this.getState()==="ship") return true;
     return false;
   }
   mustBeLookedAt()
   {
-    if(this.getState()===blockStates["hit"]) return true;
+    if(this.getState()==="ship") return true;
+    if(this.getState()==="hit") return true;
     return false;
   }
   shouldNotBeLookedAt()
   {
-    if(this.getState()===blockStates["miss"]) return true;
-    if(this.getState()===blockStates["sunk"]) return true;
+    if(this.getState()==="miss") return true;
+    if(this.getState()==="sunk") return true;
     return false;
   }
   onHighwayToHell()
   {
-    if(this.getState()===blockStates["hit"]) return true;
-    if(this.getState()===blockStates["sunk"]) return true;
+    if(this.getState()==="hit") return true;
+    if(this.getState()==="sunk") return true;
     return false;
   }
   getState()
@@ -416,17 +189,17 @@ class Block
         try {
           Check.def(state);
           Check.proto(state, "String");
-          Check.list(blockStates, state);
+          Check.list(state, STATES);
         } catch(error) {
           throw "state: " + error;
         }
         try {
           if(!this.hasShip() &&
-              (state=="ship" || state=="hit" || state=="sunk")) {
+              (state==="ship" || state==="hit" || state==="sunk")) {
             throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
           }
           if(this.hasShip() &&
-              (state=="miss" || state=="empty")) {
+              (state==="miss" || state==="empty")) {
             throw "ship yet miss/empty";
           }
         } catch(error) {
@@ -437,7 +210,7 @@ class Block
       }
     }
 
-    this.state = blockStates[state];
+    this.state = state;
   }
 }
 
@@ -466,12 +239,17 @@ class Shot
       }
     }
 
-    if(block.hasShip()) {
-      block.setState("hit");
-      grid.ships.searchShip(block.shipName).updateState();
-    } else {
-      block.setState("miss");
+    if(block.canBeShotAt()) {
+      if(block.hasShip()) {
+        block.setState("hit");
+        grid.ships.searchShip(block.shipName).amIDead();
+        return true;
+      } else {
+        block.setState("miss");
+        return false;
+      }
     }
+    return false;
   }
   static flareShot(grid, block)
   {
@@ -496,11 +274,14 @@ class Shot
       }
     }
 
-    if(block.hasShip()) {
-      block.setState("ship");
-    } else {
-      block.setState("empty");
+    if(block.isEqualTo("unknown")) {
+      if(block.hasShip()) {
+        block.setState("ship");
+      } else {
+        block.setState("empty");
+      }
     }
+    return false;
   }
   static destroyerShot(grid, block)
   {
@@ -539,11 +320,27 @@ class Shot
       }
     }
 
-    Shot.normalShot(grid, block);
-    if(blocks.length>0) {
-      const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
-      Shot.flareShot(grid, blocks[i]);
+    let hit = Shot.normalShot(grid, block);
+
+    //Attempt to perform SpecialShot
+    const ship = grid.ships.searchShip("destroyer");
+    //is alive
+    if(ship.stillAlive()) {
+      //can use
+      if(ship.specialShot.canUse()) {
+        //can shoot
+        if(blocks.length>0) {
+          const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+          hit = Shot.flareShot(grid, blocks[i]) || hit;
+          ship.specialShot.reset();
+          //reveal if malus
+          if(ship.cantTouchThis()) {
+            ship.reveal();
+          }
+        }
+      }
     }
+    return hit;
   }
   static cruiserShot(grid, block)
   {
@@ -582,11 +379,27 @@ class Shot
       }
     }
 
-    Shot.normalShot(grid, block);
-    if(blocks.length>0) {
-      const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
-      Shot.normalShot(grid, blocks[i]);
+    let hit = Shot.normalShot(grid, block);
+
+    //Attempt to perform SpecialShot
+    const ship = grid.ships.searchShip("cruiser");
+    //is alive
+    if(ship.stillAlive()) {
+      //can use
+      if(ship.specialShot.canUse()) {
+        //can shoot
+        if(blocks.length>0) {
+          const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+          hit = Shot.normalShot(grid, blocks[i]) || hit;
+          ship.specialShot.reset();
+          //reveal if malus
+          if(ship.cantTouchThis()) {
+            ship.reveal();
+          }
+        }
+      }
     }
+    return hit;
   }
   static submarineShot(grid, block)
   {
@@ -618,15 +431,35 @@ class Shot
       tmpblock = grid.grid[y][pos.column];
       if(tmpblock.canGoThrough()) {
         blocks.push(tmpblock);
+        if(tmpblock.isEqualTo("ship")) break;
       } else {
         break;
       }
     }
 
-    for(let i in blocks) {
-      Shot.normalShot(grid, blocks[i]);
-      if(blocks[i].hasShip()) break;
+    let hit = Shot.normalShot(grid, block);
+
+    //Attempt to perform SpecialShot
+    const ship = grid.ships.searchShip("destroyer");
+    //is alive
+    if(ship.stillAlive()) {
+      //can use
+      if(ship.specialShot.canUse()) {
+        //can shoot
+        if(blocks.length>0) {
+          for(let i in blocks) {
+            hit = Shot.normalShot(grid, blocks[i]) || hit;
+            if(blocks[i].hasShip()) break;
+          }
+          ship.specialShot.reset();
+          //reveal if malus
+          if(ship.cantTouchThis()) {
+            ship.reveal();
+          }
+        }
+      }
     }
+    return hit;
   }
   static battleshipShot(grid, block)
   {
@@ -665,10 +498,28 @@ class Shot
       }
     }
 
-    for(let i in blocks) {
-      Shot.flareShot(grid, blocks[i]);
+    let hit = Shot.normalShot(grid, block);
+
+    //Attempt to perform SpecialShot
+    const ship = grid.ships.searchShip("battleship");
+    //is alive
+    if(ship.stillAlive()) {
+      //can use
+      if(ship.specialShot.canUse()) {
+        //can shoot
+        if(blocks.length>0) {
+          for(let i in blocks) {
+            hit = Shot.flareShot(grid, blocks[i]) || hit;
+          }
+          ship.specialShot.reset();
+          //reveal if malus
+          if(ship.cantTouchThis()) {
+            ship.reveal();
+          }
+        }
+      }
     }
-    Shot.normalShot(grid, block);
+    return hit;
   }
   static carrierShot(grid, block)
   {
@@ -707,9 +558,28 @@ class Shot
       }
     }
 
-    for(let i in blocks) {
-      Shot.normalShot(grid, blocks[i]);
+    let hit = Shot.normalShot(grid, block);
+
+    //Attempt to perform SpecialShot
+    const ship = grid.ships.searchShip("carrier");
+    //is alive
+    if(ship.stillAlive()) {
+      //can use
+      if(ship.specialShot.canUse()) {
+        //can shoot
+        if(blocks.length>0) {
+          for(let i in blocks) {
+            hit = Shot.normalShot(grid, blocks[i]) || hit;
+          }
+          ship.specialShot.reset();
+          //reveal if malus
+          if(ship.cantTouchThis()) {
+            ship.reveal();
+          }
+        }
+      }
     }
+    return hit;
   }
 }
 class SpecialShot extends Shot
@@ -730,7 +600,7 @@ class SpecialShot extends Shot
         try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -739,7 +609,8 @@ class SpecialShot extends Shot
       }
     }
 
-    this.limit = length;
+    this.name = name;
+    this.limit = 2*length;
     this.charge = 0;
     switch(name) {
       case "destroyer":
@@ -766,6 +637,13 @@ class SpecialShot extends Shot
     this.charge = 0;
     return this.limit;
   }
+  canUse()
+  {
+    if(affectedBy("SHOT"+this.name)) {
+      return this.charge===this.limit;
+    }
+    return false;
+  }
   pumpItUp()
   {
     if(this.charge<this.limit) this.charge++;
@@ -780,15 +658,22 @@ class SpecialShot extends Shot
 
 class Ship
 {
-  constructor(name)
+  constructor(owner, name)
   {
     let str;
     if(DEBUG) {
       try {
         try {
+          Check.def(owner);
+          Check.proto(owner, "String");
+          Check.list(owner, PLAYERS);
+        } catch(error) {
+          throw "owner: " + error;
+        }
+        try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -797,6 +682,7 @@ class Ship
       }
     }
 
+    this.owner = owner;
     this.name = name;
     switch(this.name) {
       case "destroyer":
@@ -835,6 +721,10 @@ class Ship
   getLength()
   {
     return this.length;
+  }
+  isSilent()
+  {
+    return this.silent;
   }
   updateSpecialShot(up)
   {
@@ -892,6 +782,20 @@ class Ship
   {
     this.rotation = false;
   }
+  cantTouchThis()
+  {
+    if(affectedBy(this.owner, "MALUSreveal") && !this.isSilent()) {
+      for(let i in this.blocks) {
+        if(this.blocks[i].onHighwayToHell()) return true;
+      }
+    }
+    return false;
+  }
+  stillAlive()
+  {
+    if(this.stayinAlive) return true;
+    return false;
+  }
   kill()
   {
     for(let i in this.blocks) {
@@ -899,18 +803,14 @@ class Ship
     }
     this.stayinAlive = false;
   }
-  updateState()
+  amIDead()
   {
     let dead = true;
     for(let i in this.blocks) {
       if(!this.blocks[i].onHighwayToHell()) dead = false;
     }
     if(dead) this.kill();
-  }
-  stillAlive()
-  {
-    if(this.stayinAlive) return true;
-    return false;
+    return dead;
   }
   setBlocks(name, blocks)
   {
@@ -919,7 +819,7 @@ class Ship
         try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -952,17 +852,38 @@ class Ship
       return true;
     }
   }
+  reveal()
+  {
+    for(let i in this.blocks) {
+      if(this.blocks[i].isEqualTo("unknown")) this.blocks[i].setState("ship");
+    }
+  }
 }
 class Ships
 {
-  constructor()
+  constructor(owner)
   {
+    if(DEBUG) {
+      try {
+        try {
+          Check.def(owner);
+          Check.proto(owner, "String");
+          Check.list(owner, PLAYERS);
+        } catch(error) {
+          throw "owner: " + error;
+        }
+      } catch(error) {
+        throw Error("Ships (constructor) - " + error);
+      }
+    }
+
+    this.owner = owner;
     this.ships = [];
-    this.ships.push(new Ship("destroyer"));
-    this.ships.push(new Ship("cruiser"));
-    this.ships.push(new Ship("submarine"));
-    this.ships.push(new Ship("battleship"));
-    this.ships.push(new Ship("carrier"));
+    this.ships.push(new Ship(owner, "destroyer"));
+    this.ships.push(new Ship(owner, "cruiser"));
+    this.ships.push(new Ship(owner, "submarine"));
+    this.ships.push(new Ship(owner, "battleship"));
+    this.ships.push(new Ship(owner, "carrier"));
     this.specialShotsCharge = [];
     this.resetSpecialShots();
   }
@@ -973,7 +894,7 @@ class Ships
         try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -1010,7 +931,7 @@ class Ships
     }
 
     for(let i in this.ships) {
-      this.specialShots[i] = this.ships[i].updateSpecialShot(up);
+      this.specialShotsCharge[i] = this.ships[i].updateSpecialShot(up);
     }
   }
   resetSpecialShots()
@@ -1033,7 +954,7 @@ class Ships
         try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -1067,7 +988,7 @@ class Grid
         try {
           Check.def(owner);
           Check.proto(owner, "String");
-          Check.list(players, owner);
+          Check.list(owner, PLAYERS);
         } catch(error) {
           throw "owner: " + error;
         }
@@ -1076,9 +997,9 @@ class Grid
       }
     }
 
-    this.owner = players[owner];
+    this.owner = owner;
     this.login = "";
-    this.ships = new Ships();
+    this.ships = new Ships(owner);
     this.grid = [];
     let tmp;
     for(let i=0; i<10; i++) {
@@ -1117,7 +1038,7 @@ class Grid
         try {
           Check.def(name);
           Check.proto(name, "String");
-          Check.list(ships, name);
+          Check.list(name, SHIPS);
         } catch(error) {
           throw "name: " + error;
         }
@@ -1172,11 +1093,6 @@ class Grid
   {
     for(let i in this.grid) {
       for(let j in this.grid[i]) {
-        if(this.grid[i][j].mustBeShotAt()) return this.grid[i][j];
-      }
-    }
-    for(let i in this.grid) {
-      for(let j in this.grid[i]) {
         if(this.grid[i][j].mustBeLookedAt()) return this.grid[i][j];
       }
     }
@@ -1205,6 +1121,39 @@ class Grid
     }
 
     attackMode(this, block);
+
+    const chance = parseInt(Math.random()*1000);
+    if(affectedBy(this.owner, "MALUSrevealblock") && chance%10===0) {
+        let blocks = [];
+        let tmp;
+        if(affectedBy(this.owner, "MALUSrevealship") && chance%2===0) {
+          for(let i in this.grid) {
+            tmp = [];
+            for(let j in this.grid[i]) {
+              if(this.grid[i][j].isEqualTo("unknown")) {
+                if(this.grid[i][j].hasShip()) {
+                  tmp.push(this.grid[i][j]);
+                }
+              }
+            }
+            blocks.push(tmp);
+          }
+        } else {
+          for(let i in this.grid) {
+            tmp = [];
+            for(let j in this.grid[i]) {
+              if(this.grid[i][j].isEqualTo("unknown")) {
+                tmp.push(this.grid[i][j]);
+              }
+            }
+            blocks.push(tmp);
+          }
+        }
+        const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+        const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
+        Shot.flareShot(this, this.grid[i][j]);
+    }
+
     //this.visualise();
     return this.ships.stillAlive();
   }
@@ -1214,22 +1163,22 @@ class Grid
     for(let i in this.grid) {
       for(let j in this.grid[i]) {
         switch(this.grid[i][j].getState()) {
-          case blockStates["unknown"]:
+          case "unknown":
             str += ".";
             break;
-          case blockStates["empty"]:
+          case "empty":
             str += ":";
             break;
-          case blockStates["miss"]:
+          case "miss":
             str += "m";
             break;
-          case blockStates["ship"]:
+          case "ship":
             str += "S";
             break;
-          case blockStates["hit"]:
+          case "hit":
             str += "x";
             break;
-          case blockStates["sunk"]:
+          case "sunk":
             str += "X";
             break;
         }

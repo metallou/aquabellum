@@ -4,24 +4,112 @@ html,body
   height: 100%;
   margin: 0;
   padding: 0;
-  /*
   overflow: hidden;
-  */
 }
 
-.svg
+#wrapper
 {
   width: 100vw;
   height: 100vh;
   position: relative;
 }
-svg
+#container
 {
+  width: 100vw;
+  height: 400vh;
   position: absolute;
-  top: 50%;
+  top: 0;
+  left: 0;
+}
+main, aside
+{
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+section
+{
+  width: 100vw;
+}
+article
+{
+  display: flex;
+  flex-direction: column;
+}
+article p
+{
+  text-align: center;
+  margin: 0;
+}
+
+span
+{
+  display: none;
+  font-size: 0;
+}
+#bonusmalus
+{
+  display: flex;
+}
+#bonusmalus article
+{
+  flex: 1;
+}
+sub
+{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 50%;
+  background-color: rgb(255,255,0);
+  font-size: 20px;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.info
+{
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(0,0,0, 0.2);
+}
+.info p
+{
+  display: inline-block;
+  position: absolute;
   left: 50%;
-  transform: translate(-50%,-50%);
-  border: 2px solid black;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 20px;
+  border: 3px solid black;
+  background-color: rgb(255,255,255);
+}
+
+
+
+
+
+.selected circle
+{
+  stroke: rgb(0,0,255);
+}
+#bonus .selected circle
+{
+  stroke: rgb(0,255,0);
+}
+#malus .selected circle
+{
+  stroke: rgb(255,0,0);
+}
+
+.selected .cross
+{
+  display: none;
 }
 
 .grid {
