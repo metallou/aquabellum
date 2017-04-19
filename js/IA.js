@@ -466,25 +466,12 @@ class Bot extends IA
     }
     this.grid = null;
   }
-  setGrid(grid)
+  setGrid()
   {
-    if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-      } catch(error) {
-        throw Error("IA (setGrid) - " + error);
-      }
-    }
-
-    this.grid = grid;
+    this.grid = new Grid("BOT" + this.difficulty);
+    IA.placeShips(this.grid);
   }
-  attack(gridE, attackMode)
+  attack(gridE)
   {
     if(DEBUG) {
       try {
@@ -494,12 +481,6 @@ class Bot extends IA
           Check.instance(gridE, Grid);
         } catch(error) {
           throw "gridE : " + error;
-        }
-        try {
-          Check.def(attackMode);
-          Check.proto(attackMode, "Function");
-        } catch(error) {
-          throw "attackMode : " + error;
         }
       } catch(error) {
         throw Error("IA (attack) - " + error);
@@ -518,8 +499,7 @@ class Bot extends IA
       }
     }
 
-    this.grid.ships.updateSpecialShots(true);
-    return gridE.fireAt(target, attackMode);
+    return gridE.fireAt(target, Shot.normalShot);
   }
 }
 
@@ -588,14 +568,12 @@ let bot2 = new Bot("hard");
 for(let l=0; l<1; l++) {
   life1 = true;
   life2 = true;
-  bot1.setGrid(new Grid("botEasy"));
-  bot2.setGrid(new Grid("botHard"));
-  IA.placeShips(bot1.grid);
-  IA.placeShips(bot2.grid);
+  bot1.setGrid();
+  bot2.setGrid();
   for(let i=0; i<100 && life1 && life2; i++) {
     nbShots = i;
-    life1 = bot1.attack(bot2.grid, Shot.normalShot);
-    if(life1) life2 = bot2.attack(bot1.grid, Shot.normalShot);
+    life1 = bot1.attack(bot2.grid);
+    if(life1) life2 = bot2.attack(bot1.grid);
     visualize(bot1.grid, bot2.grid);
   }
   if(life1) {
@@ -603,6 +581,6 @@ for(let l=0; l<1; l++) {
   } else {
     console.info("1 " + nbShots);
   }
-  grid1 = null;
-  grid2 = null;
 }
+bot1 = null;
+bot2 = null;
