@@ -48,14 +48,6 @@ const readyEvents = function()
         document.getElementById("container").style["top"] = "-200vh";
         loadStats()
       });
-  document.getElementById("NEXT").addEventListener("click", function(e)
-      {
-        newStatsPage(true);
-      });
-  document.getElementById("PREV").addEventListener("click", function(e)
-      {
-        newStatsPage(false);
-      });
 
   //CREDITS
   document.getElementById("CREDITS").addEventListener("click", function(e)
@@ -63,5 +55,22 @@ const readyEvents = function()
         document.getElementById("container").style["top"] = "-300vh";
       });
 
+  initStats();
+
+  //Haut, haut, bas, bas, gauche, droite, gauche, droite, B, A
+  let k = [38, 38, 40, 40, 37, 39, 37, 39];
+  let n = 0;
+  document.addEventListener("keydown", function(e) {
+    if(e.keyCode===k[n++]) {
+      if(n===k.length) {
+        KONAMI = !KONAMI;
+        document.body.classList.toggle("KONAMI");
+        n = 0;
+        return false;
+      }
+    } else {
+      n = 0;
+    }
+  });
 }
 document.addEventListener("DOMContentLoaded", readyEvents);

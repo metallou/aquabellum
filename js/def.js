@@ -1,6 +1,7 @@
 "use strict"
 
 const DEBUG = true;
+let KONAMI = false;
 
 const TYPES = {
   Boolean: 1,

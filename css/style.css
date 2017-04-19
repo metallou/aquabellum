@@ -42,6 +42,21 @@ section p
   margin: 0;
 }
 
+.button
+{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 5%;
+}
+.button button
+{
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
 span
 {
   display: none;
@@ -97,10 +112,6 @@ sub
   background-color: rgb(255,255,255);
 }
 
-
-
-
-
 .optionselected circle
 {
   stroke: rgb(0,0,255);
@@ -117,6 +128,59 @@ sub
 .optionselected .cross
 {
   display: none;
+}
+
+.statscontainer, #credits
+{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.statsinner
+{
+  width: 320px;
+  margin: auto;
+  background-color: rgba(0,200,0, 0.9);
+  border: 30px solid rgba(0,0,0, 0.9);
+  border-radius: 10px;
+}
+table {
+  width: 100%;
+  color: #fff;
+  font-size: 20px;
+}
+th:last-child, td:last-child
+{
+  width: 70px;
+}
+thead th, tfoot td
+{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.statsbuttons
+{
+  display: flex;
+  justify-content: space-between;
+}
+
+.dev
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.dev a img
+{
+  width: 50px;
+  height: 50px;
+}
+figure img
+{
+  width: 100px;
+  height: 100px;
 }
 
 .grid {
