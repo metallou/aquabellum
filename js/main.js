@@ -15,9 +15,10 @@ const setOnClick = function(elem) {
   }
 }
 
-launchGame.playerVsEasy = function() {
+launchGame.playerVsPlayer = function() {
 	let gridP1 = new Grid("self"),
-	    gridP2 = new Grid("botEasy");
+	    gridP2 = new Grid("other");
+
 
 	console.log(gridP1.visualise());
 	console.log(gridP2);
@@ -28,7 +29,7 @@ const mainReady = function()
 
   setOnClick('button');
 
-	document.getElementById('start')
+	document.getElementById('PLAY')
 	        .addEventListener('click', launchGame.playerVsEasy);
 
 }
