@@ -2,6 +2,7 @@
 
 const launchGame = {};
 
+
 const toggleSelect = function() {
 	let item = this;
 	item.classList.toggle('selected');
@@ -15,9 +16,12 @@ const setOnClick = function(elem) {
   }
 }
 
-launchGame.playerVsEasy = function() {
+
+launchGame.playerVsPlayer = function() {
 	let gridP1 = new Grid("self"),
-	    gridP2 = new Grid("botEasy");
+	    gridP2 = new Grid("other");
+
+
 
 	console.log(gridP1.visualise());
 	console.log(gridP2);
@@ -26,10 +30,12 @@ launchGame.playerVsEasy = function() {
 const mainReady = function()
 {
 
-  setOnClick('button');
+  setOnClick('.ship-button');
 
-	document.getElementById('start')
-	        .addEventListener('click', launchGame.playerVsEasy);
+	setOnClick('.grid .row .cell');
+
+	document.getElementById('PLAY')
+	        .addEventListener('click', launchGame.playerVsPlayer);
 
 }
 
