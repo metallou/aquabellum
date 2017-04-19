@@ -55,6 +55,13 @@ span
 {
   flex: 1;
 }
+#specialshots article
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 sub
 {
   display: inline-block;
@@ -94,20 +101,20 @@ sub
 
 
 
-.selected circle
+.optionselected circle
 {
   stroke: rgb(0,0,255);
 }
-#bonus .selected circle
+#bonus .optionselected circle
 {
   stroke: rgb(0,255,0);
 }
-#malus .selected circle
+#malus .optionselected circle
 {
   stroke: rgb(255,0,0);
 }
 
-.selected .cross
+.optionselected .cross
 {
   display: none;
 }

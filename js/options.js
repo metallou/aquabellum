@@ -3,8 +3,8 @@
 const toggleOption = function(option)
 {
   const id = option.getElementsByTagName("span")[0].id;
-  option.classList.toggle("selected");
-  if(option.classList.contains("selected")) {
+  option.classList.toggle("optionselected");
+  if(option.classList.contains("optionselected")) {
     localStorage.setItem(id, "on");
   } else {
     localStorage.setItem(id, "off");
@@ -63,7 +63,7 @@ const readyOptions = function()
     str = localStorage.getItem(keys.item(i).id);
     if(keys.item(i).classList.contains("KOO")) {
       if(localStorage.getItem(keys.item(i).id)==="on") {
-        keys.item(i).parentNode.classList.toggle("selected");
+        keys.item(i).parentNode.classList.toggle("optionselected");
       }
     }
   }
