@@ -2,6 +2,18 @@
 
 const readyEvents = function()
 {
+  //NAVIGATION
+  const asideButtons = document.getElementsByClassName("ASIDEPAGE");
+  for(let i=0; i<asideButtons.length; i++) {
+    asideButtons.item(i).addEventListener("click", function(e)
+        {
+          if(e.target.id==="STATS") loadStats();
+          if(e.target.id==="OPTIONS") initOptions();
+          let offset = document.getElementById(e.target.id+"PAGE").offsetTop;
+          offset = 100*parseInt(Math.round(offset/window.innerHeight));
+          document.getElementById("container").style["top"] = (-offset)+"vh";
+        });
+  }
   const menuButtons = document.getElementsByClassName("MENU");
   for(let i=0; i<menuButtons.length; i++) {
     menuButtons.item(i).addEventListener("click", function(e)
@@ -11,10 +23,6 @@ const readyEvents = function()
   }
 
   //OPTIONS
-  document.getElementById("OPTIONS").addEventListener("click", function(e)
-      {
-        document.getElementById("container").style["top"] = "-100vh";
-      });
   const optionButtons = document.getElementsByTagName("svg");
   for(let i=0; i<optionButtons.length; i++) {
     optionButtons.item(i).addEventListener("click", function(e)
@@ -42,19 +50,9 @@ const readyEvents = function()
         });
   }
 
-  //STATS
-  document.getElementById("STATS").addEventListener("click", function(e)
-      {
-        document.getElementById("container").style["top"] = "-200vh";
-        loadStats()
-      });
 
-  //CREDITS
-  document.getElementById("CREDITS").addEventListener("click", function(e)
-      {
-        document.getElementById("container").style["top"] = "-300vh";
-      });
-
+  //INIT
+  initOptions();
   initStats();
 
   //Haut, haut, bas, bas, gauche, droite, gauche, droite, B, A

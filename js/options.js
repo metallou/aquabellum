@@ -32,7 +32,7 @@ const resetStats = function()
   }
 }
 
-const readyOptions = function()
+const initOptions = function()
 {
   const page = document.getElementById("OPTIONSPAGE");
   const keys = page.getElementsByTagName("span");
@@ -63,9 +63,8 @@ const readyOptions = function()
     str = localStorage.getItem(keys.item(i).id);
     if(keys.item(i).classList.contains("KOO")) {
       if(localStorage.getItem(keys.item(i).id)==="on") {
-        keys.item(i).parentNode.classList.toggle("optionselected");
+        keys.item(i).parentNode.classList.add("optionselected");
       }
     }
   }
 }
-document.addEventListener("DOMContentLoaded", readyOptions);

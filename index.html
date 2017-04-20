@@ -17,7 +17,7 @@
     content="Felix, Kevin, Samuel"
     />
     <title>
-      Aqua Bellum
+      AQUABELLUM
     </title>
     <link
     rel="icon"
@@ -69,16 +69,32 @@
     <div id="wrapper">
       <div id="container">
         <main>
-          <button id="PLAY">
-            Play
-          </button>
-          <button id="OPTIONS">
-            Options
-          </button>
-          <button id="STATS">
-            Stats
-          </button>
-          <button id="CREDITS">
+          <h1>
+            AQUABELLUM
+          </h1>
+          <div class="playbuttons">
+            <button id="PLAYPRACTICE">
+              Practice
+            </button>
+            <button id="PLAYVERSUS">
+              Versus
+            </button>
+            <button id="PLAYMULTI">
+              Multi
+            </button>
+          </div>
+          <div class="asidebuttons">
+            <button class="ASIDEPAGE" id="OPTIONS">
+              Options
+            </button>
+            <button class="ASIDEPAGE" id="HELP">
+              ?
+            </button>
+            <button class="ASIDEPAGE" id="STATS">
+              Stats
+            </button>
+          </div>
+          <button class="ASIDEPAGE" id="CREDITS">
             Credits
           </button>
         </main>
@@ -92,7 +108,7 @@
                 Bonus
               </strong>
               <br>
-              Actice effect once
+              Active effect (once)
               </p>
               <article>
                 <p class="OPTIONKEY">
@@ -143,7 +159,7 @@
                 Malus
               </strong>
               <br>
-              passive effect always
+              passive effect (always)
               </p>
               <article>
                 <p class="OPTIONKEY">
@@ -241,11 +257,9 @@
               </sub>
             </article>
           </section>
-          <div class="button">
           <button class="MENU">
-            MENU
+            Menu
           </button>
-          </div>
           <div class="info" id="infoBONUSmove">
             <p>
             <strong>
@@ -394,282 +408,352 @@
         <aside id="STATSPAGE">
           <div class="statscontainer">
             <div class="statsinner">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  GENERAL STATS
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <td></td>
-                <td></td>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>
-                  Total Games Played :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Total Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Highest Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Average Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Last Score :
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
-          </div>
-          <div class="statscontainer">
-            <div class="statsinner">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  BOSS STATS
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <td></td>
-                <td></td>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>
-                  Total Boss Waves :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Total Boss Total Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Total Boss Highest Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Total Boss Average Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Total Boss Last Score :
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      GENERAL STATS
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr>
+                    <td>
+                      Total Games Played :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Highest Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Average Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Last Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="statscontainer">
             <div class="statsinner">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  RISING BOSS STATS
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <td></td>
-                <td></td>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>
-                  Total Rising Boss Waves :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Rising Boss Total Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Rising Boss Highest Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Rising Boss Average Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Rising Boss Last Score :
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      BOSS STATS
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr>
+                    <td>
+                      Total Boss Waves :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total Boss Total Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total Boss Highest Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total Boss Average Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Total Boss Last Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="statscontainer">
             <div class="statsinner">
-          <table>
-            <thead>
-              <tr>
-                <th>
-                  FALLING BOSS STATS
-                </th>
-                <th></th>
-              </tr>
-            </thead>
-            <tfoot>
-              <tr>
-                <td></td>
-                <td></td>
-              </tr>
-            </tfoot>
-            <tbody>
-              <tr>
-                <td>
-                  Total Falling Boss Waves :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Falling Boss Total Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Falling Boss Highest Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Falling Boss Average Score :
-                </td>
-                <td></td>
-              </tr>
-              <tr>
-                <td>
-                  Falling Boss Last Score :
-                </td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      RISING BOSS STATS
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr>
+                    <td>
+                      Total Rising Boss Waves :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Rising Boss Total Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Rising Boss Highest Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Rising Boss Average Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Rising Boss Last Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
+          <div class="statscontainer">
+            <div class="statsinner">
+              <table>
+                <thead>
+                  <tr>
+                    <th>
+                      FALLING BOSS STATS
+                    </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+                <tbody>
+                  <tr>
+                    <td>
+                      Total Falling Boss Waves :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Falling Boss Total Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Falling Boss Highest Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Falling Boss Average Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Falling Boss Last Score :
+                    </td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div class="button">
-            <button class="MENU">
-              Return to Menu
-            </button>
-          </div>
+          <button class="MENU">
+            Menu
+          </button>
         </aside>
         <aside id="CREDITSPAGE">
           <div id="credits">
             <div id="creditsinner">
-            <div class="dev">
-              <div>
-                <figure>
-                  <img src="https://avatars.githubusercontent.com/glosl" alt="glosl" />
-                  <figcaption>
-                    Félix HAUGER
-                  </figcaption>
-                </figure>
+              <div class="dev">
+                <div>
+                  <figure>
+                    <img src="https://avatars.githubusercontent.com/glosl" alt="glosl" />
+                    <figcaption>
+                    Félix
+                    <br>
+                    HAUGER
+                    </figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <a href="https://github.com/glosl" rel="external" target="_blank">
+                    <img src="media/img/github.png" alt="github" />
+                  </a>
+                  <a href="https://glosl.github.io/portfolio/" rel="external" target="_blank">
+                    <img src="media/img/web.png" alt="portfolio" />
+                  </a>
+                </div>
               </div>
-              <div>
-                <a href="https://github.com/glosl" rel="external" target="_blank">
-                  <img src="media/img/github.png" alt="github" />
-                </a>
-                <a href="https://glosl.github.io/portfolio/" rel="external" target="_blank">
-                  <img src="media/img/web.png" alt="portfolio" />
-                </a>
+              <div class="dev">
+                <div>
+                  <figure>
+                    <img src="https://avatars.githubusercontent.com/metallou" alt="metallou" />
+                    <figcaption>
+                    Kévin
+                    <br>
+                    CASTEJON
+                    </figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <a href="https://github.com/metallou" rel="external" target="_blank">
+                    <img src="media/img/github.png" alt="github" />
+                  </a>
+                  <a href="http://kevin-castejon.esy.es" rel="external" target="_blank">
+                    <img src="media/img/web.png" alt="portfolio" />
+                  </a>
+                </div>
               </div>
-            </div>
-            <div class="dev">
-              <div>
-                <figure>
-                  <img src="https://avatars.githubusercontent.com/metallou" alt="metallou" />
-                  <figcaption>
-                    Kévin CASTEJON
-                  </figcaption>
-                </figure>
+              <div class="dev">
+                <div>
+                  <figure>
+                    <img src="https://avatars.githubusercontent.com/darkilen" alt="darkilen" />
+                    <figcaption>
+                    Samuel
+                    <br>
+                    ARLAUD
+                    </figcaption>
+                  </figure>
+                </div>
+                <div>
+                  <a href="https://github.com/darkilen" rel="external" target="_blank">
+                    <img src="media/img/github.png" alt="github" />
+                  </a>
+                  <a href="https://darkilen.github.io/portfolio/" rel="external" target="_blank">
+                    <img src="media/img/web.png" alt="portfolio" />
+                  </a>
+                </div>
               </div>
-              <div>
-                <a href="https://github.com/metallou" rel="external" target="_blank">
-                  <img src="media/img/github.png" alt="github" />
-                </a>
-                <a href="http://kevin-castejon.esy.es" rel="external" target="_blank">
-                  <img src="media/img/web.png" alt="portfolio" />
-                </a>
-              </div>
-            </div>
-            <div class="dev">
-              <div>
-                <figure>
-                  <img src="https://avatars.githubusercontent.com/darkilen" alt="darkilen" />
-                  <figcaption>
-                    Samuel ARLAUD
-                  </figcaption>
-                </figure>
-              </div>
-              <div>
-                <a href="https://github.com/darkilen" rel="external" target="_blank">
-                  <img src="media/img/github.png" alt="github" />
-                </a>
-                <a href="https://darkilen.github.io/portfolio/" rel="external" target="_blank">
-                  <img src="media/img/web.png" alt="portfolio" />
-                </a>
-            </div>
-            </div>
             </div>
           </div>
-          <div class="button">
           <button class="MENU">
-            MENU
+            Menu
           </button>
+        </aside>
+        <aside id="HELPPAGE">
+          <div id="help">
+            <h1>
+              AQUABELLUM
+            </h1>
+            <h2>
+              Rules & Help
+            </h2>
+            <div>
+              <h3>
+                Rules
+              </h3>
+              <p>
+              This game is turn based
+              <br>
+              The rules are simple and are as follow :
+              </p>
+              <ol>
+                <li>
+                  Place your ships
+                </li>
+                <li>
+                  Enemy places ships
+                </li>
+                <li>
+                  Shoot an enemy tile
+                </li>
+                <li>
+                  Enemy shoots a tile
+                </li>
+                <li>
+                  Repeat shooting until someone loses
+                </li>
+              </ol>
+            </div>
+            <div>
+              <h3>
+                Help
+              </h3>
+              <p>
+              We created some new rules for this game :
+              </p>
+              <ul>
+                <li>
+                  Each ship has a Speical Shot you can use during gameplay
+                </li>
+                <li>
+                  the Speical Shot cooldown is shared between all Special Shots
+                </li>
+                <li>
+                  There are bonuses and maluses during gameplay
+                </li>
+                <li>
+                  Bonuses can be used once
+                </li>
+                <li>
+                  Maluses are always active
+                </li>
+                <li>
+                  Special Shots, Bonuses and Maluses can be disabled in the OPTIONS
+                </li>
+              </ul>
+            </div>
           </div>
+          <button class="MENU">
+            Menu
+          </button>
         </aside>
       </div>
     </div>
