@@ -1,6 +1,7 @@
 "use strict"
 
 const DEBUG = true;
+let KONAMI = false;
 
 const TYPES = {
   Boolean: 1,
@@ -28,9 +29,9 @@ const SHIPS = {
 const PLAYERS = {
   self: 1,
   other: 2,
-  botEasy: 3,
-  botMedium: 4,
-  botHard: 5
+  BOTeasy: 3,
+  BOTmedium: 4,
+  BOThard: 5
 };
 const DIFFICULTIES = {
   easy: 1,

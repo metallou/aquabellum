@@ -1,22 +1,57 @@
 "use strict"
 
-const loadStats = function()
+const initStats = function()
 {
   const page = document.getElementById("STATSPAGE");
-  const tables = page.getElementsByTagName("table");
-  const theads = page.getElementsByTagName("thead");
-  const tbodys = page.getElementsByTagName("tbody");
+  const containers = page.getElementsByClassName("statscontainer");
+  const inners = page.getElementsByClassName("statsinner");
+  const bodys = page.getElementsByTagName("tbody");
+  const foots = page.getElementsByTagName("tfoot");
   let trs;
   let key;
   let value;
-  //Write page number in second th
-  for(let i=0; i<theads.length; i++) {
-    trs = theads[i].getElementsByTagName("tr")[0];
-    trs.children[1].textContent = (i+1)+"/"+tables.length;
+  //Write page number in tfoot
+  for(let i=0; i<foots.length; i++) {
+    trs = foots[i].getElementsByTagName("tr");
+    value = (i+1)+"/"+foots.length;
+    trs[0].children[1].textContent = value;
   }
-  //Gather localStorage stats
-  for(let i=0; i<tbodys.length; i++) {
-    trs = tbodys[i].getElementsByTagName("tr");
+  //Create buttons
+  let div;
+  let button;
+  for(let i=0; i<containers.length; i++) {
+    div = document.createElement("div");
+    inners[i].appendChild(div);
+    div.classList.add("statsbuttons");
+    button = document.createElement("button");
+    div.appendChild(button);
+    button.classList.add("PREV");
+    button.textContent = "PREV";
+    button.addEventListener("click", function(){newStatsPage(false)});
+    button = document.createElement("button");
+    div.appendChild(button);
+    button.classList.add("NEXT");
+    button.textContent = "NEXT";
+    button.addEventListener("click", function(){newStatsPage(true)});
+  }
+  //Set table display
+  for(let i=0; i<containers.length; i++) {
+    containers[i].style["display"] = "none";
+  }
+}
+const loadStats = function()
+{
+  const page = document.getElementById("STATSPAGE");
+  const containers = page.getElementsByClassName("statscontainer");
+  const inners = page.getElementsByClassName("statsinner");
+  const bodys = page.getElementsByTagName("tbody");
+  const foots = page.getElementsByTagName("tfoot");
+  let trs;
+  let key;
+  let value;
+  //Write localtorage data into table
+  for(let i=0; i<bodys.length; i++) {
+    trs = bodys[i].getElementsByTagName("tr");
     for(let j=0; j<trs.length; j++) {
       key = trs[j].children[0].textContent;
       key = key.toLowerCase();
@@ -28,12 +63,10 @@ const loadStats = function()
     }
   }
   //Set table display
-  for(let i=1; i<tables.length; i++) {
-    tables[i].style["display"] = "none";
+  for(let i=0; i<containers.length; i++) {
+    containers[i].style["display"] = "none";
   }
-  tables[0].style["display"] = "";
-  //Set button display
-  document.getElementById("PREV").style["display"] = "none";
+  containers[0].style["display"] = "";
 }
 
 //Get the one table being displayed
@@ -46,36 +79,21 @@ const displayedElementIndex = function(array)
 const newStatsPage = function(next)
 {
   const page = document.getElementById("STATSPAGE");
-  const pages = page.getElementsByTagName("table");
+  const pages = page.getElementsByClassName("statscontainer");
   const num = displayedElementIndex(pages);
   const curPage = pages[num];
+  const prevs = document.getElementsByClassName("PREV");
+  const nexts = document.getElementsByClassName("NEXT");
   let newPage;
-  let otherPage;
   if(next) {
     newPage = pages[num+1];
-    otherPage = pages[num+2];
   } else {
     newPage = pages[num-1];
-    otherPage = pages[num-2];
   }
   //Hide current table
   //Display new table
   if(newPage!=null && newPage!=undefined) {
     curPage.style["display"] = "none";
     newPage.style["display"] = "";
-    if(otherPage===null || otherPage===undefined) {
-      //Hide button
-      if(next) {
-        document.getElementById("NEXT").style["display"] = "none";
-      } else {
-        document.getElementById("PREV").style["display"] = "none";
-      }
-    }
-  }
-  //Display button
-  if(next) {
-    document.getElementById("PREV").style["display"] = "";
-  } else {
-    document.getElementById("NEXT").style["display"] = "";
   }
 }

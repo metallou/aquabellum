@@ -22,6 +22,7 @@ const affectedBy = function(owner, key)
       }
     }
 
+  return localStorage.getItem(key)==="on";
   return (owner==="self" || owner==="other") && localStorage.getItem(key)==="on";
 }
 
@@ -486,9 +487,11 @@ class Shot
 
     let blocks = [];
     let pos = block.getPos();
-    for(let y=pos.row-1; y<=(pos.row+1); y++) {
+    let radius = 1;
+    if(KONAMI) radius = 2;
+    for(let y=(pos.row-radius); y<=(pos.row+radius); y++) {
       if(y>=0 && y<=9) {
-        for(let x=(pos.column-1); x<=(pos.column+1); x++) {
+        for(let x=(pos.column-radius); x<=(pos.column+radius); x++) {
           if(x>=0 && x<=9) {
             if(grid.grid[y][x] && grid.grid[y][x].canBeShotAt()) {
               blocks.push(grid.grid[y][x]);
@@ -546,9 +549,11 @@ class Shot
 
     let blocks = [];
     let pos = block.getPos();
-    for(let y=pos.row-1; y<=(pos.row+1); y++) {
+    let radius = 1;
+    if(KONAMI) radius = 2;
+    for(let y=(pos.row-radius); y<=(pos.row+radius); y++) {
       if(y>=0 && y<=9) {
-        for(let x=(pos.column-1); x<=(pos.column+1); x++) {
+        for(let x=(pos.column-radius); x<=(pos.column+radius); x++) {
           if(x>=0 && x<=9) {
             if(grid.grid[y][x] && grid.grid[y][x].canBeShotAt()) {
               blocks.push(grid.grid[y][x]);
@@ -584,11 +589,18 @@ class Shot
 }
 class SpecialShot extends Shot
 {
-  constructor(name, length)
+  constructor(owner, name, length)
   {
     super();
     if(DEBUG) {
       try {
+        try {
+          Check.def(owner);
+          Check.proto(owner, "String");
+          Check.list(owner, PLAYERS);
+        } catch(error) {
+          throw "owner: " + error;
+        }
         try {
           Check.def(length);
           Check.proto(length, "Number");
@@ -609,9 +621,11 @@ class SpecialShot extends Shot
       }
     }
 
+    this.owner = owner;
     this.name = name;
     this.limit = 2*length;
     this.charge = 0;
+    if(KONAMI) this.charge = this.limit;
     switch(name) {
       case "destroyer":
         this.specialShot = Shot.destroyerShot;
@@ -635,11 +649,12 @@ class SpecialShot extends Shot
   reset()
   {
     this.charge = 0;
-    return this.limit;
+    if(KONAMI) this.charge = this.limit;
+    return this.limit - this.charge;
   }
   canUse()
   {
-    if(affectedBy("SHOT"+this.name)) {
+    if(affectedBy(this.owner, "SHOT"+this.name)) {
       return this.charge===this.limit;
     }
     return false;
@@ -647,11 +662,13 @@ class SpecialShot extends Shot
   pumpItUp()
   {
     if(this.charge<this.limit) this.charge++;
+    if(KONAMI) this.charge = this.limit;
     return this.limit - this.charge;
   }
   relaxMan()
   {
     if(this.charge>0) this.charge--;
+    if(KONAMI) this.charge = this.limit;
     return this.limit - this.charge;
   }
 }
@@ -715,7 +732,7 @@ class Ship
     this.rotation = false;
     this.onGrid = false;
     this.stayinAlive = true;
-    this.specialShot = new SpecialShot(this.name, this.length);
+    this.specialShot = new SpecialShot(this.owner, this.name, this.length);
     return true;
   }
   getLength()
@@ -1126,7 +1143,7 @@ class Grid
     if(affectedBy(this.owner, "MALUSrevealblock") && chance%10===0) {
         let blocks = [];
         let tmp;
-        if(affectedBy(this.owner, "MALUSrevealship") && chance%2===0) {
+        if(affectedBy(this.owner, "MALUSrevealship") && chance%20===0) {
           for(let i in this.grid) {
             tmp = [];
             for(let j in this.grid[i]) {
@@ -1136,7 +1153,7 @@ class Grid
                 }
               }
             }
-            blocks.push(tmp);
+            if(tmp.length>0) blocks.push(tmp);
           }
         } else {
           for(let i in this.grid) {
@@ -1146,12 +1163,14 @@ class Grid
                 tmp.push(this.grid[i][j]);
               }
             }
-            blocks.push(tmp);
+            if(tmp.length>0) blocks.push(tmp);
           }
         }
-        const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
-        const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
-        Shot.flareShot(this, this.grid[i][j]);
+        if(blocks.length) {
+          const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+          const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
+          Shot.flareShot(this, this.grid[i][j]);
+        }
     }
 
     //this.visualise();

@@ -16,12 +16,9 @@ const setOnClick = function(elem) {
   }
 }
 
-
 launchGame.playerVsPlayer = function() {
 	let gridP1 = new Grid("self"),
 	    gridP2 = new Grid("other");
-
-
 
 	console.log(gridP1.visualise());
 	console.log(gridP2);

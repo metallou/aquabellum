@@ -1,3 +1,14 @@
+@font-face
+{
+  font-family: "Gunplay";
+  src: url("../media/font/gunplay_rg.ttf") format('truetype');
+}
+
+*
+{
+  font-family: "Gunplay";
+}
+
 html,body
 {
   width: 100%;
@@ -16,7 +27,7 @@ html,body
 #container
 {
   width: 100vw;
-  height: 400vh;
+  height;
   position: absolute;
   top: 0;
   left: 0;
@@ -31,15 +42,113 @@ section
 {
   width: 100vw;
 }
-article
+section
 {
   display: flex;
   flex-direction: column;
 }
-article p
+section p
 {
   text-align: center;
   margin: 0;
+}
+button
+{
+  font-variant: small-caps;
+  font-size: 1.5rem;
+  border: 2px solid black;
+}
+
+h1, h2, h3, h4, h5, h6
+{
+  margin: 0;
+  padding: 0;
+  font-variant: small-caps;
+}
+h1, h2
+{
+  text-align: center;
+}
+h1
+{
+  font-size: 3rem;
+}
+h2
+{
+  font-size: 2.5rem;
+}
+strong
+{
+  font-variant: small-caps;
+}
+main button
+{
+  width: 100px;
+}
+.playbuttons
+{
+  position: absolute;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%,-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.playbuttons button
+{
+  width: 100%;
+  font-size: 2.5rem;
+}
+#PLAYPRACTICE
+{
+
+}
+#PLAYVERSUS
+{
+
+}
+#PLAYMULTI
+{
+
+}
+.asidebuttons
+{
+  position: absolute;
+  top: 89%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+#OPTIONS
+{
+
+}
+#HELP
+{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgb(255,255,0);
+  font-size: 2.5rem;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+#STATS
+{
+
+}
+#CREDITS, .MENU
+{
+  position: absolute;
+  left: 50%;
+  top: 96%;
+  transform: translate(-50%,-50%);
 }
 
 span
@@ -51,9 +160,16 @@ span
 {
   display: flex;
 }
-#bonusmalus article
+#bonusmalus section
 {
   flex: 1;
+}
+#specialshots article
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 sub
 {
@@ -88,28 +204,169 @@ sub
   padding: 20px;
   border: 3px solid black;
   background-color: rgb(255,255,255);
+  font-size: 1.25rem;
+  white-space: nowrap;
 }
 
-
-
-
-
-.selected circle
+.optionselected circle
 {
   stroke: rgb(0,0,255);
 }
-#bonus .selected circle
+#bonus .optionselected circle
 {
   stroke: rgb(0,255,0);
 }
-#malus .selected circle
+#malus .optionselected circle
 {
   stroke: rgb(255,0,0);
 }
 
-.selected .cross
+.optionselected .cross
 {
   display: none;
+}
+
+.statscontainer, #credits
+{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: flex-start;
+}
+.statsinner
+{
+  height: 80%;
+  width: 1024px;
+  margin: 0;
+  background-color: rgba(0,200,0, 0.9);
+  border: 30px solid rgba(0,0,0, 0.9);
+  border-radius: 10px;
+}
+.statsbuttons
+{
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+}
+table
+{
+  height: calc(100% - 35px);
+  box-sizing: border-box;
+  width: 100%;
+  color: #fff;
+  font-size: 20px;
+}
+th:last-child, td:last-child
+{
+  width: 70px;
+}
+thead th, tfoot td
+{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+@media screen and (max-width: 1024px)
+{
+  .statsinner
+  {
+    width: 768px;
+  }
+}
+@media screen and (max-width: 768px)
+{
+  .statsinner
+  {
+    width: 425px;
+  }
+}
+@media screen and (max-width: 425px)
+{
+  .statsinner
+  {
+    width: 375px;
+  }
+}
+@media screen and (max-width: 375px)
+{
+  .statsinner
+  {
+    width: 320px;
+  }
+}
+
+.dev
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.dev div
+{
+  flex: 1;
+}
+.dev a img
+{
+  width: 50px;
+  height: 50px;
+}
+figure
+{
+  margin-left: 0;
+  margin-right: 40px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+figure img
+{
+  width: 100px;
+  height: 100px;
+}
+
+#help
+{
+  display: flex;
+  flex-direction: column;
+}
+#help div
+{
+  width: 1024px;
+  margin: auto;
+}
+#help p, #help ol, #help ul
+{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+@media screen and (max-width: 1024px)
+{
+  #help div
+  {
+    width: 768px;
+  }
+}
+@media screen and (max-width: 768px)
+{
+  #help div
+  {
+    width: 425px;
+  }
+}
+@media screen and (max-width: 425px)
+{
+  #help div
+  {
+    width: 375px;
+  }
+}
+@media screen and (max-width: 375px)
+{
+  #help div
+  {
+    width: 320px;
+  }
 }
 
 .grid {
