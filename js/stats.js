@@ -32,7 +32,11 @@ const initStats = function()
     button.classList.add("PREV");
     if(i==0) button.classList.add("hidden");
     button.textContent = "Prev";
-    button.addEventListener("click", function(){newStatsPage(false)});
+    button.addEventListener("click", function()
+        {
+          playSound("page");
+          newStatsPage(false);
+        });
 
     th = document.createElement("th");
     tr.appendChild(th);
@@ -45,7 +49,11 @@ const initStats = function()
     button.classList.add("NEXT");
     if(i==(containers.length-1)) button.classList.add("hidden");
     button.textContent = "Next";
-    button.addEventListener("click", function(){newStatsPage(true)});
+    button.addEventListener("click", function()
+        {
+          playSound("page");
+          newStatsPage(true);
+        });
   }
   //set colspan
   //Create td for value

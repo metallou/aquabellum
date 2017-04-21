@@ -66,6 +66,9 @@
     </script>
   </head>
   <body>
+    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/drum.mp3"></audio>
+    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/march.mp3"></audio>
+    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/horn.mp3"></audio>
     <div id="wrapper">
       <div id="container">
         <main>
@@ -260,6 +263,35 @@
               </sub>
             </article>
           </section>
+          <section id="specialshots">
+            <p>
+            <strong>
+              Sounds
+            </strong>
+            </p>
+            <article>
+              <p class="OPTIONKEY">
+              <span class="KOO" id="music"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <sub>
+                i
+              </sub>
+              </p>
+              <p class="OPTIONKEY">
+              <span class="KOO" id="sound"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <sub>
+                i
+              </sub>
+              </p>
+            </article>
+          </section>
           <button class="MENU">
             Menu
           </button>
@@ -405,6 +437,24 @@
             <strong>
               Carrier Special Shot
             </strong>
+            </p>
+          </div>
+          <div class="info" id="infomusic">
+            <p>
+            <strong>
+              Music
+            </strong>
+            <be>
+            Toogle to disable all musics
+            </p>
+          </div>
+          <div class="info" id="infosound">
+            <p>
+            <strong>
+              Sound
+            </strong>
+            <br>
+            Toogle to disable all sound effects
             </p>
           </div>
         </aside>

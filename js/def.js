@@ -275,3 +275,11 @@ class Check
     }
   }
 }
+
+const playSound = function(file)
+{
+  if(localStorage.getItem("sound")==="on") {
+    const audio = new Audio("media/sound/"+file+".mp3");
+    audio.play();
+  }
+}
