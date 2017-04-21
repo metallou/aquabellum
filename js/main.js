@@ -3,26 +3,20 @@
 const launchGame = {};
 
 const shipButtonRadioSelect = function() {
-	let thatShipButton = this,
-	shipButtons = document.getElementsByClassName('ship-button');
+	let shipButtons = document.getElementsByClassName('ship-button');
 
-	for (let shipButton of shipButtons) {
-		shipButton.classList.remove('radio-selected');
-	}
-	thatShipButton.classList.add('radio-selected');
-
-}
-
-const setOnClick = function(elem) {
-	let selectors = document.querySelectorAll(elem);
-
-	for (let selector of selectors) {
-		selector.addEventListener('click', shipButtonRadioSelect);
-	}
+  for (let shipButton of shipButtons) {
+    shipButton.addEventListener('click', function(event) {
+			for (shipButton of shipButtons) {
+				shipButton.classList.remove('radio-selected');
+			}
+			event.target.classList.add('radio-selected');
+    });
+  }
 }
 
 const placingPhase = function() {
-	setOnClick('.ship-button');
+	shipButtonRadioSelect();
 
 
 }
