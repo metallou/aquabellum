@@ -53,6 +53,21 @@ const readyEvents = function()
           elem.style["display"] = "none";
         });
   }
+  document.getElementById("PLAYPRACTICE").addEventListener("click", function()
+      {
+        playSound("practice");
+        playVideo("practice");
+      });
+  document.getElementById("PLAYSOLO").addEventListener("click", function()
+      {
+        playSound("solo");
+        playVideo("solo");
+      });
+  document.getElementById("PLAYMULTI").addEventListener("click", function()
+      {
+        playSound("multi");
+        playVideo("multi");
+      });
 
   //INIT
   initOptions();

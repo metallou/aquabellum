@@ -9,6 +9,21 @@
   font-family: "Gunplay";
 }
 
+video
+{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
+audio
+{
+  display: none;
+}
+
 html,body
 {
   width: 100%;
@@ -106,7 +121,7 @@ main button
 {
 
 }
-#PLAYVERSUS
+#PLAYSOLO
 {
 
 }

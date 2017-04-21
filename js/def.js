@@ -283,3 +283,14 @@ const playSound = function(file)
     audio.play();
   }
 }
+const playVideo = function(file)
+{
+  const video = document.createElement("video");
+  video.setAttribute("src", "media/video/"+file+".mp4");
+  document.body.appendChild(video);
+  video.play();
+  video.onended = function()
+  {
+    document.body.removeChild(video);
+  };
+}
