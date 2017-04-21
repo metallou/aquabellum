@@ -40,6 +40,7 @@ const readyEvents = function()
   for(let i=0; i<infoButtons.length; i++) {
     infoButtons.item(i).addEventListener("click", function(e)
         {
+          playSound("bubble");
           const id = e.target.parentNode.getElementsByTagName("span")[0].id;
           document.getElementById("info"+id).style["display"] = "block";
         });
@@ -48,6 +49,7 @@ const readyEvents = function()
   for(let i=0; i<infoPages.length; i++) {
     infoPages.item(i).addEventListener("click", function(e)
         {
+          playSound("pop");
           let elem = e.target;
           while(!elem.classList.contains("info")) elem = elem.parentNode;
           elem.style["display"] = "none";
