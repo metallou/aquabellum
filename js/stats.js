@@ -5,39 +5,64 @@ const initStats = function()
   const page = document.getElementById("STATSPAGE");
   const containers = page.getElementsByClassName("statscontainer");
   const inners = page.getElementsByClassName("statsinner");
-  const bodys = page.getElementsByTagName("tbody");
-  const foots = page.getElementsByTagName("tfoot");
+  const tables = page.getElementsByTagName("table");
+  const theads = page.getElementsByTagName("thead");
+  const tbodys = page.getElementsByTagName("tbody");
   let trs;
   let key;
   let value;
-  //Write page number in tfoot
-  for(let i=0; i<foots.length; i++) {
-    trs = foots[i].getElementsByTagName("tr");
-    value = (i+1)+"/"+foots.length;
-    trs[0].children[1].textContent = value;
-  }
-  //Create buttons
-  let div;
   let button;
-  for(let i=0; i<containers.length; i++) {
-    div = document.createElement("div");
-    inners[i].appendChild(div);
-    div.classList.add("statsbuttons");
+  let tfoot;
+  let tr;
+  let td;
+  let th;
+
+  //Write page number in tfoot
+  //Create navigation buttons
+  for(let i=0; i<tables.length; i++) {
+    tfoot = document.createElement("tfoot");
+    tables[i].appendChild(tfoot);
+    tr = document.createElement("tr");
+    tfoot.appendChild(tr);
+
+    th = document.createElement("th");
+    tr.appendChild(th);
     button = document.createElement("button");
-    div.appendChild(button);
+    th.appendChild(button);
     button.classList.add("PREV");
-    button.textContent = "PREV";
+    if(i==0) button.classList.add("hidden");
+    button.textContent = "Prev";
     button.addEventListener("click", function(){newStatsPage(false)});
+
+    th = document.createElement("th");
+    tr.appendChild(th);
+    th.textContent = (i+1)+"/"+tables.length;
+
+    th = document.createElement("th");
+    tr.appendChild(th);
     button = document.createElement("button");
-    div.appendChild(button);
+    th.appendChild(button);
     button.classList.add("NEXT");
-    button.textContent = "NEXT";
+    if(i==(containers.length-1)) button.classList.add("hidden");
+    button.textContent = "Next";
     button.addEventListener("click", function(){newStatsPage(true)});
+  }
+  //set colspan
+  //Create td for value
+  for(let i=0; i<tbodys.length; i++) {
+    trs = tbodys[i].getElementsByTagName("tr");
+    for(let j=0; j<trs.length; j++) {
+      trs[j].children[0].setAttribute("colspan", "2");
+
+      td = document.createElement("td");
+      trs[j].appendChild(td);
+    }
   }
   //Set table display
   for(let i=0; i<containers.length; i++) {
     containers[i].style["display"] = "none";
   }
+
 }
 const loadStats = function()
 {
@@ -82,8 +107,6 @@ const newStatsPage = function(next)
   const pages = page.getElementsByClassName("statscontainer");
   const num = displayedElementIndex(pages);
   const curPage = pages[num];
-  const prevs = document.getElementsByClassName("PREV");
-  const nexts = document.getElementsByClassName("NEXT");
   let newPage;
   if(next) {
     newPage = pages[num+1];
