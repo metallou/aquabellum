@@ -9,21 +9,6 @@
   font-family: "Gunplay";
 }
 
-video
-{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100vw;
-  height: 100vh;
-  background-color: black;
-}
-audio
-{
-  display: none;
-}
-
 html,body
 {
   width: 100%;
@@ -121,7 +106,7 @@ main button
 {
 
 }
-#PLAYSOLO
+#PLAYVERSUS
 {
 
 }
@@ -344,20 +329,6 @@ figure img
   width: 100px;
   height: 100px;
 }
-#soundcredits, #musiccredits
-{
-  position: absolute;
-  bottom: 0;
-  margin: 0;
-}
-#soundcredits
-{
-  left: 0;
-}
-#musiccredits
-{
-  right: 0;
-}
 
 #help
 {
@@ -407,16 +378,18 @@ figure img
   width: 600px;
   height: 600px;
   /*background-color: blue;*/
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  border: 6px solid black;
 }
 
 .grid .row {
   /*background: rgba(255, 0, 0, 0.5);*/
-  width: 600px;
-  height: 60px;
+  flex: 1;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -424,12 +397,40 @@ figure img
 }
 
 .grid .row .cell {
-  border: 1px solid black;
+  border: 5px solid blue;
   box-sizing: border-box;
-  width: 60px;
-  height: 60px;
+  flex: 1;
   margin: 0;
   padding: 0;
+  position: relative;
+  max-width: 10%;
+}
+
+
+.grid .row .cell.ship {
+  background-color: yellow;
+}
+
+.grid .row .cell.hit {
+  background-color: red;
+}
+
+.grid .row .cell.sunk {
+  background-color: #222;
+  color: white;
+}
+
+.grid .row .cell.unavalaible {
+  background-color: rgba(235, 70, 0, .7);
+}
+
+.grid .row .cell.occupied {
+  background-color: rgba(235, 70, 0, .7);
+}
+
+.grid .row .cell.impossible {
+  background-color: black;
+  color: white;
 }
 
 .commands {
@@ -442,7 +443,8 @@ figure img
   margin-top: 20px;
 }
 
-.boat {
+.ship-button {
+  margin: 10px;
   padding: 5px;
   background-color: #ADD8E6;
 }
@@ -450,4 +452,24 @@ figure img
 .ship-button.radio-selected {
   box-shadow: inset 0 0 5px black;
   background-color: #76D8E6;
+}
+
+.ship-button.destroyer {
+  width: 70px;
+}
+
+.ship-button.cruiser {
+  width: 105px;
+}
+
+.ship-button.submarine {
+  width: 105px;
+}
+
+.ship-button.battleship {
+  width: 140px
+}
+
+.ship-button.carrier {
+  width: 175px;
 }
