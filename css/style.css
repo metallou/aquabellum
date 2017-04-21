@@ -329,6 +329,22 @@ figure img
   width: 100px;
   height: 100px;
 }
+#soundcredits, #musiccredits
+{
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+#musiccredits
+{
+  left: 50%;
+  transform: translate(-160%);
+}
+#soundcredits
+{
+  right: 50%;
+  transform: translate(160%);
+}
 
 #help
 {
