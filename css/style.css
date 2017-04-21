@@ -398,6 +398,7 @@ figure img
   margin: 0;
   padding: 0;
   position: relative;
+  max-width: 10%;
 }
 
 
@@ -410,6 +411,19 @@ figure img
 }
 
 .grid .row .cell.sunk {
+  background-color: #222;
+  color: white;
+}
+
+.grid .row .cell.unavalaible {
+  background-color: rgba(235, 70, 0, .7);
+}
+
+.grid .row .cell.occupied {
+  background-color: rgba(235, 70, 0, .7);
+}
+
+.grid .row .cell.impossible {
   background-color: black;
   color: white;
 }

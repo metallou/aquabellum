@@ -20,6 +20,14 @@ launchGame.playerVsPlayer = function() {
 	let gridP1 = new Grid("self"),
 	    gridP2 = new Grid("other");
 
+	function placeCruiser() {
+		gridP1.placeShip('cruiser', true, '7', '3');
+
+	}
+
+  document.querySelector('.ship-button.cruiser')
+	        .addEventListener('click', placeCruiser);
+
 	console.log(gridP1.visualise());
 	console.log(gridP2);
 }
