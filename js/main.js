@@ -3,16 +3,22 @@
 const launchGame = {};
 
 
-const toggleSelect = function() {
-	let item = this;
-	item.classList.toggle('selected');
+const shipButtonRadioSelect = function() {
+  let thatShipButton = this,
+	    shipButtons = document.getElementsByClassName('ship-button');
+
+	for (let shipButton of shipButtons) {
+		shipButton.classList.remove('radio-selected');
+	}
+	thatShipButton.classList.add('radio-selected');
+
 }
 
 const setOnClick = function(elem) {
 	let selectors = document.querySelectorAll(elem);
 
   for (let selector of selectors) {
-  	selector.addEventListener('click', toggleSelect);
+  	selector.addEventListener('click', shipButtonRadioSelect);
   }
 }
 
@@ -36,8 +42,6 @@ const mainReady = function()
 {
 
   setOnClick('.ship-button');
-
-	setOnClick('.grid .row .cell');
 
 	document.getElementById('PLAY')
 	        .addEventListener('click', launchGame.playerVsPlayer);
