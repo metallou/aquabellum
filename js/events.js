@@ -1,5 +1,7 @@
 "use strict"
 
+const SOUND = true;
+
 const readyEvents = function()
 {
   //NAVIGATION
@@ -7,6 +9,7 @@ const readyEvents = function()
   for(let i=0; i<asideButtons.length; i++) {
     asideButtons.item(i).addEventListener("click", function(e)
         {
+          playSound("morse");
           if(e.target.id==="STATS") loadStats();
           if(e.target.id==="OPTIONS") initOptions();
           let offset = document.getElementById(e.target.id+"PAGE").offsetTop;
@@ -18,6 +21,7 @@ const readyEvents = function()
   for(let i=0; i<menuButtons.length; i++) {
     menuButtons.item(i).addEventListener("click", function(e)
         {
+          playSound("morse");
           document.getElementById("container").style["top"] = "0vh";
         });
   }
@@ -49,7 +53,6 @@ const readyEvents = function()
           elem.style["display"] = "none";
         });
   }
-
 
   //INIT
   initOptions();

@@ -6,8 +6,20 @@ const toggleOption = function(option)
   option.classList.toggle("optionselected");
   if(option.classList.contains("optionselected")) {
     localStorage.setItem(id, "on");
+    if(id==="music" || id==="sound") {
+      const sounds = document.getElementsByClassName(id.toUpperCase());
+      for(let i=0; i<sounds.length; i++) {
+        sounds[i].muted = false;
+      }
+    }
   } else {
     localStorage.setItem(id, "off");
+    if(id==="music" || id==="sound") {
+      const sounds = document.getElementsByClassName(id.toUpperCase());
+      for(let i=0; i<sounds.length; i++) {
+        sounds[i].muted = true;
+      }
+    }
   }
 }
 
@@ -20,6 +32,8 @@ const resetOptions = function()
       localStorage.setItem(keys.item(i).id, "on");
     }
   }
+  localStorage.setItem("music", "off");
+  localStorage.setItem("sound", "off");
 }
 const resetStats = function()
 {
@@ -42,7 +56,6 @@ const initOptions = function()
     localStorage.clear();
     resetOptions();
     resetStats();
-    return;
   }
   for(let i=0; i<keys.length; i++) {
     str = localStorage.getItem(keys.item(i).id);
@@ -62,8 +75,14 @@ const initOptions = function()
   for(let i=0; i<keys.length; i++) {
     str = localStorage.getItem(keys.item(i).id);
     if(keys.item(i).classList.contains("KOO")) {
-      if(localStorage.getItem(keys.item(i).id)==="on") {
+      if(str==="on") {
         keys.item(i).parentNode.classList.add("optionselected");
+      }
+      if(keys.item(i).id==="music" || keys.item(i).id==="sound") {
+        const sounds = document.getElementsByClassName(keys.item(i).id.toUpperCase());
+        for(let j=0; j<sounds.length; j++) {
+          sounds[j].muted = str!="on";
+        }
       }
     }
   }
