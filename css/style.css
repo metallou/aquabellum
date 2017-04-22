@@ -19,6 +19,7 @@ video
   top: 0;
   width: 100vw;
   height: 100vh;
+  background-color: black;
 }
 
 html,body
@@ -102,8 +103,8 @@ main button
 {
   position: absolute;
   left: 50%;
-  top: 70%;
-  transform: translate(-50%,-50%);
+  bottom: 15%;
+  transform: translate(-50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -116,22 +117,36 @@ main button
 }
 #PLAYPRACTICE
 {
-
+	background-color: white;
 }
-#PLAYVERSUS
+#PLAYSOLO
 {
-
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+#PLAYSOLO button
+{
+	background-color: yellow;
+}
+#PLAYSOLO button:first-child
+{
+	background-color: green;
+}
+#PLAYSOLO button:last-child
+{
+	background-color: red;
 }
 #PLAYMULTI
 {
-
+	background-color: blue;
 }
 .asidebuttons
 {
   position: absolute;
-  top: 89%;
+  bottom: 5%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%);
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -160,8 +175,8 @@ main button
 {
   position: absolute;
   left: 50%;
-  top: 96%;
-  transform: translate(-50%,-50%);
+  bottom: 0;
+  transform: translate(-50%);
 }
 
 span

@@ -60,11 +60,15 @@ const readyEvents = function()
         playSound("practice");
         playVideo("start");
       });
-  document.getElementById("PLAYSOLO").addEventListener("click", function()
+  const soloButtons = document.getElementsByClassName("PLAYSOLO");
+  for(let soloButton of soloButtons) {
+	  soloButton.addEventListener("click", function(e)
       {
+		  console.log(e.target.name);
         playSound("solo");
         playVideo("start");
       });
+  }
   document.getElementById("PLAYMULTI").addEventListener("click", function()
       {
         playSound("multi");
