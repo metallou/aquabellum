@@ -93,6 +93,9 @@ h2
 }
 strong
 {
+	display: block;
+	text-align: center;
+	font-size: 1.5rem;
   font-variant: small-caps;
 }
 main button

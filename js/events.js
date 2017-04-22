@@ -1,6 +1,28 @@
 "use strict"
 
-const SOUND = true;
+const playSound = function(file)
+{
+  if(localStorage.getItem("sound")==="on") {
+    const audio = new Audio("media/sound/"+file+".wav");
+    audio.play();
+  }
+}
+const playVideo = function(file, func)
+{
+	if(localStorage.getItem("video")==="on") {
+  const video = document.createElement("video");
+  video.setAttribute("src", "media/video/"+file+".mp4");
+  document.body.appendChild(video);
+  video.play();
+  video.onended = function()
+  {
+    document.body.removeChild(video);
+	//func();
+  };
+	} else {
+		//func():
+	}
+}
 
 const readyEvents = function()
 {
@@ -58,21 +80,29 @@ const readyEvents = function()
   document.getElementById("PLAYPRACTICE").addEventListener("click", function()
       {
         playSound("practice");
-        playVideo("start");
+        playVideo("start", function()
+		{
+			gamePractice();
+		});
       });
   const soloButtons = document.getElementsByClassName("PLAYSOLO");
   for(let soloButton of soloButtons) {
 	  soloButton.addEventListener("click", function(e)
       {
-		  console.log(e.target.name);
         playSound("solo");
-        playVideo("start");
+        playVideo("start", function()
+		{
+			gameSolo(e.target.name);
+		});
       });
   }
   document.getElementById("PLAYMULTI").addEventListener("click", function()
       {
         playSound("multi");
-        playVideo("start");
+        playVideo("start", function()
+		{
+			gameMulti();
+		});
       });
 
   //INIT
