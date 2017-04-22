@@ -8,6 +8,18 @@
 {
   font-family: "Gunplay";
 }
+audio
+{
+  display: none;
+}
+video
+{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+}
 
 html,body
 {

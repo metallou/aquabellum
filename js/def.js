@@ -279,11 +279,11 @@ class Check
 const playSound = function(file)
 {
   if(localStorage.getItem("sound")==="on") {
-    const audio = new Audio("media/sound/"+file+".mp3");
+    const audio = new Audio("media/sound/"+file+".wav");
     audio.play();
   }
 }
-const playVideo = function(file)
+const playVideo = function(file, func)
 {
   const video = document.createElement("video");
   video.setAttribute("src", "media/video/"+file+".mp4");
@@ -292,5 +292,6 @@ const playVideo = function(file)
   video.onended = function()
   {
     document.body.removeChild(video);
+	//func();
   };
 }
