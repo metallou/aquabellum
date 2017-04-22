@@ -66,9 +66,7 @@
     </script>
   </head>
   <body>
-    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/drum.mp3"></audio>
-    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/march.mp3"></audio>
-    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/horn.mp3"></audio>
+    <audio class="MUSIC" autoplay loop src="media/music/intro.wav"></audio>
     <div id="wrapper">
       <div id="container">
         <main>
@@ -79,9 +77,17 @@
             <button id="PLAYPRACTICE">
               Practice
             </button>
-            <button id="PLAYSOLO">
-              Versus
-            </button>
+			<div id="PLAYSOLO">
+              <button class="PLAYSOLO" name="easy">
+                Easy
+              </button>
+			  <button class="PLAYSOLO" name="medium">
+                Medium
+              </button>
+			  <button class="PLAYSOLO" name="hard">
+                Hard
+              </button>
+			</div>
             <button id="PLAYMULTI">
               Multi
             </button>
@@ -290,6 +296,16 @@
                 i
               </sub>
               </p>
+              <p class="OPTIONKEY">
+              <span class="KOO" id="video"></span>
+              <svg width="50px" height="50px">
+                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+              </svg>
+              <sub>
+                i
+              </sub>
+              </p>
             </article>
           </section>
           <button class="MENU">
@@ -298,10 +314,11 @@
           <div class="info" id="infoBONUSmove">
             <p>
             <strong>
-              Move A Ship
+              Move Ships
             </strong>
-            <br>
-            This bonus allows you to move a ship
+            This bonus allows you to move any undamaged and undetected ship
+			<br>
+			onto "unknown" blocks
             <br>
             (cannot be used on a damaged ship)
             <br>
@@ -313,10 +330,11 @@
           <div class="info" id="infoBONUSrepair">
             <p>
             <strong>
-              Repair A Ship
+              Repair Ships
             </strong>
-            <br>
-            This bonus allows you to fully repair a ship
+            This bonus allows you to fully repair all unsunken ships.
+			<br>
+			All blocks previously hit will remain visible
             <br>
             <u>
               (can only be used once)
@@ -326,9 +344,8 @@
           <div class="info" id="infoBONUSshield">
             <p>
             <strong>
-              Shield All Ships
+              Shield Ships
             </strong>
-            <br>
             This bonus allows you to shield all your ships
             <br>
             from the next attack
@@ -345,10 +362,9 @@
             <strong>
               Critical Shot
             </strong>
-            <br>
             This bonus allows to sink any ship with one hit
             <br>
-            (used on tour next shot only)
+            (will remain active until next hit)
             <br>
             (cannot use a Special Shot with this bonus)
             <br>
@@ -362,7 +378,6 @@
             <strong>
               Damaged Ship Revelation
             </strong>
-            <br>
             If you use the Special Shot of a damaged ship,
             <br>
             this ship will be revealed
@@ -379,7 +394,6 @@
             <strong>
               Unlucky Block Revelation
             </strong>
-            <br>
             You have a 10% chance on each turn to see
             <br>
             a random block revealed
@@ -394,7 +408,6 @@
             <strong>
               Unlucky Ship Block Revelation
             </strong>
-            <br>
             You have a 5% chance on each turn to see
             <br>
             a random block containing a ship revealed
@@ -409,6 +422,7 @@
             <strong>
               Destroyer Special Shot
             </strong>
+			Hit your target and randomly reveal one surrounding block
             </p>
           </div>
           <div class="info" id="infoSHOTcruiser">
@@ -416,6 +430,7 @@
             <strong>
               Cruiser Special Shot
             </strong>
+			Hit your target and randomly hit one surrounding block
             </p>
           </div>
           <div class="info" id="infoSHOTsubmarine">
@@ -423,6 +438,7 @@
             <strong>
               Submarine Special Shot
             </strong>
+			Will go up the column from your target and explode upon encountering a ship
             </p>
           </div>
           <div class="info" id="infoSHOTbattleship">
@@ -430,6 +446,7 @@
             <strong>
               Battleship Special Shot
             </strong>
+			Hit your target and reveal all surrounding blocks.
             </p>
           </div>
           <div class="info" id="infoSHOTcarrier">
@@ -437,24 +454,31 @@
             <strong>
               Carrier Special Shot
             </strong>
+			Hit your target and hit all surrounding blocks
             </p>
           </div>
           <div class="info" id="infomusic">
             <p>
             <strong>
-              Music
+              Musics
             </strong>
-            <be>
-            Toogle to disable all musics
+            Toogle all musics
             </p>
           </div>
           <div class="info" id="infosound">
             <p>
             <strong>
-              Sound
+              Sounds
             </strong>
-            <br>
-            Toogle to disable all sound effects
+            Toogle all sound effects
+            </p>
+          </div>
+		  <div class="info" id="infovideo">
+            <p>
+            <strong>
+              Videos
+            </strong>
+            Toogle all videos
             </p>
           </div>
         </aside>

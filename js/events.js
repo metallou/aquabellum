@@ -1,6 +1,28 @@
 "use strict"
 
-const SOUND = true;
+const playSound = function(file)
+{
+  if(localStorage.getItem("sound")==="on") {
+    const audio = new Audio("media/sound/"+file+".wav");
+    audio.play();
+  }
+}
+const playVideo = function(file, func)
+{
+	if(localStorage.getItem("video")==="on") {
+  const video = document.createElement("video");
+  video.setAttribute("src", "media/video/"+file+".mp4");
+  document.body.appendChild(video);
+  video.play();
+  video.onended = function()
+  {
+    document.body.removeChild(video);
+	//func();
+  };
+	} else {
+		//func():
+	}
+}
 
 const readyEvents = function()
 {
@@ -58,17 +80,29 @@ const readyEvents = function()
   document.getElementById("PLAYPRACTICE").addEventListener("click", function()
       {
         playSound("practice");
-        playVideo("practice");
+        playVideo("start", function()
+		{
+			gamePractice();
+		});
       });
-  document.getElementById("PLAYSOLO").addEventListener("click", function()
+  const soloButtons = document.getElementsByClassName("PLAYSOLO");
+  for(let soloButton of soloButtons) {
+	  soloButton.addEventListener("click", function(e)
       {
         playSound("solo");
-        playVideo("solo");
+        playVideo("start", function()
+		{
+			gameSolo(e.target.name);
+		});
       });
+  }
   document.getElementById("PLAYMULTI").addEventListener("click", function()
       {
         playSound("multi");
-        playVideo("multi");
+        playVideo("start", function()
+		{
+			gameMulti();
+		});
       });
 
   //INIT
