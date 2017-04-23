@@ -6,18 +6,19 @@ const toggleOption = function(option)
   option.classList.toggle("optionselected");
   if(option.classList.contains("optionselected")) {
     localStorage.setItem(id, "on");
-    if(id==="music" || id==="sound") {
-      const sounds = document.getElementsByClassName(id.toUpperCase());
-      for(let i=0; i<sounds.length; i++) {
-        sounds[i].muted = false;
+    if(id==="music") {
+      const musicss = document.getElementsByClassName("MUSIC");
+      for(let music of musics) {
+        music.muted = true;
       }
+	  document.getElementById("INTRO").muted = false;
     }
   } else {
     localStorage.setItem(id, "off");
-    if(id==="music" || id==="sound") {
-      const sounds = document.getElementsByClassName(id.toUpperCase());
-      for(let i=0; i<sounds.length; i++) {
-        sounds[i].muted = true;
+    if(id==="music") {
+      const musics = document.getElementsByClassName("MUSIC");
+      for(let music of musics) {
+        music.muted = true;
       }
     }
   }

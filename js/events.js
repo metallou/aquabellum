@@ -17,11 +17,15 @@ const playVideo = function(file, func)
   video.onended = function()
   {
     document.body.removeChild(video);
-	//func();
+	console.log(func);
   };
 	} else {
 		//func():
 	}
+}
+const stopIntro = function()
+{
+	document.getElementById("INTRO").muted = true;
 }
 
 const readyEvents = function()
@@ -79,6 +83,7 @@ const readyEvents = function()
   }
   document.getElementById("PLAYPRACTICE").addEventListener("click", function()
       {
+		stopIntro();
         playSound("practice");
         playVideo("start", function()
 		{
@@ -89,6 +94,7 @@ const readyEvents = function()
   for(let soloButton of soloButtons) {
 	  soloButton.addEventListener("click", function(e)
       {
+		stopIntro();
         playSound("solo");
         playVideo("start", function()
 		{
@@ -98,6 +104,7 @@ const readyEvents = function()
   }
   document.getElementById("PLAYMULTI").addEventListener("click", function()
       {
+		stopIntro();
         playSound("multi");
         playVideo("start", function()
 		{
@@ -124,5 +131,13 @@ const readyEvents = function()
       n = 0;
     }
   });
+  
+  const musics = document.getElementsByClassName("MUSIC");
+  for(let music of musics) {
+	music.muted = true;
+  }
+  if(localStorage.getItem("music")==="on") {
+	document.getElementById("INTRO").muted = false;
+  }
 }
 document.addEventListener("DOMContentLoaded", readyEvents);
