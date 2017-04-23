@@ -43,235 +43,214 @@ class Check
 {
   static def(object)
   {
-    try {
-      if(object===null) throw "null";
-      if(object===undefined) throw "undefined";
-    } catch(error) {
-      throw "Check.def - " + error;
-    }
+	if(object===null) throw Erro("null");
+    if(object===undefined) throw Error("undefined");
   }
   static list(object, list)
   {
     let str;
     let comp;
-    try {
-      try {
-        this.def(object);
-        str = Object.prototype.toString.call(object);
-        comp = Object.prototype.toString.call("");
-        if(!(str===comp)) throw "wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")";
-        if(!list[object]) throw "not in list"
-          +"\n"
-            +"(received \"" + object + "\")";
-      } catch(error) {
-        throw "object: " + error;
-      }
-      try {
-        this.def(list);
+	
+	this.def(list);
         str = Object.prototype.toString.call(list);
         comp = Object.prototype.toString.call({});
-        if(!(str===comp)) throw "wrong type"
+        if(!(str===comp)) throw Error("wrong type"
           +"\n"
             +"(received " + str + ")"
             +"\n"
-            +"(expected " + comp + ")";
-        if(Object.keys(list).length===0) throw "empty set";
-      } catch(error) {
-        throw "list: " + error;
-      }
-    } catch(error) {
-      throw "Check.list - " + error;
-    }
+            +"(expected " + comp + ")");
+        if(Object.keys(list).length===0) throw Error("empty set");
+		
+	this.def(object);
+        str = Object.prototype.toString.call(object);
+        comp = Object.prototype.toString.call("");
+        if(str!=comp) throw Error("wrong type"
+          +"\n"
+            +"(received " + str + ")"
+            +"\n"
+            +"(expected " + comp + ")");
+        if(!list[object]) throw Error("not in list"
+          +"\n"
+            +"(received \"" + object + "\")");
   }
   static proto(object, type)
   {
-    let str;
-    let comp;
-    try {
-      try {
-        this.def(type);
-        str = Object.prototype.toString.call(type);
-        comp = Object.prototype.toString.call("");
-        if(!(str===comp)) throw "wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")";
-        Check.list(type, TYPES);
-      } catch(error) {
-        throw "type: " + error;
-      }
-      try {
-        this.def(object);
-        str = Object.prototype.toString.call(object);
-        if(!(Object.prototype.toString.call(object)==="[object "+type+"]")) {
-          throw "wrong type"
-            +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + "[object "+type+"]" + ")";
-        }
-      } catch(error) {
-        throw "object: " + error;
-      }
-    } catch(error) {
-      throw "Check.proto - " + error;
-    }
+    this.list(type, TYPES);
+	
+	this.def(object);
+    const str = Object.prototype.toString.call(object);
+	const comp = "[object "+type+"]";
+    if(str!=comp) throw Error("wrong type"
+        +"\n"
+        +"(received " + str + ")"
+        +"\n"
+        +"(expected " + "[object "+type+"]" + ")");
   }
   static instance(object, objectClass)
   {
-    try {
-      try {
-        this.def(object);
-        this.proto(object, "Object");
-      } catch(error) {
-        throw "object: " + error;
-      }
-      try {
-        this.def(objectClass);
-        this.proto(objectClass, "Function");
-      } catch(error) {
-        throw "objectClass: " + error;
-      }
-      if(!(object instanceof objectClass)) throw "wrong instance";
-    } catch(error) {
-      throw "Check.instance - " + error;
-    }
+	  this.func(objectClass);
+	  this.object(object);
+	  if(!(object instanceof objectClass)) throw Error("wrong instance");
   }
   static sup(number, limit)
   {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number<limit) throw "too low"
+	  this.number(number);
+	  this.number(limit);
+	  if(number<limit) throw Error("too low"
         +"\n"
-          +"(received "+number+"<"+limit+")"
-    } catch(error) {
-      throw "Check.sup - " + error;
-    }
+          +"(received "+number+"<"+limit+")");
   }
   static inf(number, limit)
   {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number>limit) throw "too high"
+	  this.number(number);
+	  this.number(limit);
+	  if(number>limit) throw Error("too low"
         +"\n"
-          +"(received "+number+">"+limit+")"
-    } catch(error) {
-      throw "Check.inf - " + error;
-    }
+          +"(received "+number+">"+limit+")");
   }
   static esup(number, limit)
   {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number<=limit) throw "too low"
+	  this.number(number);
+	  this.number(limit);
+	  if(number<=limit) throw Error("too low"
         +"\n"
-          +"(received "+number+"<="+limit+")"
-    } catch(error) {
-      throw "Check.esup - " + error;
-    }
+          +"(received "+number+"<="+limit+")");
   }
   static einf(number, limit)
   {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number>=limit) throw "too high"
+	  this.number(number);
+	  this.number(limit);
+	  if(number>=limit) throw Error("too low"
         +"\n"
-          +"(received "+number+">="+limit+")"
-    } catch(error) {
-      throw "Check.einf - " + error;
-    }
+          +"(received "+number+">="+limit+")");
   }
   static eq(number, limit)
   {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(!(number===limit)) throw "not equal"
+	  this.number(number);
+	  this.number(limit);
+	  if(number!=limit) throw Error("not equal"
         +"\n"
-          +"(received "+number+"!="+limit+")"
-    } catch(error) {
-      throw "Check.eq - " + error;
-    }
+          +"(received "+number+"!="+limit+")");
   }
   static neq(number, limit)
   {
-    try {
-      try {
-        this.def(number);
-        this.proto(number, "Number");
-      } catch(error) {
-        throw "number: " + error;
-      }
-      try {
-        this.def(limit);
-        this.proto(limit, "Number");
-      } catch(error) {
-        throw "limit: " + error;
-      }
-      if(number===limit) throw "equal"
+	  this.number(number);
+	  this.number(limit);
+	  if(number===limit) throw Error("equal"
         +"\n"
-          +"(received "+number+"=="+limit+")"
-    } catch(error) {
-      throw "Check.neq - " + error;
-    }
+          +"(received "+number+")");
+  }
+  
+  
+  
+  
+  
+  static boolean(prout)
+  {
+	Check.def(prout);
+    Check.proto(prout, "Boolean");
+  }
+  static number(prout)
+  {
+	Check.def(prout);
+    Check.proto(prout, "Number");
+  }
+  static string(prout)
+  {
+	Check.def(prout);
+    Check.proto(prout, "String");
+  }
+  static array(prout)
+  {
+	Check.def(prout);
+    Check.proto(prout, "Array");
+  }
+  static object(prout)
+  {
+	Check.def(prout);
+    Check.proto(prout, "Object");
+  }
+  static func(prout)
+  {
+	Check.def(prout);
+    Check.proto(prout, "Function");
+  }
+  
+  
+  
+  
+  
+  static row(prout)
+  {
+		Check.sup(prout, 0);
+        Check.inf(prout, 9);
+  }
+  static column(prout)
+  {
+		Check.sup(prout, 0);
+        Check.inf(prout, 9);
+  }
+  static name(prout)
+  {
+	  Check.list(prout, SHIPS);
+  }
+  static rotation(prout)
+  {
+	Check.boolean(prout);
+  }
+  static up(prout)
+  {
+	Check.boolean(prout);
+  }
+  static grid(prout)
+  {
+    Check.instance(prout, Grid);
+  }
+  static block(prout)
+  {
+	Check.instance(prout, Block);
+  }
+  static length(prout)
+  {
+    Check.sup(prout, 2);
+    Check.inf(prout, 5);
+  }
+  static blocks(prout, length)
+  {
+	  Check.length(length);
+	  Check.array(prout);
+		  Check.eq(prout.length, length);
+          prout.forEach(function(element, index, array)
+		  {
+			  Check.instance(element, Block);
+		  });
+  }
+  static state(prout)
+  {
+	Check.list(prout, STATES);
+  }
+  static special(prout)
+  {
+	Check.instance(prout, SpecialShot);
+  }
+  static bonus(prout)
+  {
+	Check.instance(prout, Bonus);
+  }
+  static ship(prout)
+  {
+	Check.instance(prout, Ship);
+  }
+  static ships(prout)
+  {
+	Check.instance(prout, Ships);
+  }
+  static login(prout)
+  {
+    Check.string(prout);
+  }
+  static owner(prout)
+  {
+	Check.list(prout, PLAYERS);
   }
 }

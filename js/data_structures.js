@@ -3,23 +3,8 @@
 const affectedBy = function(owner, key)
 {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(owner);
-          Check.proto(owner, "String");
-          Check.list(owner, PLAYERS);
-        } catch(error) {
-          throw "owner: " + error;
-        }
-        try {
-          Check.def(key);
-          Check.proto(key, "String");
-        } catch(error) {
-          throw "key: " + error;
-        }
-      } catch(error) {
-        throw Error("Function (affectedBy) - " + error);
-      }
+      Check.owner(owner);
+      Check.string(key);
     }
 
   return localStorage.getItem(key)==="on";
@@ -33,26 +18,8 @@ class Block
   constructor(row, column)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(row);
-          Check.proto(row, "Number");
-          Check.sup(row, 0);
-          Check.inf(row, 9);
-        } catch(error) {
-          throw "row: " + error;
-        }
-        try {
-          Check.def(column);
-          Check.proto(column, "Number");
-          Check.sup(column, 0);
-          Check.inf(column, 9);
-        } catch(error) {
-          throw "column: " + error;
-        }
-      } catch(error) {
-        throw Error("Block (constructor) - " + error);
-      }
+      Check.row(row);
+		Check.column(column);
     }
 
     this.state = "unknown";
@@ -81,17 +48,7 @@ class Block
   setShip(name)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-      } catch(error) {
-        throw Error("Block (setShip) - " + error);
-      }
+      Check.name(name);
     }
 
     this.shipName = name;
@@ -124,17 +81,7 @@ class Block
   isEqualTo(state)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(state);
-          Check.proto(state, "String");
-          Check.list(state, STATES);
-        } catch(error) {
-          throw "state: " + error;
-        }
-      } catch(error) {
-        throw Error("Block (isEqualTo) - " + error);
-      }
+      Check.state(state);
     }
 
     if(this.getState()===state) return true;
@@ -186,29 +133,15 @@ class Block
   setState(state)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(state);
-          Check.proto(state, "String");
-          Check.list(state, STATES);
-        } catch(error) {
-          throw "state: " + error;
-        }
-        try {
-          if(!this.hasShip() &&
+		Check.state(state);
+        if(!this.hasShip() &&
               (state==="ship" || state==="hit" || state==="sunk")) {
             throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
-          }
-          if(this.hasShip() &&
+        }
+        if(this.hasShip() &&
               (state==="miss" || state==="empty")) {
             throw "ship yet miss/empty";
-          }
-        } catch(error) {
-          throw "impossible state: " + error;
         }
-      } catch(error) {
-        throw Error("Block (setState) - " + error);
-      }
     }
 
     this.state = state;
@@ -220,24 +153,8 @@ class Shot
   static normalShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (normalShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     if(block.canBeShotAt()) {
@@ -255,24 +172,8 @@ class Shot
   static flareShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (flareShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     if(block.isEqualTo("unknown")) {
@@ -287,24 +188,8 @@ class Shot
   static destroyerShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (destroyerShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     let blocks = [];
@@ -346,24 +231,8 @@ class Shot
   static cruiserShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (cruiserShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     let blocks = [];
@@ -405,24 +274,8 @@ class Shot
   static submarineShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (submarineShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     let blocks = [];
@@ -441,16 +294,16 @@ class Shot
     let hit = Shot.normalShot(grid, block);
 
     //Attempt to perform SpecialShot
-    const ship = grid.ships.searchShip("destroyer");
+    const ship = grid.ships.searchShip("submarine");
     //is alive
     if(ship.stillAlive()) {
       //can use
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
-          for(let i in blocks) {
-            hit = Shot.normalShot(grid, blocks[i]) || hit;
-            if(blocks[i].hasShip()) break;
+          for(let block of blocks) {
+            hit = Shot.normalShot(grid, block) || hit;
+            if(block.hasShip()) break;
           }
           ship.specialShot.reset();
           //reveal if malus
@@ -465,24 +318,8 @@ class Shot
   static battleshipShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (battleshipShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     let blocks = [];
@@ -511,9 +348,10 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
-          for(let i in blocks) {
-            hit = Shot.flareShot(grid, blocks[i]) || hit;
-          }
+		  blocks.forEach(function(element, index, array)
+		  {
+			  hit = Shot.flareShot(grid, element) || hit;
+		  });
           ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
@@ -527,24 +365,8 @@ class Shot
   static carrierShot(grid, block)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(grid);
-          Check.proto(grid, "Object");
-          Check.instance(grid, Grid);
-        } catch(error) {
-          throw "grid : " + error;
-        }
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block : " + error;
-        }
-      } catch(error) {
-        throw Error("Shot (carrierShot) - " + error);
-      }
+      Check.grid(grid);
+		Check.block(block);
     }
 
     let blocks = [];
@@ -573,9 +395,10 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
-          for(let i in blocks) {
-            hit = Shot.normalShot(grid, blocks[i]) || hit;
-          }
+		  blocks.forEach(function(element, index, array)
+		  {
+			  hit = Shot.normalShot(grid, element) || hit;
+		  });
           ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
@@ -593,32 +416,9 @@ class SpecialShot extends Shot
   {
     super();
     if(DEBUG) {
-      try {
-        try {
-          Check.def(owner);
-          Check.proto(owner, "String");
-          Check.list(owner, PLAYERS);
-        } catch(error) {
-          throw "owner: " + error;
-        }
-        try {
-          Check.def(length);
-          Check.proto(length, "Number");
-          Check.sup(length, 2);
-          Check.inf(length, 5);
-        } catch(error) {
-          throw "length: " + error;
-        }
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-      } catch(error) {
-        throw "SpecialShot (constructor) - " + error;
-      }
+      Check.owner(owner);
+		Check.name(name);
+		Check.length(length);
     }
 
     this.owner = owner;
@@ -679,24 +479,8 @@ class Ship
   {
     let str;
     if(DEBUG) {
-      try {
-        try {
-          Check.def(owner);
-          Check.proto(owner, "String");
-          Check.list(owner, PLAYERS);
-        } catch(error) {
-          throw "owner: " + error;
-        }
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-      } catch(error) {
-        throw "Ship (constructor) - " + error;
-      }
+      Check.owner(owner);
+		Check.name(name);
     }
 
     this.owner = owner;
@@ -746,16 +530,7 @@ class Ship
   updateSpecialShot(up)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(up);
-          Check.proto(up, "Boolean");
-        } catch(error) {
-          throw "up: " + error;
-        }
-      } catch(error) {
-        throw "Ship (updateSpecialShot) - " + error;
-      }
+      Check.up(up);
     }
     if(up) {
       return this.specialShot.pumpItUp();
@@ -802,9 +577,10 @@ class Ship
   cantTouchThis()
   {
     if(affectedBy(this.owner, "MALUSreveal") && !this.isSilent()) {
-      for(let i in this.blocks) {
-        if(this.blocks[i].onHighwayToHell()) return true;
-      }
+	  return this.blocks.some(function(element, index, array)
+	  {
+		  return element.onHighwayToHell();
+	  });
     }
     return false;
   }
@@ -815,65 +591,97 @@ class Ship
   }
   kill()
   {
-    for(let i in this.blocks) {
-      this.blocks[i].setState("sunk");
-    }
+	  this.blocks.forEach(function(element, index, array)
+	  {
+		  element.setState("sunk");
+	  });
     this.stayinAlive = false;
   }
   amIDead()
   {
-    let dead = true;
-    for(let i in this.blocks) {
-      if(!this.blocks[i].onHighwayToHell()) dead = false;
-    }
+    const dead = this.blocks.every(function(element, index, array)
+	  {
+		  return element.onHighwayToHell();
+	  });
     if(dead) this.kill();
     return dead;
   }
-  setBlocks(name, blocks)
+  canPlaceShipOver(name, blocks)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-        try {
-          Check.def(blocks);
-          Check.proto(blocks, "Array");
-          if(blocks.length!=this.getLength()) throw "wrong size";
-          for(let i in blocks) {
-            Check.instance(blocks[i], Block);
-          }
-        } catch(error) {
-          throw "blocks: " + error;
-        }
-      } catch(error) {
-        throw "Ship (setBlocks) - " + error;
-      }
+      Check.name(name);
+		Check.blocks(blocks, this.getLength());
     }
+	
+	return blocks.every(function(element, index, array)
+	  {
+		  return element.canPlaceShipAt();
+	  });
+  }
+  canShootShipOver(name, blocks)
+  {
+    if(DEBUG) {
+      Check.name(name);
+		Check.blocks(blocks, this.getLength());
+    }
+	
+	return blocks.every(function(element, index, array)
+	  {
+		  return element.canBeShotAt();
+	  });
+  }
+  canWelcomeShipOver(name, blocks)
+  {
+    if(DEBUG) {
+      Check.name(name);
+		Check.blocks(blocks, this.getLength());
+    }
+	
+	return blocks.every(function(element, index, array)
+	  {
+		  return element.canWelcomeShip();
+	  });
+  }
+  setShipOver(name, blocks)
+  {
+    if(DEBUG) {
+      Check.name(name);
+		Check.blocks(blocks, this.getLength());
+    }
+	
     if(this.isOnGrid()) {
       throw Error("Ship Already set");
     } else {
-      for(let i in blocks) {
-        if(blocks[i].hasShip()) return false;
-      }
-      for(let i in blocks) {
-        blocks[i].setShip(name);
-        this.blocks[i] = blocks[i];
-      }
-
-      this.setOnGrid();
-      return true;
+	  if(blocks.some(function(element, index, array)
+	  {
+		  return element.hasShip();
+	  })) {
+		  return false;
+	  } else {
+		this.blocks = blocks;
+		this.blocks.forEach(function(element, index, array)
+		{
+			element.setShip(name);
+		});
+		this.setOnGrid();
+		return true;
+	  }
     }
+  }
+  unsetShip()
+  {
+	  this.blocks.forEach(function(element,index,array)
+	  {
+		element.unsetShip();
+	  });
+	  this.unsetOnGrid();
   }
   reveal()
   {
-    for(let i in this.blocks) {
-      if(this.blocks[i].isEqualTo("unknown")) this.blocks[i].setState("ship");
-    }
+	this.blocks.forEach(function(element, index, array)
+		{
+			if(element.isEqualTo("unknown")) element.setState("ship");
+		});
   }
 }
 class Ships
@@ -881,17 +689,7 @@ class Ships
   constructor(owner)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(owner);
-          Check.proto(owner, "String");
-          Check.list(owner, PLAYERS);
-        } catch(error) {
-          throw "owner: " + error;
-        }
-      } catch(error) {
-        throw Error("Ships (constructor) - " + error);
-      }
+      Check.owner(owner);
     }
 
     this.owner = owner;
@@ -907,17 +705,7 @@ class Ships
   searchShip(name)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-      } catch(error) {
-        throw "Ships (searchShip) - " + error;
-      }
+      Check.name(name);
     }
 
     return this.ships.find(function(ship)
@@ -927,72 +715,83 @@ class Ships
   }
   stillAlive()
   {
-    for(let i in this.ships) {
-      if(this.ships[i].stillAlive()) return true;
-    }
-    return false;
+	return this.ships.some(function(element, index, array)
+	  {
+		  return element.stillAlive();
+	  })
   }
   updateSpecialShots(up)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(up);
-          Check.proto(up, "Boolean");
-        } catch(error) {
-          throw "up: " + error;
-        }
-      } catch(error) {
-        throw "Ships (updateSpecialShots) - " + error;
-      }
+      Check.up(up);
     }
 
-    for(let i in this.ships) {
-      this.specialShotsCharge[i] = this.ships[i].updateSpecialShot(up);
-    }
+	let tmp = [];
+	this.ships.forEach(function(element, index, array)
+	{
+		tmp[index] = element.updateSpecialShot(up);
+	});
+	this.specialShotsCharge = tmp;
   }
   resetSpecialShots()
   {
-    for(let i in this.ships) {
-      this.specialShotsCharge[i] = this.ships[i].resetSpecialShot();
-    }
+	let tmp = [];
+	this.ships.forEach(function(element, index, array)
+	{
+		tmp[index] = element.resetSpecialShot();
+	});
+	this.specialShotsCharge = tmp;
   }
-  allShipsPlaces()
+  canPlaceShipOver(name, blocks)
   {
-    for(let i in this.ships) {
-      if(!this.ships[i].isOnGrid()) return false;
+	if(DEBUG) {
+      Check.name(name);
+		Check.blocks(blocks, this.searchShip(name).getLength());
     }
-    return true;
+	  
+	return this.searchShip(name).canPlaceShipOver(name, blocks);
   }
-  setShipBlocks(name, blocks)
+  canShootShipOver(name, blocks)
+  {
+	if(DEBUG) {
+      Check.name(name);
+		Check.blocks(blocks, this.searchShip(name).getLength());
+    }
+	  
+	return this.searchShip(name).canShootShipOver(name, blocks);
+  }
+  canWelcomeShipOver(name, blocks)
+  {
+	if(DEBUG) {
+      Check.name(name);
+		Check.blocks(blocks, this.searchShip(name).getLength());
+    }
+	  
+	return this.searchShip(name).canWelcomeShipOver(name, blocks);
+  }
+  setShipOver(name, blocks)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-        try {
-          Check.def(blocks);
-          Check.proto(blocks, "Array");
-          if(blocks.length!=this.searchShip(name).getLength()) {
-            throw "wrong size";
-          }
-          for(let i in blocks) {
-            Check.instance(blocks[i], Block);
-          }
-        } catch(error) {
-          throw "blocks: " + error;
-        }
-      } catch(error) {
-        throw "Ship (insertShip) - " + error;
-      }
+      Check.name(name);
+	  Check.blocks(blocks, this.searchShip(name).getLength());
     }
 
-    return this.searchShip(name).setBlocks(name, blocks);
+    return this.searchShip(name).setShipOver(name, blocks);
+  }
+  unsetShip(name)
+  {
+	if(DEBUG) {
+      Check.name(name);
+    }
+	
+	this.searchShip(name).unsetShip();
+  }
+  allShipsPlaced()
+  {
+	return this.ships.every(function(element,index,array)
+	{
+		return element.isOnGrid();
+	});
   }
 }
 
@@ -1001,17 +800,7 @@ class Grid
   constructor(owner)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(owner);
-          Check.proto(owner, "String");
-          Check.list(owner, PLAYERS);
-        } catch(error) {
-          throw "owner: " + error;
-        }
-      } catch(error) {
-        throw Error("Grid (constructor) - " + error);
-      }
+      Check.owner(owner);
     }
 
     this.owner = owner;
@@ -1034,16 +823,7 @@ class Grid
   setLogin(login)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(owner);
-          Check.proto(owner, "String");
-        } catch(error) {
-          throw "name: " + error;
-        }
-      } catch(error) {
-        throw Error("Grid (setLogin) - " + error);
-      }
+      Check.login(login);
     }
 
     this.login = login;
@@ -1051,39 +831,10 @@ class Grid
   placeShip(name, rotation, row, column)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(name);
-          Check.proto(name, "String");
-          Check.list(name, SHIPS);
-        } catch(error) {
-          throw "name: " + error;
-        }
-        try {
-          Check.def(rotation);
-          Check.proto(rotation, "Boolean");
-        } catch(error) {
-          throw "rotation: " + error;
-        }
-        try {
-          Check.def(row);
-          Check.proto(row, "Number");
-          Check.sup(row, 0);
-          Check.inf(row, 9);
-        } catch(error) {
-          throw "row: " + error;
-        }
-        try {
-          Check.def(column);
-          Check.proto(column, "Number");
-          Check.sup(column, 0);
-          Check.inf(column, 9);
-        } catch(error) {
-          throw "column: " + error;
-        }
-      } catch(error) {
-        throw Error("Grid (placeShip) - " + error);
-      }
+		Check.name(name);
+        Check.rotation(rotation);
+		Check.row(row);
+		Check.column(column);
     }
 
     let ship = this.ships.searchShip(name);
@@ -1095,8 +846,8 @@ class Grid
         blocks.push(this.grid[row+i][column])
       }
     }
-
-    return this.ships.setShipBlocks(name, blocks);
+	
+    return this.ships.setShipOver(name, blocks);
   }
   resetProbas()
   {
@@ -1118,23 +869,8 @@ class Grid
   fireAt(block, attackMode)
   {
     if(DEBUG) {
-      try {
-        try {
-          Check.def(block);
-          Check.proto(block, "Object");
-          Check.instance(block, Block);
-        } catch(error) {
-          throw "block: " + error;
-        }
-        try {
-          Check.def(attackMode);
-          Check.proto(attackMode, "Function");
-        } catch(error) {
-          throw "attackMode: " + error;
-        }
-      } catch(error) {
-        throw Error("Grid (fireAt) - " + error);
-      }
+      Check.block(block);
+		Check.func(attackMode);
     }
 
     attackMode(this, block);
