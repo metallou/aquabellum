@@ -7,7 +7,7 @@ const toggleOption = function(option)
   if(option.classList.contains("optionselected")) {
     localStorage.setItem(id, "on");
     if(id==="music") {
-      const musicss = document.getElementsByClassName("MUSIC");
+      const musics = document.getElementsByClassName("MUSIC");
       for(let music of musics) {
         music.muted = true;
       }
