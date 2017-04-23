@@ -7,25 +7,65 @@ const playSound = function(file)
     audio.play();
   }
 }
-const playVideo = function(file, func)
+const playGameTransition = function(videofile, audiofile, func)
 {
-	if(localStorage.getItem("video")==="on") {
-  const video = document.createElement("video");
-  video.setAttribute("src", "media/video/"+file+".mp4");
-  document.body.appendChild(video);
-  video.play();
-  video.onended = function()
-  {
-    document.body.removeChild(video);
-	console.log(func);
-  };
+	if(localStorage.getItem("transition")==="on") {
+		playSound(audiofile);
+		const video = document.createElement("video");
+		video.setAttribute("src", "media/video/"+videofile+".mp4");
+		document.body.appendChild(video);
+		video.play();
+		video.onended = function()
+		{
+			console.log(func);
+			setTimeout(function()
+			{
+				document.body.removeChild(video);
+				}, 100);
+		};
 	} else {
-		//func():
+		console.log(func);
+	}
+}
+const playPageTransition = function(audiofile, func)
+{
+	playSound(audiofile);
+	if(localStorage.getItem("transition")==="on") {
+		const transition1 = document.getElementById("transition1");
+		transition1.classList.add("transition11");
+		setTimeout(function()
+		{
+			transition1.classList.add("transition12");
+		}, 100);
+		transition1.addEventListener("transitionend", function(e)
+		{
+			func();
+			transition1.classList.remove("transition1");
+			const transition2 = document.getElementById("transition2");
+			transition2.classList.add("transition21");
+			setTimeout(function()
+			{
+				transition2.classList.add("transition22");
+				transition1.classList.remove("transition11");
+				transition1.classList.remove("transition12");
+			}, 100);
+			transition2.addEventListener("transitionend", function(e)
+			{
+				transition2.classList.remove("transition21");
+				transition2.classList.remove("transition22");
+			});
+		});
+	} else {
+		func();
 	}
 }
 const stopIntro = function()
 {
 	document.getElementById("INTRO").muted = true;
+}
+const playIntro = function()
+{
+	document.getElementById("INTRO").muted = false;
 }
 
 const readyEvents = function()
@@ -35,20 +75,24 @@ const readyEvents = function()
   for(let i=0; i<asideButtons.length; i++) {
     asideButtons.item(i).addEventListener("click", function(e)
         {
-          playSound("morse");
-          if(e.target.id==="STATS") loadStats();
-          if(e.target.id==="OPTIONS") initOptions();
-          let offset = document.getElementById(e.target.id+"PAGE").offsetTop;
-          offset = 100*parseInt(Math.round(offset/window.innerHeight));
-          document.getElementById("container").style["top"] = (-offset)+"vh";
+		playPageTransition("morse", function()
+			{
+				if(e.target.id==="STATS") loadStats();
+				if(e.target.id==="OPTIONS") initOptions();
+				let offset = document.getElementById(e.target.id+"PAGE").offsetTop;
+				offset = 100*parseInt(Math.round(offset/window.innerHeight));
+				document.getElementById("container").style["top"] = (-offset)+"vh";
+			});
         });
   }
   const menuButtons = document.getElementsByClassName("MENU");
   for(let i=0; i<menuButtons.length; i++) {
     menuButtons.item(i).addEventListener("click", function(e)
         {
-          playSound("morse");
-          document.getElementById("container").style["top"] = "0vh";
+			playPageTransition("morse", function()
+			{
+				document.getElementById("container").style["top"] = "0vh";
+			});
         });
   }
 
@@ -84,8 +128,7 @@ const readyEvents = function()
   document.getElementById("PLAYPRACTICE").addEventListener("click", function()
       {
 		stopIntro();
-        playSound("practice");
-        playVideo("start", function()
+        playGameTransition("start", "practice", function()
 		{
 			gamePractice();
 		});
@@ -95,8 +138,7 @@ const readyEvents = function()
 	  soloButton.addEventListener("click", function(e)
       {
 		stopIntro();
-        playSound("solo");
-        playVideo("start", function()
+        playGameTransition("start", "solo", function()
 		{
 			gameSolo(e.target.name);
 		});
@@ -105,8 +147,7 @@ const readyEvents = function()
   document.getElementById("PLAYMULTI").addEventListener("click", function()
       {
 		stopIntro();
-        playSound("multi");
-        playVideo("start", function()
+        playGameTransition("start", "multi", function()
 		{
 			gameMulti();
 		});

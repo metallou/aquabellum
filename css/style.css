@@ -31,6 +31,44 @@ html,body
   overflow: hidden;
 }
 
+#transition1, #transition2
+{
+	display: none;
+	background-color: black;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
+#transition1
+{
+	opacity: 0;
+}
+#transition2
+{
+	opacity: 1;
+}
+#transition1.transition11
+{
+	display: block;
+}
+#transition1.transition12
+{
+	opacity: 1;
+	transition: opacity 0.25s;
+}
+#transition2.transition21
+{
+	display: block;
+}
+#transition2.transition22
+{
+	opacity: 0;
+	transition: opacity 0.25s;
+}
+
 #wrapper
 {
   width: 100vw;

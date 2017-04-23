@@ -69,6 +69,8 @@
     <audio autoplay loop src="media/music/intro.wav" class="MUSIC" id="INTRO"></audio>
 	<audio autoplay loop src="media/music/game1.wav" class="MUSIC" id="GAME"></audio>
 	<audio autoplay loop src="media/music/game2.wav" class="MUSIC" id="GAMEKONAMI"></audio>
+	<div id="transition1"></div>
+	<div id="transition2"></div>
     <div id="wrapper">
       <div id="container">
         <main>
@@ -114,7 +116,6 @@
             AQUABELLUM
           </h1>
           <span id="score"></span>
-          <span id="score2"></span>
           <div id="bonusmalus">
             <section id="bonus">
               <p>
@@ -299,7 +300,7 @@
               </sub>
               </p>
               <p class="OPTIONKEY">
-              <span class="KOO" id="video"></span>
+              <span class="KOO" id="transition"></span>
               <svg width="50px" height="50px">
                 <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
                 <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
@@ -475,12 +476,12 @@
             Toogle all sound effects
             </p>
           </div>
-		  <div class="info" id="infovideo">
+		  <div class="info" id="infotransition">
             <p>
             <strong>
               Videos
             </strong>
-            Toogle all videos
+            Toogle all transitions
             </p>
           </div>
         </aside>
