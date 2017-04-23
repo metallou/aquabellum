@@ -35,12 +35,12 @@ const shipButtonSelect = function(ship) {
   for (let shipButton of shipButtons) {
     shipButton.addEventListener('click', function(e)
 		{
-			checkUnavalaibleCells();
+			checkImpossibleCells();
 			for (shipButton of shipButtons) {
 				shipButton.classList.remove('radio-selected');
 			}
 			e.target.classList.add('radio-selected');
-			ship.name = e.target.name;  // define
+			ship.name = e.target.name;  // define ship name on placingPhase function
 
 			//Enlever bateau si placé
 			//recalculer position unavailable
