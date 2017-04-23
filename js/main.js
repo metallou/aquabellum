@@ -2,7 +2,7 @@
 
 const launchGame = {};
 
-const checkUnavalaibleCells = function() {
+const checkImpossibleCells = function() {
 	let htmlPlayer1Grid = document.getElementById('grid_p1'),
 	    htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
 
@@ -13,7 +13,19 @@ const checkUnavalaibleCells = function() {
         cells[i].classList.add('impossible');
 			}
 		}
+  }
 
+}
+
+const removeImpossibleCells = function() {
+	let htmlPlayer1Grid = document.getElementById('grid_p1'),
+	    htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
+
+	for (let htmlPlayer1Row of htmlPlayer1Rows) {
+    let cells = htmlPlayer1Row.getElementsByClassName('cell');
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].classList.remove('impossible');
+		}
   }
 
 }
@@ -28,7 +40,7 @@ const shipButtonSelect = function(ship) {
 				shipButton.classList.remove('radio-selected');
 			}
 			e.target.classList.add('radio-selected');
-			ship.name = e.target.name;
+			ship.name = e.target.name;  // define
 
 			//Enlever bateau si placé
 			//recalculer position unavailable
