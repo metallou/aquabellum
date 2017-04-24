@@ -48,7 +48,8 @@ const rotationButtonSelect = function(ship) {
   document.getElementById("rotation").addEventListener('click', function(e) {
     console.info(ship);
     ship.rotation = !ship.rotation;
-    // TODO : recalculer positions impossible
+		removeImpossibleCells();
+		checkImpossibleCells();
   });
 }
 
@@ -71,7 +72,7 @@ const placingPhase = function() {
 
 GAME.solo = function() {
   let gridP1 = new Grid("self"),
-  bot = new Grid("BOTeasy");
+      bot = new Grid("BOTeasy");
 
   placingPhase();
 
