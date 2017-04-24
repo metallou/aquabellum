@@ -27,21 +27,10 @@ const checkImpossibleCells = function() {
   for (let htmlPlayer1Row of htmlPlayer1Rows) {
     let cells = htmlPlayer1Row.getElementsByClassName('cell');
     for (let i = 0; i < cells.length; i++) {
+    cells[i].classList.remove('impossible');
       if (cells[i].classList.contains('ship')) {
         cells[i].classList.add('impossible');
       }
-    }
-  }
-}
-
-const removeImpossibleCells = function() {
-  let htmlPlayer1Grid = document.getElementById('grid_p1'),
-  htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
-
-  for (let htmlPlayer1Row of htmlPlayer1Rows) {
-    let cells = htmlPlayer1Row.getElementsByClassName('cell');
-    for (let i = 0; i < cells.length; i++) {
-      cells[i].classList.remove('impossible');
     }
   }
 }

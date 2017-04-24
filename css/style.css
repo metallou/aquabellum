@@ -119,7 +119,7 @@ main, aside, .gameboard
 {
   flex-direction: column;
 }
-#shipbuttons, #malusbuttons
+#ship-buttons, #malusbuttons
 {
   order: 1;
 }
@@ -131,10 +131,43 @@ main, aside, .gameboard
 {
   order: 3;
 }
-#shipbuttons img
+#ship-buttons {
+  width: 180px;
+}
+#ship-buttons > div {
+  position: relative;
+  height: 50px;
+}
+
+#ship-buttons .ship-button
 {
   transform: rotate(90deg);
 }
+
+.commands {
+  position: absolute;
+  top: 50px;
+  right: 80px;
+}
+
+.button-control {
+  margin-top: 20px;
+}
+
+.gamebuttons button
+{
+  margin: 0;
+  padding: 0;
+  background-color: #ADD8E6;
+  width: 100px;
+}
+
+.ship-button.radio-selected {
+  box-shadow: inset 0 0 5px black;
+  background-color: #76D8E6;
+  position: absolute;
+}
+
 section
 {
   width: 100vw;
@@ -629,16 +662,6 @@ figure img
 .grid .row .cell.impossible {
   background-color: black;
   color: white;
-}
-
-.commands {
-  position: absolute;
-  top: 50px;
-  right: 80px;
-}
-
-.button-control {
-  margin-top: 20px;
 }
 
 .gamebuttons button
