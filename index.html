@@ -802,5 +802,289 @@
         </aside>
       </div>
     </div>
+    <div id="gamewrapper" style="display:none">
+      <div id="gamecontainer">
+        <div id="ENEMYBOARD" class="gameboard">
+          <button class="commandbuttons exit">EXIT</button>
+          <button class="commandbuttons validate">FIRE</button>
+          <button class="commandbuttons change" name="SELF">CHANGE</button>
+          <div id="malusbuttons" class="gamebuttons">
+            <button name="special" class="malus-button">Special</button>
+            <button name="block" class="malus-button">Block</button>
+            <button name="ship" class="malus-button">Ship</button>
+          </div>
+          <div id="shotbuttons" class="gamebuttons">
+            <button name="destroyer" class="shot-button">Destroyer</button>
+            <button name="cruiser" class="shot-button">Cruiser</button>
+            <button name="submarine" class="shot-button">Submarine</button>
+            <button name="battleship" class="shot-button">Battleship</button>
+            <button name="carrier" class="shot-button">Carrier</button>
+          </div>
+          <div id="grid_p1" class="grid">
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell ship">bateau</div>
+              <div class="cell ship"></div>
+              <div class="cell hit">touché</div>
+              <div class="cell sunk">coulé</div>
+              <div class="cell unavalaible">pas dispo</div>
+              <div class="cell">occupé</div>
+              <div class="cell impossible">impossible</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+          </div>
+        </div>
+        <div id="SELFBOARD" class="gameboard">
+          <button class="commandbuttons exit">EXIT</button>
+          <button class="commandbuttons validate">FIRE</button>
+          <button class="commandbuttons change" name="ENEMY">CHANGE</button>
+          <div id="shipbuttons" class="gamebuttons">
+            <button id="rotation" name="rotation">ROTATION</button>
+            <button name="destroyer" class="ship-button destroyer">Destroyer</button>
+            <button name="destroyer" class="ship-button cruiser">Cruiser</button>
+            <button name="destroyer" class="ship-button submarine">Submarine</button>
+            <button name="destroyer" class="ship-button battleship">Battleship</button>
+            <button name="destroyer" class="ship-button carrier">Carrier</button>
+          </div>
+          <div id="bonusbuttons" class="gamebuttons">
+            <button name="move" class="bonus-button">Move</button>
+            <button name="repair" class="bonus-button">Repair</button>
+            <button name="shild" class="bonus-button">Shield</button>
+            <button name="critical" class="bonus-button">Critical</button>
+          </div>
+          <div id="grid_p2" class="grid">
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell ship">bateau</div>
+              <div class="cell ship"></div>
+              <div class="cell hit">touché</div>
+              <div class="cell sunk">coulé</div>
+              <div class="cell unavalaible">pas dispo</div>
+              <div class="cell">occupé</div>
+              <div class="cell impossible">impossible</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+            <div class="row">
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
