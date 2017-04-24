@@ -29,65 +29,93 @@ html,body
   margin: 0;
   padding: 0;
   overflow: hidden;
+  background-color: rgb(121, 137, 51);
 }
 
 #transition1, #transition2
 {
-	display: none;
-	background-color: black;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 10;
+  display: none;
+  background-color: black;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
 }
 #transition1
 {
-	opacity: 0;
+  opacity: 0;
 }
 #transition2
 {
-	opacity: 1;
+  opacity: 1;
 }
 #transition1.transition11
 {
-	display: block;
+  display: block;
 }
 #transition1.transition12
 {
-	opacity: 1;
-	transition: opacity 0.25s;
+  opacity: 1;
+  transition: opacity 0.25s;
 }
 #transition2.transition21
 {
-	display: block;
+  display: block;
 }
 #transition2.transition22
 {
-	opacity: 0;
-	transition: opacity 0.25s;
+  opacity: 0;
+  transition: opacity 0.25s;
 }
 
-#wrapper
+#wrapper, #gamewrapper
 {
   width: 100vw;
   height: 100vh;
   position: relative;
+  background-size: cover;
 }
-#container
+#wrapper
+{
+  background-image: url('../media/img/intro.jpg');
+}
+#container, #gamecontainer
 {
   width: 100vw;
-  height;
   position: absolute;
   top: 0;
   left: 0;
 }
-main, aside
+main, aside, .gameboard
 {
   width: 100vw;
   height: 100vh;
   position: relative;
+}
+.gameboard, .gamebuttons
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.gamebuttons
+{
+  flex-direction: column;
+}
+#shipbuttons, #malusbuttons
+{
+  order: 1;
+}
+.grid
+{
+  order: 2;
+}
+#shotbuttons, #bonusbuttons
+{
+  order: 3;
 }
 section
 {
@@ -124,16 +152,20 @@ h1
 {
   height: 60px;
   font-size: 3rem;
+  color: #eee;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, .8);
 }
+
+
 h2
 {
   font-size: 2.5rem;
 }
 strong
 {
-	display: block;
-	text-align: center;
-	font-size: 1.5rem;
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
   font-variant: small-caps;
 }
 main button
@@ -159,29 +191,29 @@ main button
 }
 #PLAYPRACTICE
 {
-	background-color: white;
+  background-color: white;
 }
 #PLAYSOLO
 {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
 #PLAYSOLO button
 {
-	background-color: yellow;
+  background-color: yellow;
 }
 #PLAYSOLO button:first-child
 {
-	background-color: green;
+  background-color: green;
 }
 #PLAYSOLO button:last-child
 {
-	background-color: red;
+  background-color: red;
 }
 #PLAYMULTI
 {
-	background-color: blue;
+  background-color: blue;
 }
 .asidebuttons
 {
@@ -244,8 +276,8 @@ span
 }
 article p
 {
-	margin-left: 5px;
-	margin-right: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 sub
 {
@@ -287,12 +319,12 @@ sub
 
 .ring
 {
-	cx: 25;
-	cy: 25;
-	r: 20;
-	stroke: rgb(0,0,0);
-	stroke-width: 5;
-	fill: rgb(255,255,255);
+  cx: 25;
+  cy: 25;
+  r: 20;
+  stroke: rgb(0,0,0);
+  stroke-width: 5;
+  fill: rgb(255,255,255);
 }
 .optionselected .ring
 {
@@ -308,8 +340,8 @@ sub
 }
 .cross
 {
-	stroke: none;
-	fill: rgb(255,0,0);
+  stroke: none;
+  fill: rgb(255,0,0);
 }
 .optionselected .cross
 {
@@ -479,14 +511,29 @@ figure img
   }
 }
 
+.commandbuttons
+{
+  position: absolute;
+}
+.exit
+{
+  right: 0;
+  top: 0;
+}
+.change
+{
+  left: 0;
+  bottom: 0;
+}
+.validate
+{
+  right: 0;
+  bottom: 0;
+}
 .grid {
   width: 600px;
   height: 600px;
   /*background-color: blue;*/
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   border: 6px solid black;
@@ -548,33 +595,15 @@ figure img
   margin-top: 20px;
 }
 
-.ship-button {
-  margin: 10px;
-  padding: 5px;
+.gamebuttons button
+{
+  margin: 0;
+  padding: 0;
   background-color: #ADD8E6;
+  width: 100px;
 }
 
 .ship-button.radio-selected {
   box-shadow: inset 0 0 5px black;
   background-color: #76D8E6;
-}
-
-.ship-button.destroyer {
-  width: 70px;
-}
-
-.ship-button.cruiser {
-  width: 105px;
-}
-
-.ship-button.submarine {
-  width: 105px;
-}
-
-.ship-button.battleship {
-  width: 140px
-}
-
-.ship-button.carrier {
-  width: 175px;
 }

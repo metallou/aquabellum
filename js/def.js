@@ -2,6 +2,7 @@
 
 const DEBUG = true;
 let KONAMI = false;
+const GAME = {};
 
 const TYPES = {
   Boolean: 1,
@@ -43,43 +44,43 @@ class Check
 {
   static def(object)
   {
-	if(object===null) throw Erro("null");
+    if(object===null) throw Erro("null");
     if(object===undefined) throw Error("undefined");
   }
   static list(object, list)
   {
     let str;
     let comp;
-	
-	this.def(list);
-        str = Object.prototype.toString.call(list);
-        comp = Object.prototype.toString.call({});
-        if(!(str===comp)) throw Error("wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")");
-        if(Object.keys(list).length===0) throw Error("empty set");
-		
-	this.def(object);
-        str = Object.prototype.toString.call(object);
-        comp = Object.prototype.toString.call("");
-        if(str!=comp) throw Error("wrong type"
-          +"\n"
-            +"(received " + str + ")"
-            +"\n"
-            +"(expected " + comp + ")");
-        if(!list[object]) throw Error("not in list"
-          +"\n"
-            +"(received \"" + object + "\")");
+
+    this.def(list);
+    str = Object.prototype.toString.call(list);
+    comp = Object.prototype.toString.call({});
+    if(!(str===comp)) throw Error("wrong type"
+        +"\n"
+        +"(received " + str + ")"
+        +"\n"
+        +"(expected " + comp + ")");
+    if(Object.keys(list).length===0) throw Error("empty set");
+
+    this.def(object);
+    str = Object.prototype.toString.call(object);
+    comp = Object.prototype.toString.call("");
+    if(str!=comp) throw Error("wrong type"
+        +"\n"
+        +"(received " + str + ")"
+        +"\n"
+        +"(expected " + comp + ")");
+    if(!list[object]) throw Error("not in list"
+        +"\n"
+        +"(received \"" + object + "\")");
   }
   static proto(object, type)
   {
     this.list(type, TYPES);
-	
-	this.def(object);
+
+    this.def(object);
     const str = Object.prototype.toString.call(object);
-	const comp = "[object "+type+"]";
+    const comp = "[object "+type+"]";
     if(str!=comp) throw Error("wrong type"
         +"\n"
         +"(received " + str + ")"
@@ -88,119 +89,119 @@ class Check
   }
   static instance(object, objectClass)
   {
-	  this.func(objectClass);
-	  this.object(object);
-	  if(!(object instanceof objectClass)) throw Error("wrong instance");
+    this.func(objectClass);
+    this.object(object);
+    if(!(object instanceof objectClass)) throw Error("wrong instance");
   }
   static sup(number, limit)
   {
-	  this.number(number);
-	  this.number(limit);
-	  if(number<limit) throw Error("too low"
+    this.number(number);
+    this.number(limit);
+    if(number<limit) throw Error("too low"
         +"\n"
-          +"(received "+number+"<"+limit+")");
+        +"(received "+number+"<"+limit+")");
   }
   static inf(number, limit)
   {
-	  this.number(number);
-	  this.number(limit);
-	  if(number>limit) throw Error("too low"
+    this.number(number);
+    this.number(limit);
+    if(number>limit) throw Error("too low"
         +"\n"
-          +"(received "+number+">"+limit+")");
+        +"(received "+number+">"+limit+")");
   }
   static esup(number, limit)
   {
-	  this.number(number);
-	  this.number(limit);
-	  if(number<=limit) throw Error("too low"
+    this.number(number);
+    this.number(limit);
+    if(number<=limit) throw Error("too low"
         +"\n"
-          +"(received "+number+"<="+limit+")");
+        +"(received "+number+"<="+limit+")");
   }
   static einf(number, limit)
   {
-	  this.number(number);
-	  this.number(limit);
-	  if(number>=limit) throw Error("too low"
+    this.number(number);
+    this.number(limit);
+    if(number>=limit) throw Error("too low"
         +"\n"
-          +"(received "+number+">="+limit+")");
+        +"(received "+number+">="+limit+")");
   }
   static eq(number, limit)
   {
-	  this.number(number);
-	  this.number(limit);
-	  if(number!=limit) throw Error("not equal"
+    this.number(number);
+    this.number(limit);
+    if(number!=limit) throw Error("not equal"
         +"\n"
-          +"(received "+number+"!="+limit+")");
+        +"(received "+number+"!="+limit+")");
   }
   static neq(number, limit)
   {
-	  this.number(number);
-	  this.number(limit);
-	  if(number===limit) throw Error("equal"
+    this.number(number);
+    this.number(limit);
+    if(number===limit) throw Error("equal"
         +"\n"
-          +"(received "+number+")");
+        +"(received "+number+")");
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   static boolean(prout)
   {
-	Check.def(prout);
+    Check.def(prout);
     Check.proto(prout, "Boolean");
   }
   static number(prout)
   {
-	Check.def(prout);
+    Check.def(prout);
     Check.proto(prout, "Number");
   }
   static string(prout)
   {
-	Check.def(prout);
+    Check.def(prout);
     Check.proto(prout, "String");
   }
   static array(prout)
   {
-	Check.def(prout);
+    Check.def(prout);
     Check.proto(prout, "Array");
   }
   static object(prout)
   {
-	Check.def(prout);
+    Check.def(prout);
     Check.proto(prout, "Object");
   }
   static func(prout)
   {
-	Check.def(prout);
+    Check.def(prout);
     Check.proto(prout, "Function");
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   static row(prout)
   {
-		Check.sup(prout, 0);
-        Check.inf(prout, 9);
+    Check.sup(prout, 0);
+    Check.inf(prout, 9);
   }
   static column(prout)
   {
-		Check.sup(prout, 0);
-        Check.inf(prout, 9);
+    Check.sup(prout, 0);
+    Check.inf(prout, 9);
   }
   static name(prout)
   {
-	  Check.list(prout, SHIPS);
+    Check.list(prout, SHIPS);
   }
   static rotation(prout)
   {
-	Check.boolean(prout);
+    Check.boolean(prout);
   }
   static up(prout)
   {
-	Check.boolean(prout);
+    Check.boolean(prout);
   }
   static grid(prout)
   {
@@ -208,7 +209,7 @@ class Check
   }
   static block(prout)
   {
-	Check.instance(prout, Block);
+    Check.instance(prout, Block);
   }
   static length(prout)
   {
@@ -217,33 +218,33 @@ class Check
   }
   static blocks(prout, length)
   {
-	  Check.length(length);
-	  Check.array(prout);
-		  Check.eq(prout.length, length);
-          prout.forEach(function(element, index, array)
-		  {
-			  Check.instance(element, Block);
-		  });
+    Check.length(length);
+    Check.array(prout);
+    Check.eq(prout.length, length);
+    prout.forEach(function(element, index, array)
+        {
+          Check.instance(element, Block);
+        });
   }
   static state(prout)
   {
-	Check.list(prout, STATES);
+    Check.list(prout, STATES);
   }
   static special(prout)
   {
-	Check.instance(prout, SpecialShot);
+    Check.instance(prout, SpecialShot);
   }
   static bonus(prout)
   {
-	Check.instance(prout, Bonus);
+    Check.instance(prout, Bonus);
   }
   static ship(prout)
   {
-	Check.instance(prout, Ship);
+    Check.instance(prout, Ship);
   }
   static ships(prout)
   {
-	Check.instance(prout, Ships);
+    Check.instance(prout, Ships);
   }
   static login(prout)
   {
@@ -251,6 +252,6 @@ class Check
   }
   static owner(prout)
   {
-	Check.list(prout, PLAYERS);
+    Check.list(prout, PLAYERS);
   }
 }
