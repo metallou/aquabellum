@@ -2,10 +2,10 @@
 
 const affectedBy = function(owner, key)
 {
-    if(DEBUG) {
-      Check.owner(owner);
-      Check.string(key);
-    }
+  if(DEBUG) {
+    Check.owner(owner);
+    Check.string(key);
+  }
 
   return localStorage.getItem(key)==="on";
   return (owner==="self" || owner==="other") && localStorage.getItem(key)==="on";
@@ -19,7 +19,7 @@ class Block
   {
     if(DEBUG) {
       Check.row(row);
-		Check.column(column);
+      Check.column(column);
     }
 
     this.state = "unknown";
@@ -133,15 +133,15 @@ class Block
   setState(state)
   {
     if(DEBUG) {
-		Check.state(state);
-        if(!this.hasShip() &&
-              (state==="ship" || state==="hit" || state==="sunk")) {
-            throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
-        }
-        if(this.hasShip() &&
-              (state==="miss" || state==="empty")) {
-            throw "ship yet miss/empty";
-        }
+      Check.state(state);
+      if(!this.hasShip() &&
+          (state==="ship" || state==="hit" || state==="sunk")) {
+        throw "no ship yet \"ship\"/\"hit\"/\"sunk\"";
+      }
+      if(this.hasShip() &&
+          (state==="miss" || state==="empty")) {
+        throw "ship yet miss/empty";
+      }
     }
 
     this.state = state;
@@ -154,7 +154,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     if(block.canBeShotAt()) {
@@ -173,7 +173,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     if(block.isEqualTo("unknown")) {
@@ -189,7 +189,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     let blocks = [];
@@ -232,7 +232,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     let blocks = [];
@@ -275,7 +275,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     let blocks = [];
@@ -319,7 +319,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     let blocks = [];
@@ -348,10 +348,10 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
-		  blocks.forEach(function(element, index, array)
-		  {
-			  hit = Shot.flareShot(grid, element) || hit;
-		  });
+          blocks.forEach(function(element, index, array)
+              {
+                hit = Shot.flareShot(grid, element) || hit;
+              });
           ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
@@ -366,7 +366,7 @@ class Shot
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     let blocks = [];
@@ -395,10 +395,10 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
-		  blocks.forEach(function(element, index, array)
-		  {
-			  hit = Shot.normalShot(grid, element) || hit;
-		  });
+          blocks.forEach(function(element, index, array)
+              {
+                hit = Shot.normalShot(grid, element) || hit;
+              });
           ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
@@ -417,8 +417,8 @@ class SpecialShot extends Shot
     super();
     if(DEBUG) {
       Check.owner(owner);
-		Check.name(name);
-		Check.length(length);
+      Check.name(name);
+      Check.length(length);
     }
 
     this.owner = owner;
@@ -480,7 +480,7 @@ class Ship
     let str;
     if(DEBUG) {
       Check.owner(owner);
-		Check.name(name);
+      Check.name(name);
     }
 
     this.owner = owner;
@@ -577,10 +577,10 @@ class Ship
   cantTouchThis()
   {
     if(affectedBy(this.owner, "MALUSreveal") && !this.isSilent()) {
-	  return this.blocks.some(function(element, index, array)
-	  {
-		  return element.onHighwayToHell();
-	  });
+      return this.blocks.some(function(element, index, array)
+          {
+            return element.onHighwayToHell();
+          });
     }
     return false;
   }
@@ -591,18 +591,18 @@ class Ship
   }
   kill()
   {
-	  this.blocks.forEach(function(element, index, array)
-	  {
-		  element.setState("sunk");
-	  });
+    this.blocks.forEach(function(element, index, array)
+        {
+          element.setState("sunk");
+        });
     this.stayinAlive = false;
   }
   amIDead()
   {
     const dead = this.blocks.every(function(element, index, array)
-	  {
-		  return element.onHighwayToHell();
-	  });
+        {
+          return element.onHighwayToHell();
+        });
     if(dead) this.kill();
     return dead;
   }
@@ -610,78 +610,79 @@ class Ship
   {
     if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.getLength());
+      Check.blocks(blocks, this.getLength());
     }
-	
-	return blocks.every(function(element, index, array)
-	  {
-		  return element.canPlaceShipAt();
-	  });
+
+    return blocks.every(function(element, index, array)
+        {
+          return element.canPlaceShipAt();
+        });
   }
   canShootShipOver(name, blocks)
   {
     if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.getLength());
+      Check.blocks(blocks, this.getLength());
     }
-	
-	return blocks.every(function(element, index, array)
-	  {
-		  return element.canBeShotAt();
-	  });
+
+    return blocks.every(function(element, index, array)
+        {
+          return element.canBeShotAt();
+        });
   }
   canWelcomeShipOver(name, blocks)
   {
     if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.getLength());
+      Check.blocks(blocks, this.getLength());
     }
-	
-	return blocks.every(function(element, index, array)
-	  {
-		  return element.canWelcomeShip();
-	  });
+
+    return blocks.every(function(element, index, array)
+        {
+          return element.canWelcomeShip();
+        });
   }
   setShipOver(name, blocks)
   {
     if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.getLength());
+      Check.blocks(blocks, this.getLength());
     }
-	
+
     if(this.isOnGrid()) {
       throw Error("Ship Already set");
     } else {
-	  if(blocks.some(function(element, index, array)
-	  {
-		  return element.hasShip();
-	  })) {
-		  return false;
-	  } else {
-		this.blocks = blocks;
-		this.blocks.forEach(function(element, index, array)
-		{
-			element.setShip(name);
-		});
-		this.setOnGrid();
-		return true;
-	  }
+      if(blocks.some(function(element, index, array)
+            {
+              return element.hasShip();
+            })) {
+        return false;
+      } else {
+        this.blocks = blocks;
+        this.blocks.forEach(function(element, index, array)
+            {
+              element.setShip(name);
+            });
+        this.setOnGrid();
+        return true;
+      }
     }
   }
   unsetShip()
   {
-	  this.blocks.forEach(function(element,index,array)
-	  {
-		element.unsetShip();
-	  });
-	  this.unsetOnGrid();
+    this.blocks.forEach(function(element,index,array)
+        {
+          element.unsetShip();
+        });
+    this.blocks = [];
+    this.unsetOnGrid();
   }
   reveal()
   {
-	this.blocks.forEach(function(element, index, array)
-		{
-			if(element.isEqualTo("unknown")) element.setState("ship");
-		});
+    this.blocks.forEach(function(element, index, array)
+        {
+          if(element.isEqualTo("unknown")) element.setState("ship");
+        });
   }
 }
 class Ships
@@ -715,10 +716,10 @@ class Ships
   }
   stillAlive()
   {
-	return this.ships.some(function(element, index, array)
-	  {
-		  return element.stillAlive();
-	  })
+    return this.ships.some(function(element, index, array)
+        {
+          return element.stillAlive();
+        })
   }
   updateSpecialShots(up)
   {
@@ -726,72 +727,72 @@ class Ships
       Check.up(up);
     }
 
-	let tmp = [];
-	this.ships.forEach(function(element, index, array)
-	{
-		tmp[index] = element.updateSpecialShot(up);
-	});
-	this.specialShotsCharge = tmp;
+    let tmp = [];
+    this.ships.forEach(function(element, index, array)
+        {
+          tmp[index] = element.updateSpecialShot(up);
+        });
+    this.specialShotsCharge = tmp;
   }
   resetSpecialShots()
   {
-	let tmp = [];
-	this.ships.forEach(function(element, index, array)
-	{
-		tmp[index] = element.resetSpecialShot();
-	});
-	this.specialShotsCharge = tmp;
+    let tmp = [];
+    this.ships.forEach(function(element, index, array)
+        {
+          tmp[index] = element.resetSpecialShot();
+        });
+    this.specialShotsCharge = tmp;
   }
   canPlaceShipOver(name, blocks)
   {
-	if(DEBUG) {
+    if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.searchShip(name).getLength());
+      Check.blocks(blocks, this.searchShip(name).getLength());
     }
-	  
-	return this.searchShip(name).canPlaceShipOver(name, blocks);
+
+    return this.searchShip(name).canPlaceShipOver(name, blocks);
   }
   canShootShipOver(name, blocks)
   {
-	if(DEBUG) {
+    if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.searchShip(name).getLength());
+      Check.blocks(blocks, this.searchShip(name).getLength());
     }
-	  
-	return this.searchShip(name).canShootShipOver(name, blocks);
+
+    return this.searchShip(name).canShootShipOver(name, blocks);
   }
   canWelcomeShipOver(name, blocks)
   {
-	if(DEBUG) {
+    if(DEBUG) {
       Check.name(name);
-		Check.blocks(blocks, this.searchShip(name).getLength());
+      Check.blocks(blocks, this.searchShip(name).getLength());
     }
-	  
-	return this.searchShip(name).canWelcomeShipOver(name, blocks);
+
+    return this.searchShip(name).canWelcomeShipOver(name, blocks);
   }
   setShipOver(name, blocks)
   {
     if(DEBUG) {
       Check.name(name);
-	  Check.blocks(blocks, this.searchShip(name).getLength());
+      Check.blocks(blocks, this.searchShip(name).getLength());
     }
 
     return this.searchShip(name).setShipOver(name, blocks);
   }
   unsetShip(name)
   {
-	if(DEBUG) {
+    if(DEBUG) {
       Check.name(name);
     }
-	
-	this.searchShip(name).unsetShip();
+
+    this.searchShip(name).unsetShip();
   }
   allShipsPlaced()
   {
-	return this.ships.every(function(element,index,array)
-	{
-		return element.isOnGrid();
-	});
+    return this.ships.every(function(element,index,array)
+        {
+          return element.isOnGrid();
+        });
   }
 }
 
@@ -831,10 +832,10 @@ class Grid
   placeShip(name, rotation, row, column)
   {
     if(DEBUG) {
-		Check.name(name);
-        Check.rotation(rotation);
-		Check.row(row);
-		Check.column(column);
+      Check.name(name);
+      Check.rotation(rotation);
+      Check.row(row);
+      Check.column(column);
     }
 
     let ship = this.ships.searchShip(name);
@@ -846,7 +847,7 @@ class Grid
         blocks.push(this.grid[row+i][column])
       }
     }
-	
+
     return this.ships.setShipOver(name, blocks);
   }
   resetProbas()
@@ -870,43 +871,43 @@ class Grid
   {
     if(DEBUG) {
       Check.block(block);
-		Check.func(attackMode);
+      Check.func(attackMode);
     }
 
     attackMode(this, block);
 
     const chance = parseInt(Math.random()*1000);
     if(affectedBy(this.owner, "MALUSrevealblock") && chance%10===0) {
-        let blocks = [];
-        let tmp;
-        if(affectedBy(this.owner, "MALUSrevealship") && chance%20===0) {
-          for(let i in this.grid) {
-            tmp = [];
-            for(let j in this.grid[i]) {
-              if(this.grid[i][j].isEqualTo("unknown")) {
-                if(this.grid[i][j].hasShip()) {
-                  tmp.push(this.grid[i][j]);
-                }
-              }
-            }
-            if(tmp.length>0) blocks.push(tmp);
-          }
-        } else {
-          for(let i in this.grid) {
-            tmp = [];
-            for(let j in this.grid[i]) {
-              if(this.grid[i][j].isEqualTo("unknown")) {
+      let blocks = [];
+      let tmp;
+      if(affectedBy(this.owner, "MALUSrevealship") && chance%20===0) {
+        for(let i in this.grid) {
+          tmp = [];
+          for(let j in this.grid[i]) {
+            if(this.grid[i][j].isEqualTo("unknown")) {
+              if(this.grid[i][j].hasShip()) {
                 tmp.push(this.grid[i][j]);
               }
             }
-            if(tmp.length>0) blocks.push(tmp);
           }
+          if(tmp.length>0) blocks.push(tmp);
         }
-        if(blocks.length) {
-          const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
-          const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
-          Shot.flareShot(this, this.grid[i][j]);
+      } else {
+        for(let i in this.grid) {
+          tmp = [];
+          for(let j in this.grid[i]) {
+            if(this.grid[i][j].isEqualTo("unknown")) {
+              tmp.push(this.grid[i][j]);
+            }
+          }
+          if(tmp.length>0) blocks.push(tmp);
         }
+      }
+      if(blocks.length) {
+        const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
+        const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
+        Shot.flareShot(this, this.grid[i][j]);
+      }
     }
 
     //this.visualise();
