@@ -2,50 +2,86 @@
 
 const launchGame = {};
 
-const shipButtonRadioSelect = function() {
-	let thatShipButton = this,
-	shipButtons = document.getElementsByClassName('ship-button');
+const checkImpossibleCells = function() {
+	let htmlPlayer1Grid = document.getElementById('grid_p1'),
+	    htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
 
-	for (let shipButton of shipButtons) {
-		shipButton.classList.remove('radio-selected');
-	}
-	thatShipButton.classList.add('radio-selected');
-
+	for (let htmlPlayer1Row of htmlPlayer1Rows) {
+    let cells = htmlPlayer1Row.getElementsByClassName('cell');
+    for (let i = 0; i < cells.length; i++) {
+			if (cells[i].classList.contains('ship')) {
+        cells[i].classList.add('impossible');
+			}
+		}
+  }
 }
 
-const setOnClick = function(elem) {
-	let selectors = document.querySelectorAll(elem);
+const removeImpossibleCells = function() {
+	let htmlPlayer1Grid = document.getElementById('grid_p1'),
+	    htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
 
-	for (let selector of selectors) {
-		selector.addEventListener('click', shipButtonRadioSelect);
-	}
+	for (let htmlPlayer1Row of htmlPlayer1Rows) {
+    let cells = htmlPlayer1Row.getElementsByClassName('cell');
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].classList.remove('impossible');
+		}
+  }
+}
+
+const shipButtonSelect = function(ship) {
+	const shipButtons = document.getElementsByClassName('ship-button');
+  for (let shipButton of shipButtons) {
+    shipButton.addEventListener('click', function(e)
+		{
+			checkImpossibleCells();
+			for (shipButton of shipButtons) {
+				shipButton.classList.remove('radio-selected');
+			}
+			e.target.classList.add('radio-selected');
+			ship.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
+
+			//Enlever bateau si placé
+			//recalculer position unavailable
+    });
+  }
+}
+
+const rotationButtonSelect = function(ship) {
+	document.getElementById("rotation").addEventListener('click', function(e) {
+		console.info(ship);
+		ship.rotation = !ship.rotation;
+		// TODO : recalculer positions impossible
+  });
 }
 
 const placingPhase = function() {
-	setOnClick('.ship-button');
 
+	let placingShip = {
+				name: "",
+				rotation: false,
+				row: 0,
+				column: 0
+			};
+
+
+	shipButtonSelect(placingShip);
+	rotationButtonSelect(placingShip);
+	//addEventListener blocks
 
 }
 
-launchGame.playerVsPlayer = function() {
+launchGame.solo = function() {
 	let gridP1 = new Grid("self"),
-	    gridP2 = new Grid("other");
+	    bot = new Grid("BOTeasy");
 
   placingPhase();
 
-
-	console.log(gridP1.visualise());
-	console.log(gridP2);
+	gridP1.visualise();
+	console.log(gridP1);
 }
 
-
-
-const mainReady = function()
-{
-
-	document.getElementById('PLAY')
-	        .addEventListener('click', launchGame.playerVsPlayer);
-
+const mainReady = function() {
+	document.getElementById('PLAY').addEventListener('click', launchGame.solo);
 }
 
 document.addEventListener("DOMContentLoaded", mainReady);

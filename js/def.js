@@ -275,22 +275,3 @@ class Check
     }
   }
 }
-
-const playSound = function(file)
-{
-  if(localStorage.getItem("sound")==="on") {
-    const audio = new Audio("media/sound/"+file+".mp3");
-    audio.play();
-  }
-}
-const playVideo = function(file)
-{
-  const video = document.createElement("video");
-  video.setAttribute("src", "media/video/"+file+".mp4");
-  document.body.appendChild(video);
-  video.play();
-  video.onended = function()
-  {
-    document.body.removeChild(video);
-  };
-}

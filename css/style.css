@@ -8,6 +8,19 @@
 {
   font-family: "Gunplay";
 }
+audio
+{
+  display: none;
+}
+video
+{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+}
 
 html,body
 {
@@ -16,6 +29,44 @@ html,body
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+#transition1, #transition2
+{
+	display: none;
+	background-color: black;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+}
+#transition1
+{
+	opacity: 0;
+}
+#transition2
+{
+	opacity: 1;
+}
+#transition1.transition11
+{
+	display: block;
+}
+#transition1.transition12
+{
+	opacity: 1;
+	transition: opacity 0.25s;
+}
+#transition2.transition21
+{
+	display: block;
+}
+#transition2.transition22
+{
+	opacity: 0;
+	transition: opacity 0.25s;
 }
 
 #wrapper
@@ -80,18 +131,22 @@ h2
 }
 strong
 {
+	display: block;
+	text-align: center;
+	font-size: 1.5rem;
   font-variant: small-caps;
 }
 main button
 {
   width: 100px;
+  background-color: white;
 }
 .playbuttons
 {
   position: absolute;
   left: 50%;
-  top: 70%;
-  transform: translate(-50%,-50%);
+  bottom: 15%;
+  transform: translate(-50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -104,22 +159,36 @@ main button
 }
 #PLAYPRACTICE
 {
-
+	background-color: white;
 }
-#PLAYVERSUS
+#PLAYSOLO
 {
-
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+#PLAYSOLO button
+{
+	background-color: yellow;
+}
+#PLAYSOLO button:first-child
+{
+	background-color: green;
+}
+#PLAYSOLO button:last-child
+{
+	background-color: red;
 }
 #PLAYMULTI
 {
-
+	background-color: blue;
 }
 .asidebuttons
 {
   position: absolute;
-  top: 89%;
+  bottom: 5%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%);
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -148,8 +217,9 @@ main button
 {
   position: absolute;
   left: 50%;
-  top: 96%;
-  transform: translate(-50%,-50%);
+  bottom: 0;
+  transform: translate(-50%);
+  background-color: white;
 }
 
 span
@@ -165,22 +235,28 @@ span
 {
   flex: 1;
 }
-#specialshots article
+#specialshots article, #settings article
 {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
 }
+article p
+{
+	margin-left: 5px;
+	margin-right: 5px;
+}
 sub
 {
   display: inline-block;
   width: 20px;
   height: 20px;
+  margin-left: -10px;
   border: 1px solid black;
   border-radius: 50%;
   background-color: rgb(255,255,0);
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   box-sizing: border-box;
 }
@@ -209,19 +285,32 @@ sub
   white-space: nowrap;
 }
 
-.optionselected circle
+.ring
+{
+	cx: 25;
+	cy: 25;
+	r: 20;
+	stroke: rgb(0,0,0);
+	stroke-width: 5;
+	fill: rgb(255,255,255);
+}
+.optionselected .ring
 {
   stroke: rgb(0,0,255);
 }
-#bonus .optionselected circle
+#bonus .optionselected .ring
 {
   stroke: rgb(0,255,0);
 }
-#malus .optionselected circle
+#malus .optionselected .ring
 {
   stroke: rgb(255,0,0);
 }
-
+.cross
+{
+	stroke: none;
+	fill: rgb(255,0,0);
+}
 .optionselected .cross
 {
   display: none;

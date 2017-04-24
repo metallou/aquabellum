@@ -66,9 +66,11 @@
     </script>
   </head>
   <body>
-    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/drum.mp3"></audio>
-    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/march.mp3"></audio>
-    <audio class="MUSIC" autoplay loop volume="1.0" src="media/music/horn.mp3"></audio>
+    <audio autoplay loop src="media/music/intro.wav" class="MUSIC" id="INTRO"></audio>
+	<audio autoplay loop src="media/music/game1.wav" class="MUSIC" id="GAME"></audio>
+	<audio autoplay loop src="media/music/game2.wav" class="MUSIC" id="GAMEKONAMI"></audio>
+	<div id="transition1"></div>
+	<div id="transition2"></div>
     <div id="wrapper">
       <div id="container">
         <main>
@@ -79,9 +81,17 @@
             <button id="PLAYPRACTICE">
               Practice
             </button>
-            <button id="PLAYSOLO">
-              Versus
-            </button>
+			<div id="PLAYSOLO">
+              <button class="PLAYSOLO" name="easy">
+                Easy
+              </button>
+			  <button class="PLAYSOLO" name="medium">
+                Medium
+              </button>
+			  <button class="PLAYSOLO" name="hard">
+                Hard
+              </button>
+			</div>
             <button id="PLAYMULTI">
               Multi
             </button>
@@ -106,22 +116,20 @@
             AQUABELLUM
           </h1>
           <span id="score"></span>
-          <span id="score2"></span>
           <div id="bonusmalus">
             <section id="bonus">
               <p>
               <strong>
                 Bonus
               </strong>
-              <br>
               Active effect (once)
               </p>
               <article>
                 <p class="OPTIONKEY">
                 <span class="KOO" id="BONUSmove"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -130,8 +138,8 @@
                 <p class="OPTIONKEY">
                 <span class="KOO" id="BONUSrepair"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -140,8 +148,8 @@
                 <p class="OPTIONKEY">
                 <span class="KOO" id="BONUSshield"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -150,8 +158,8 @@
                 <p class="OPTIONKEY">
                 <span class="KOO" id="BONUScritical"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -164,15 +172,14 @@
               <strong>
                 Malus
               </strong>
-              <br>
               passive effect (always)
               </p>
               <article>
                 <p class="OPTIONKEY">
                 <span class="KOO" id="MALUSreveal"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -181,8 +188,8 @@
                 <p class="OPTIONKEY">
                 <span class="KOO" id="MALUSrevealblock"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -191,8 +198,8 @@
                 <p class="OPTIONKEY">
                 <span class="KOO" id="MALUSrevealship"></span>
                 <svg width="50px" height="50px">
-                  <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
                 </svg>
                 <sub>
                   i
@@ -206,7 +213,6 @@
             <strong>
               Special Shots
             </strong>
-            <br>
             Using a Speical Shot will reset all Special Shots
             <br>
             Wait to use stronger Special Shots
@@ -215,8 +221,23 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="SHOTdestroyer"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+				<line x1="25" x2="25" y1="7" y2="43" stroke="black" stroke-width="3" />
+				<g transform="translate(25,18)">
+					<g transform="translate(-8,0)">
+<path d="M-5,0 q5,-15 10,0 Z" stroke="none" fill="rgb(100,100,100)" />
+<rect x="-5" y="0" width="10" height="17" stroke="none" fill="black" />
+					</g>
+					<g transform="translate(8,0)">
+<line x1="-5" x2="5" y1="16" y2="16" stroke="black" stroke-width="2" />
+<line x1="-2" x2="-2" y1="16" y2="7" stroke="black" stroke-width="2" />
+<line x1="-2" x2="5" y1="7" y2="0" stroke="rgb(100,100,100)" stroke-width="1" />
+<circle cx="5" cy="0" r="1" stroke="none" fill="rgb(100,100,100)" />
+<path d="M-4,-2 Q-5,10 7,9 Z" stroke="none" fill="rgb(100,100,100)" />
+
+					</g>
+				</g>
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
@@ -225,8 +246,19 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="SHOTcruiser"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+				<line x1="25" x2="25" y1="7" y2="43" stroke="black" stroke-width="3" />
+				<g transform="translate(25,18)">
+					<g transform="translate(-8,0)">
+<path d="M-5,0 q5,-15 10,0 Z" stroke="none" fill="rgb(100,100,100)" />
+<rect x="-5" y="0" width="10" height="17" stroke="none" fill="black" />
+					</g>
+					<g transform="translate(8,0)">
+<path d="M-5,0 q5,-15 10,0 Z" stroke="none" fill="rgb(100,100,100)" />
+<rect x="-5" y="0" width="10" height="17" stroke="none" fill="black" />
+					</g>
+				</g>
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
@@ -235,8 +267,15 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="SHOTsubmarine"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+				<g transform="translate(25,10)">
+					<path d="M-5,3 q5,-5 10,0 v10 l-1,10 h3 v3 h-14 v-3 h3 l-1,-10 Z" stroke="none" fill="black" />
+					<line x1="0" x2="0" y1="26" y2="27" stroke="rgb(100,100,100)" stroke-width="4" fill="none" />
+					<line x1="-5" x2="5" y1="28" y2="28" stroke="rgb(100,100,100)" stroke-width="2" fill="none" />
+					<line x1="-5" x2="5" y1="5" y2="5" stroke="rgb(150,150,150)" stroke-width="1" fill="none" />
+					<line x1="-5" x2="5" y1="15" y2="15" stroke="rgb(150,150,150)" stroke-width="1" fill="none" />
+				</g>
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
@@ -245,8 +284,15 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="SHOTbattleship"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+				<g transform="translate(25,25)">
+					<path d="M-1,-15 h2 l2,7 v3 l7,2 v3 h-7 l-1,10 h3 v2 h-10 v-2 h3 l-1,-10 h-7 v-3 l7,-2 v-3 Z" stroke="none" fill="black" />
+					<path d="M-1,-12 h2 l2,3 h-6 Z" stroke="none" fill="rgb(150,150,150)" />
+					<line x1="-10" x2="10" y1="-12" y2="8" stroke="rgb(100,100,100)" stroke-width="3" />
+					<line x1="-10" x2="10" y1="8" y2="-12" stroke="rgb(100,100,100)" stroke-width="3" />
+					<circle cx="0" cy="-2" r="2" stroke="none" fill="black" />
+				</g>
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
@@ -255,15 +301,22 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="SHOTcarrier"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+				<g transform="translate(25,10)">
+					<path d="M0,0 l3,7 v3 l10,12 h-10 l-1,2 h-4 l-1,-2 h-10 l10,-12 v-3 Z" stroke="none" fill="black" />
+					<path d="M0,3 l2,3 h-4 Z" stroke="none" fill="rgb(150,150,150)" />
+					<line x1="3" x2="3" y1="10" y2="22" stroke="rgb(100,100,100)" stroke-width="1" />
+					<line x1="-3" x2="-3" y1="10" y2="22" stroke="rgb(100,100,100)" stroke-width="1" />
+					<line x1="0" x2="0" y1="18" y2="22" stroke="rgb(100,100,100)" stroke-width="1" />
+				</g>
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
               </sub>
             </article>
           </section>
-          <section id="specialshots">
+          <section id="settings">
             <p>
             <strong>
               Sounds
@@ -273,8 +326,11 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="music"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+				<circle cx="18" cy="32" r="4" stroke="none" fill="black" />
+				<circle cx="30" cy="32" r="4" stroke="none" fill="black" />
+				<path d="M20,32 V15 H33 V32" stroke="black" stroke-width="3" fill="none" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
@@ -283,8 +339,22 @@
               <p class="OPTIONKEY">
               <span class="KOO" id="sound"></span>
               <svg width="50px" height="50px">
-                <circle cx="25" cy="25" r="20" stroke="black" stroke-width="5" fill="white" />
-                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" stroke="none" stroke-fill="0" fill="red" />
+                <circle class="ring" />
+                <path d="M12,20 h5 l7,-5 v20 l-7,-5 h-5 Z" stroke="none" fill="black" />
+				<path d="M28,15 q5,10 0,20" stroke="black" stroke-width="4" fill="none" />
+				<path d="M33,12 q5,13 0,26" stroke="black" stroke-width="4" fill="none" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+              </svg>
+              <sub>
+                i
+              </sub>
+              </p>
+              <p class="OPTIONKEY">
+              <span class="KOO" id="transition"></span>
+              <svg width="50px" height="50px">
+                <circle class="ring" />
+				<path d="M12,15 h18 v5 h1 l7,-5 v20 l-7,-5 h-1 v5 h-18 Z" stroke="none" fill="black" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
               </svg>
               <sub>
                 i
@@ -298,10 +368,11 @@
           <div class="info" id="infoBONUSmove">
             <p>
             <strong>
-              Move A Ship
+              Move Ships
             </strong>
-            <br>
-            This bonus allows you to move a ship
+            This bonus allows you to move any undamaged and undetected ship
+			<br>
+			onto "unknown" blocks
             <br>
             (cannot be used on a damaged ship)
             <br>
@@ -313,10 +384,11 @@
           <div class="info" id="infoBONUSrepair">
             <p>
             <strong>
-              Repair A Ship
+              Repair Ships
             </strong>
-            <br>
-            This bonus allows you to fully repair a ship
+            This bonus allows you to fully repair all unsunken ships.
+			<br>
+			All blocks previously hit will remain visible
             <br>
             <u>
               (can only be used once)
@@ -326,9 +398,8 @@
           <div class="info" id="infoBONUSshield">
             <p>
             <strong>
-              Shield All Ships
+              Shield Ships
             </strong>
-            <br>
             This bonus allows you to shield all your ships
             <br>
             from the next attack
@@ -345,10 +416,9 @@
             <strong>
               Critical Shot
             </strong>
-            <br>
             This bonus allows to sink any ship with one hit
             <br>
-            (used on tour next shot only)
+            (will remain active until next hit)
             <br>
             (cannot use a Special Shot with this bonus)
             <br>
@@ -362,7 +432,6 @@
             <strong>
               Damaged Ship Revelation
             </strong>
-            <br>
             If you use the Special Shot of a damaged ship,
             <br>
             this ship will be revealed
@@ -379,7 +448,6 @@
             <strong>
               Unlucky Block Revelation
             </strong>
-            <br>
             You have a 10% chance on each turn to see
             <br>
             a random block revealed
@@ -394,7 +462,6 @@
             <strong>
               Unlucky Ship Block Revelation
             </strong>
-            <br>
             You have a 5% chance on each turn to see
             <br>
             a random block containing a ship revealed
@@ -408,53 +475,74 @@
             <p>
             <strong>
               Destroyer Special Shot
+			  <br>
+			  (sonar)
             </strong>
+			Hit your target and randomly reveal one surrounding block
             </p>
           </div>
           <div class="info" id="infoSHOTcruiser">
             <p>
             <strong>
               Cruiser Special Shot
+			  <br>
+			  (double shot)
             </strong>
+			Hit your target and randomly hit one surrounding block
             </p>
           </div>
           <div class="info" id="infoSHOTsubmarine">
             <p>
             <strong>
               Submarine Special Shot
+			  <br>
+			  (torpedo strike)
             </strong>
+			Will go up the column from your target and explode upon encountering a ship
             </p>
           </div>
           <div class="info" id="infoSHOTbattleship">
             <p>
             <strong>
               Battleship Special Shot
+			  <br>
+			  (helicopter sweep)
             </strong>
+			Hit your target and reveal all surrounding blocks.
             </p>
           </div>
           <div class="info" id="infoSHOTcarrier">
             <p>
             <strong>
               Carrier Special Shot
+			  <br>
+			  (fighter jet)
             </strong>
+			Hit your target and hit all surrounding blocks
             </p>
           </div>
           <div class="info" id="infomusic">
             <p>
             <strong>
-              Music
+              Musics
             </strong>
-            <be>
-            Toogle to disable all musics
+            Toogle all musics
             </p>
           </div>
           <div class="info" id="infosound">
             <p>
             <strong>
-              Sound
+              Sounds
             </strong>
-            <br>
-            Toogle to disable all sound effects
+            Toogle all sound effects
+            </p>
+          </div>
+		  <div class="info" id="infotransition">
+            <p>
+            <strong>
+              Videos
+            </strong>
+            Toogle all transitions
             </p>
           </div>
         </aside>
