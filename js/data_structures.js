@@ -150,7 +150,7 @@ class Block
 
 class Shot
 {
-  static normalShot(grid, block)
+  static normalShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
@@ -169,7 +169,7 @@ class Shot
     }
     return false;
   }
-  static flareShot(grid, block)
+  static flareShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
@@ -185,11 +185,12 @@ class Shot
     }
     return false;
   }
-  static destroyerShot(grid, block)
+  static destroyerShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
       Check.block(block);
+      Check.grid(gridO);
     }
 
     let blocks = [];
@@ -209,7 +210,7 @@ class Shot
     let hit = Shot.normalShot(grid, block);
 
     //Attempt to perform SpecialShot
-    const ship = grid.ships.searchShip("destroyer");
+    const ship = gridO.ships.searchShip("destroyer");
     //is alive
     if(ship.stillAlive()) {
       //can use
@@ -228,11 +229,12 @@ class Shot
     }
     return hit;
   }
-  static cruiserShot(grid, block)
+  static cruiserShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
       Check.block(block);
+      Check.grid(gridO);
     }
 
     let blocks = [];
@@ -252,7 +254,7 @@ class Shot
     let hit = Shot.normalShot(grid, block);
 
     //Attempt to perform SpecialShot
-    const ship = grid.ships.searchShip("cruiser");
+    const ship = gridO.ships.searchShip("cruiser");
     //is alive
     if(ship.stillAlive()) {
       //can use
@@ -271,11 +273,12 @@ class Shot
     }
     return hit;
   }
-  static submarineShot(grid, block)
+  static submarineShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
       Check.block(block);
+      Check.grid(gridO);
     }
 
     let blocks = [];
@@ -294,7 +297,7 @@ class Shot
     let hit = Shot.normalShot(grid, block);
 
     //Attempt to perform SpecialShot
-    const ship = grid.ships.searchShip("submarine");
+    const ship = gridO.ships.searchShip("submarine");
     //is alive
     if(ship.stillAlive()) {
       //can use
@@ -315,11 +318,12 @@ class Shot
     }
     return hit;
   }
-  static battleshipShot(grid, block)
+  static battleshipShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
       Check.block(block);
+      Check.grid(gridO);
     }
 
     let blocks = [];
@@ -341,7 +345,7 @@ class Shot
     let hit = Shot.normalShot(grid, block);
 
     //Attempt to perform SpecialShot
-    const ship = grid.ships.searchShip("battleship");
+    const ship = gridO.ships.searchShip("battleship");
     //is alive
     if(ship.stillAlive()) {
       //can use
@@ -362,11 +366,12 @@ class Shot
     }
     return hit;
   }
-  static carrierShot(grid, block)
+  static carrierShot(grid, block, gridO)
   {
     if(DEBUG) {
       Check.grid(grid);
       Check.block(block);
+      Check.grid(gridO);
     }
 
     let blocks = [];
@@ -388,7 +393,7 @@ class Shot
     let hit = Shot.normalShot(grid, block);
 
     //Attempt to perform SpecialShot
-    const ship = grid.ships.searchShip("carrier");
+    const ship = gridO.ships.searchShip("carrier");
     //is alive
     if(ship.stillAlive()) {
       //can use
@@ -454,6 +459,7 @@ class SpecialShot extends Shot
   }
   canUse()
   {
+    if(KONAMI) return true;
     if(affectedBy(this.owner, "SHOT"+this.name)) {
       return this.charge===this.limit;
     }
@@ -867,14 +873,15 @@ class Grid
     }
     return null;
   }
-  fireAt(block, attackMode)
+  fireAt(block, attackMode, gridO)
   {
     if(DEBUG) {
       Check.block(block);
       Check.func(attackMode);
+      Check.grid(gridO);
     }
 
-    attackMode(this, block);
+    attackMode(this, block, gridO);
 
     const chance = parseInt(Math.random()*1000);
     if(affectedBy(this.owner, "MALUSrevealblock") && chance%10===0) {

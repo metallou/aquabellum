@@ -129,7 +129,7 @@ const readyEvents = function()
             {
               document.getElementById("gamewrapper").style["display"] = "";
               document.getElementById("wrapper").style["display"] = "none";
-              GAME.solo();
+              GAME.practice();
             });
       });
   const soloButtons = document.getElementsByClassName("PLAYSOLO");
