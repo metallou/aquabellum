@@ -131,6 +131,10 @@ main, aside, .gameboard
 {
   order: 3;
 }
+#shipbuttons img
+{
+  transform: rotate(90deg);
+}
 section
 {
   width: 100vw;
