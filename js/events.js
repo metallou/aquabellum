@@ -15,16 +15,13 @@ const playGameTransition = function(videofile, audiofile, func)
     video.setAttribute("src", "media/video/"+videofile+".mp4");
     document.body.appendChild(video);
     video.play();
+    setTimeout(func, 1000);
     video.onended = function()
     {
-      console.log(func);
-      setTimeout(function()
-          {
-            document.body.removeChild(video);
-          }, 100);
+      document.body.removeChild(video);
     };
   } else {
-    console.log(func);
+    func();
   }
 }
 const playPageTransition = function(audiofile, func)
@@ -130,7 +127,9 @@ const readyEvents = function()
         stopIntro();
         playGameTransition("start", "practice", function()
             {
-              gamePractice();
+              document.getElementById("gamewrapper").style["display"] = "";
+              document.getElementById("wrapper").style["display"] = "none";
+              GAME.solo();
             });
       });
   const soloButtons = document.getElementsByClassName("PLAYSOLO");
@@ -140,7 +139,9 @@ const readyEvents = function()
           stopIntro();
           playGameTransition("start", "solo", function()
               {
-                gameSolo(e.target.name);
+                document.getElementById("gamewrapper").style["display"] = "";
+                document.getElementById("wrapper").style["display"] = "none";
+                GAME.solo(e.target.name);
               });
         });
   }
@@ -149,7 +150,9 @@ const readyEvents = function()
         stopIntro();
         playGameTransition("start", "multi", function()
             {
-              gameMulti();
+              document.getElementById("gamewrapper").style["display"] = "";
+              document.getElementById("wrapper").style["display"] = "none";
+              GAME.solo();
             });
       });
 

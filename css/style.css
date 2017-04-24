@@ -29,6 +29,7 @@ html,body
   margin: 0;
   padding: 0;
   overflow: hidden;
+  background-color: rgb(121, 137, 51);
 }
 
 #transition1, #transition2
@@ -74,9 +75,11 @@ html,body
   width: 100vw;
   height: 100vh;
   position: relative;
-  background-image: url('../media/img/intro.jpg');
   background-size: cover;
-  background-color: rgb(121, 137, 51);
+}
+#wrapper
+{
+  background-image: url('../media/img/intro.jpg');
 }
 #container, #gamecontainer
 {
@@ -150,7 +153,6 @@ h1
   height: 60px;
   font-size: 3rem;
   color: #eee;
-  padding-top: 80px;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, .8);
 }
 
