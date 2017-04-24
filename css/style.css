@@ -632,17 +632,23 @@ figure img
 }
 
 
+.grid .row .cell.unknown {
+  background-color: transparent;
+}
+.grid .row .cell.empty {
+  background-color: empty;
+}
+.grid .row .cell.miss {
+  background-color: white;
+}
 .grid .row .cell.ship {
   background-color: yellow;
 }
-
 .grid .row .cell.hit {
   background-color: red;
 }
-
 .grid .row .cell.sunk {
-  background-color: #222;
-  color: white;
+  background-color: black;
 }
 
 .grid .row .cell.unavalaible {
@@ -656,4 +662,27 @@ figure img
 .grid .row .cell.impossible {
   background-color: black;
   color: white;
+}
+
+.gamebuttons button
+{
+  margin: 0;
+  padding: 0;
+  background-color: #ADD8E6;
+  width: 100px;
+}
+
+.ship-button.radio-selected {
+  box-shadow: inset 0 0 5px black;
+  background-color: #76D8E6;
+}
+.shot-button.button-selected
+{
+  box-shadow: inset 0 0 5px black;
+  background-color: #76D8E6;
+  background-color: #000000;
+}
+.grid .row .cell.cell-selected
+{
+  border-color: yellow;
 }
