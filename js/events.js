@@ -9,19 +9,19 @@ const playSound = function(file)
 }
 const playVideo = function(file, func)
 {
-	if(localStorage.getItem("video")==="on") {
-  const video = document.createElement("video");
-  video.setAttribute("src", "media/video/"+file+".mp4");
-  document.body.appendChild(video);
-  video.play();
-  video.onended = function()
-  {
-    document.body.removeChild(video);
-	//func();
-  };
-	} else {
-		//func():
-	}
+  if(localStorage.getItem("video")==="on") {
+    const video = document.createElement("video");
+    video.setAttribute("src", "media/video/"+file+".mp4");
+    document.body.appendChild(video);
+    video.play();
+    video.onended = function()
+    {
+      document.body.removeChild(video);
+      //func();
+    };
+  } else {
+    //func():
+  }
 }
 
 const readyEvents = function()
@@ -81,28 +81,28 @@ const readyEvents = function()
       {
         playSound("practice");
         playVideo("start", function()
-		{
-			gamePractice();
-		});
+            {
+              gamePractice();
+            });
       });
   const soloButtons = document.getElementsByClassName("PLAYSOLO");
   for(let soloButton of soloButtons) {
-	  soloButton.addEventListener("click", function(e)
-      {
-        playSound("solo");
-        playVideo("start", function()
-		{
-			gameSolo(e.target.name);
-		});
-      });
+    soloButton.addEventListener("click", function(e)
+        {
+          playSound("solo");
+          playVideo("start", function()
+              {
+                gameSolo(e.target.name);
+              });
+        });
   }
   document.getElementById("PLAYMULTI").addEventListener("click", function()
       {
         playSound("multi");
         playVideo("start", function()
-		{
-			gameMulti();
-		});
+            {
+              gameMulti();
+            });
       });
 
   //INIT

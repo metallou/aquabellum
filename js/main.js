@@ -59,6 +59,7 @@ const rotationButtonSelect = function(ship) {
 }
 
 const placingPhase = function() {
+        document.getElementById("gamecontainer").style["top"] = "-100vh";
 
 	let placingShip = {
 				name: "",
@@ -99,7 +100,19 @@ launchGame.solo = function() {
 }
 
 const mainReady = function() {
-	document.getElementById('PLAY').addEventListener('click', launchGame.solo);
+        const changeButtons = document.getElementsByClassName("change");
+        for(let changeButton of changeButtons) {
+          changeButton.addEventListener("click", function(e)
+              {
+                console.log(e.target);
+                console.log(e.target.id);
+                let offset = document.getElementById(e.target.name+"BOARD").offsetTop;
+                offset = 100*parseInt(Math.round(offset/window.innerHeight));
+                document.getElementById("gamecontainer").style["top"] = (-offset)+"vh";
+              });
+        }
+
+        placingPhase();
 }
 
 document.addEventListener("DOMContentLoaded", mainReady);
