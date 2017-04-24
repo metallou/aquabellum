@@ -14,7 +14,6 @@ const checkImpossibleCells = function() {
 			}
 		}
   }
-
 }
 
 const removeImpossibleCells = function() {
@@ -27,7 +26,6 @@ const removeImpossibleCells = function() {
       cells[i].classList.remove('impossible');
 		}
   }
-
 }
 
 const shipButtonSelect = function(ship) {
@@ -40,7 +38,7 @@ const shipButtonSelect = function(ship) {
 				shipButton.classList.remove('radio-selected');
 			}
 			e.target.classList.add('radio-selected');
-			ship.name = e.target.name;  // define ship name on placingPhase function
+			ship.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
 
 			//Enlever bateau si placé
 			//recalculer position unavailable
@@ -49,13 +47,11 @@ const shipButtonSelect = function(ship) {
 }
 
 const rotationButtonSelect = function(ship) {
-	document.getElementById("rotation").addEventListener('click', function(e)
-		{
-			console.info(ship);
-			ship.rotation = !ship.rotation;
-
-			//recalculer position unavailable
-    });
+	document.getElementById("rotation").addEventListener('click', function(e) {
+		console.info(ship);
+		ship.rotation = !ship.rotation;
+		// TODO : recalculer positions impossible
+  });
 }
 
 const placingPhase = function() {
@@ -67,20 +63,6 @@ const placingPhase = function() {
 				row: 0,
 				column: 0
 			};
-
-	//Repérage blocs impossibles
-
-
-
-
-	// for (let htmlPlayer1Cell of htmlPlayer1Cells) {
-	//   if (!htmlPlayer1Cell.canPlaceShipAt()) {
-	// 		htmlPlayer1Cell.classList.add('impossible');
-	// 		console.log(htmlPlayer1Cell + "has a ship");
-	// 	}
-
-		// htmlPlayer1Cell hasShip() ? htmlPlayer1Cell.classList.add('impossible') : console.log(htmlPlayer1Cell + "oké");
-	// }
 
 
 	shipButtonSelect(placingShip);
