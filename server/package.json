@@ -1,0 +1,16 @@
+{
+  "name": "naval_battle",
+  "version": "0.1.0",
+  "dependencies": {
+    "socket.io": "~1.2.1",
+    "ent": "~0.1.0"
+  },
+  "author": "Darkilen <samuel.arlaud@gmail.com>",
+  "description": "Une bataille navale 1vs1 en temps réel avec socket.io",
+  "readme": "../README.md",
+  "license" : "UNLICENSED",
+  "repository" :
+  { "type" : "git",
+    "url" : "https://github.com/metallou/naval_battle.git"
+  }
+}
