@@ -59,35 +59,31 @@ const placingPhase = function(solo) {
     column: 0
   };
 
-  // shipButtonSelect :
   const shipButtons = document.getElementsByClassName('ship-button');
   for (let shipButton of shipButtons) {
     shipButton.addEventListener('click', function(e)
         {
           checkImpossibleCells();
+          // shipButtonSelect :
           for (shipButton of shipButtons) {
             shipButton.classList.remove('radio-selected');
           }
           e.target.classList.add('radio-selected');
           placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
           console.log(placingShip.name);
-          //Enlever bateau si placé
           //recalculer position unavailable
 
 
     for (let shipButton of shipButtons) {
       console.log(shipButton.classList);
       if (shipButton.classList.contains('radio-selected')) {
-        console.log('toto-2');
         let htmlPlayer1Grid = document.getElementById('grid_p1'),
             htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
 
         for (let htmlPlayer1Row of htmlPlayer1Rows) {
-          console.log('toto-1');
           let cells = htmlPlayer1Row.getElementsByClassName('cell');
           for (let i = 0; i < cells.length; i++) {
             cells[i].addEventListener('click', function() {
-              console.log('toto');
               GAME.player.placeShip(
                 placingShip.name,
                 placingShip.rotation,
@@ -95,7 +91,7 @@ const placingPhase = function(solo) {
                 placingShip.column
               );
               console.log(GAME.player);
-              shipButton.style["visibility"] = "hidden";
+              shipButton.style["visibility"] = "hidden"; // remove ship-button if placed
             });
 
           }
@@ -109,12 +105,11 @@ const placingPhase = function(solo) {
   }
 
 
-
-
-
   // shipButtonSelect(placingShip);
   rotationButtonSelect(placingShip);
   //addEventListener blocks
+
+  shootingPhase(solo);
 
 }
 // TODO : hide validate button if condition not full
