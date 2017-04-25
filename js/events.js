@@ -129,7 +129,7 @@ const readyEvents = function()
             {
               document.getElementById("gamewrapper").style["display"] = "";
               document.getElementById("wrapper").style["display"] = "none";
-              GAME.solo();
+              GAME.practice();
             });
       });
   const soloButtons = document.getElementsByClassName("PLAYSOLO");
@@ -160,15 +160,22 @@ const readyEvents = function()
   initOptions();
   initStats();
 
-  //Haut, haut, bas, bas, gauche, droite, gauche, droite, B, A
+  ////UP, UP, DOWN, DOWN, LEFT, RIGHT, LEFT, RIGHT
   let k = [38, 38, 40, 40, 37, 39, 37, 39];
   let n = 0;
   document.addEventListener("keydown", function(e) {
     if(e.keyCode===k[n++]) {
       if(n===k.length) {
-        KONAMI = !KONAMI;
-        document.body.classList.toggle("KONAMI");
         n = 0;
+        if(KONAMI) {
+          KONAMI = false;
+          document.body.classList.remove("KONAMI");
+          playSound("konami_off");
+        } else {
+          KONAMI = true;
+          document.body.classList.add("KONAMI");
+          playSound("konami_on");
+        }
         return false;
       }
     } else {

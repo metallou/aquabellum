@@ -46,45 +46,45 @@ class IA {
   static selectTargetHard(grid)
   {
     if(DEBUG) {
-		Check.grid(grid);
+      Check.grid(grid);
     }
 
-	grid.ships.ships.forEach(function(element, index, array)
-	{
-		let blocks;
-		let length;
-      if(element.stillAlive()) {
-        length = element.getLength();
-        for(let x=0; x<=(10-length); x++) {
-          for(let y=0; y<10; y++) {
-            blocks = [];
-            for(let i=0; i<length; i++) {
-              blocks.push(grid.grid[x+i][y]);
+    grid.ships.ships.forEach(function(element, index, array)
+        {
+          let blocks;
+          let length;
+          if(element.stillAlive()) {
+            length = element.getLength();
+            for(let x=0; x<=(10-length); x++) {
+              for(let y=0; y<10; y++) {
+                blocks = [];
+                for(let i=0; i<length; i++) {
+                  blocks.push(grid.grid[x+i][y]);
+                }
+                if(element.canShootShipOver(element.name, blocks)) {
+                  blocks.forEach(function(element2,index2,array2)
+                      {
+                        element2.addProba();
+                      });
+                }
+              }
             }
-            if(element.canShootShipOver(element.name, blocks)) {
-			  blocks.forEach(function(element2,index2,array2)
-			  {
-				  element2.addProba();
-			  });
-			}
+            for(let y=0; y<=(10-length); y++) {
+              for(let x=0; x<10; x++) {
+                blocks = [];
+                for(let i=0; i<length; i++) {
+                  blocks.push(grid.grid[x][y+i]);
+                }
+                if(element.canShootShipOver(element.name, blocks)) {
+                  blocks.forEach(function(element2,index2,array2)
+                      {
+                        element2.addProba();
+                      });
+                }
+              }
+            }
           }
-        }
-        for(let y=0; y<=(10-length); y++) {
-          for(let x=0; x<10; x++) {
-            blocks = [];
-            for(let i=0; i<length; i++) {
-              blocks.push(grid.grid[x][y+i]);
-            }
-            if(element.canShootShipOver(element.name, blocks)) {
-              blocks.forEach(function(element2,index2,array2)
-			  {
-				  element2.addProba();
-			  });
-            }
-          }
-        }
-      }
-    });
+        });
 
     let target;
     let proba = 0;
@@ -107,7 +107,7 @@ class IA {
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     let target;
@@ -138,7 +138,7 @@ class IA {
   {
     if(DEBUG) {
       Check.grid(grid);
-		Check.block(block);
+      Check.block(block);
     }
 
     return IA.huntTargetEasy(grid, block);
@@ -146,48 +146,48 @@ class IA {
   static huntTargetHard(grid, block)
   {
     if(DEBUG) {
-		Check.grid(grid);
-		Check.block(block);
+      Check.grid(grid);
+      Check.block(block);
     }
 
     let pos = block.getPos();
     let blocks;
     let length;
 
-	grid.ships.ships.forEach(function(element,index,array)
-	{
-      if(element.stillAlive()) {
-        length = element.getLength();
-        for(let x=(pos.row-length); x<=(pos.row+length); x++) {
-          if(x>=0 && x<=(10-length)) {
-            blocks = [];
-            for(let i=0; i<length; i++) {
-              blocks.push(grid.grid[x+i][pos.column]);
+    grid.ships.ships.forEach(function(element,index,array)
+        {
+          if(element.stillAlive()) {
+            length = element.getLength();
+            for(let x=(pos.row-length); x<=(pos.row+length); x++) {
+              if(x>=0 && x<=(10-length)) {
+                blocks = [];
+                for(let i=0; i<length; i++) {
+                  blocks.push(grid.grid[x+i][pos.column]);
+                }
+                if(element.canWelcomeShipOver(element.name, blocks)) {
+                  blocks.forEach(function(element2,index2,array2)
+                      {
+                        element2.addProba();
+                      });
+                }
+              }
             }
-            if(element.canWelcomeShipOver(element.name, blocks)) {
-              blocks.forEach(function(element2,index2,array2)
-			  {
-				  element2.addProba();
-			  });
+            for(let y=(pos.column-length); y<=(pos.column+length); y++) {
+              if(y>=0 && y<=(10-length)) {
+                blocks = [];
+                for(let i=0; i<length; i++) {
+                  blocks.push(grid.grid[pos.row][y+i]);
+                }
+                if(element.canWelcomeShipOver(element.name, blocks)) {
+                  blocks.forEach(function(element2,index2,array2)
+                      {
+                        element2.addProba();
+                      });
+                }
+              }
             }
           }
-        }
-        for(let y=(pos.column-length); y<=(pos.column+length); y++) {
-          if(y>=0 && y<=(10-length)) {
-            blocks = [];
-            for(let i=0; i<length; i++) {
-              blocks.push(grid.grid[pos.row][y+i]);
-            }
-            if(element.canWelcomeShipOver(element.name, blocks)) {
-              blocks.forEach(function(element2,index2,array2)
-			  {
-				  element2.addProba();
-			  });
-            }
-          }
-        }
-      }
-    });
+        });
 
     let target;
     let tmptarget;
@@ -253,8 +253,8 @@ class IA {
   static selectPlace(grid, ship)
   {
     if(DEBUG) {
-		Check.grid(grid);
-		Check.ship(ship);
+      Check.grid(grid);
+      Check.ship(ship);
     }
 
     let blocks = [];
@@ -296,15 +296,15 @@ class IA {
     }
 
     grid.ships.ships.forEach(function(element, index, array)
-	{
-		let placed;
-		let pos;
-      do {
-        if(IA.selectRotation()) element.setRotation();
-        pos = IA.selectPlace(grid, element).getPos();
-		placed = grid.placeShip(element.name,element.rotation,pos.row,pos.column);
-      } while(!placed);
-    });
+        {
+          let placed;
+          let pos;
+          do {
+            if(IA.selectRotation()) element.setRotation();
+            pos = IA.selectPlace(grid, element).getPos();
+            placed = grid.placeShip(element.name,element.rotation,pos.row,pos.column);
+          } while(!placed);
+        });
   }
 }
 class Bot extends IA
@@ -341,10 +341,11 @@ class Bot extends IA
     this.grid = new Grid("BOT" + this.difficulty);
     IA.placeShips(this.grid);
   }
-  attack(gridE)
+  attack(gridE, gridS)
   {
     if(DEBUG) {
       Check.grid(gridE);
+      Check.grid(gridS);
     }
 
     const block = gridE.searchTarget();
@@ -359,110 +360,6 @@ class Bot extends IA
       }
     }
 
-    return gridE.fireAt(target, Shot.normalShot);
+    return gridE.fireAt(target, Shot.normalShot, gridS);
   }
 }
-
-
-
-
-
-function visualize(grid1, grid2)
-{
-	let str1;
-	let str2;
-  let str = "";
-    for(let i in grid1.grid) {
-		str1 = "";
-      for(let j in grid1.grid[i]) {
-        switch(grid1.grid[i][j].getState()) {
-          case "unknown":
-            str1 += ".";
-            break;
-          case "empty":
-            str1 += " ";
-            break;
-          case "miss":
-            str1 += " ";
-            break;
-          case "ship":
-            str1 += "S";
-            break;
-          case "hit":
-            str1 += "x";
-            break;
-          case "sunk":
-            str1 += "X";
-            break;
-        }
-      }
-      str1 += "\t";
-      for(let j in grid2.grid[i]) {
-        switch(grid2.grid[i][j].getState()) {
-          case "unknown":
-            str1 += ".";
-            break;
-          case "empty":
-            str1 += " ";
-            break;
-          case "miss":
-            str1 += " ";
-            break;
-          case "ship":
-            str1 += "S";
-            break;
-          case "hit":
-            str1 += "x";
-            break;
-          case "sunk":
-            str1 += "X";
-            break;
-        }
-      }
-	  
-	  str2 = "";
-	  for(let j in grid1.grid[i]) {
-		if(grid1.grid[i][j].hasShip()) {
-			str2 += "x";
-		} else {
-			str2 += ".";
-		}
-      }
-      str2 += "\t";
-      for(let j in grid2.grid[i]) {
-        if(grid2.grid[i][j].hasShip()) {
-			str2 += "x";
-		} else {
-			str2 += ".";
-		}
-      }
-	  str += str1 + "\t\t" + str2 + "\n";
-  }
-  console.log(str);
-}
-let grid1;
-let grid2;
-let nbShots;
-let life1;
-let life2;
-let bot1 = new Bot("medium");
-let bot2 = new Bot("hard");
-for(let l=0; l<1; l++) {
-  life1 = true;
-  life2 = true;
-  bot1.setGrid();
-  bot2.setGrid();
-  for(let i=0; i<100 && life1 && life2; i++) {
-    nbShots = i;
-    life1 = bot1.attack(bot2.grid);
-    if(life1) life2 = bot2.attack(bot1.grid);
-    visualize(bot1.grid, bot2.grid);
-  }
-  if(life1) {
-    console.info("22222 " + nbShots);
-  } else {
-    console.info("1 " + nbShots);
-  }
-}
-bot1 = null;
-bot2 = null;
