@@ -151,34 +151,16 @@ const checkImpossibleCells = function() {
   }
 }
 
-const shipButtonSelect = function(ship) {
-  const shipButtons = document.getElementsByClassName('ship-button');
-  for (let shipButton of shipButtons) {
-    shipButton.addEventListener('click', function(e)
-        {
-          checkImpossibleCells();
-          for (shipButton of shipButtons) {
-            shipButton.classList.remove('button-selected');
-          }
-          e.target.classList.add('button-selected');
-          ship.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
-
-          //Enlever bateau si placé
-          //recalculer position unavailable
-        });
-  }
-}
 
 const rotationButtonSelect = function(ship) {
   document.getElementById("rotation").addEventListener('click', function(e) {
     ship.rotation = !ship.rotation;
-    removeImpossibleCells();
     checkImpossibleCells();
   });
 }
 // TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
 //
-const placingPhase = function(grid, bot, solo) {
+const placingPhase = function(solo) {
   document.getElementById("gamecontainer").style["top"] = "-100vh";
 
   let placingShip = {
@@ -188,14 +170,65 @@ const placingPhase = function(grid, bot, solo) {
     column: 0
   };
 
+  // shipButtonSelect :
+  const shipButtons = document.getElementsByClassName('ship-button');
+  for (let shipButton of shipButtons) {
+    shipButton.addEventListener('click', function(e)
+        {
+          checkImpossibleCells();
+          for (shipButton of shipButtons) {
+            shipButton.classList.remove('button-selected');
+          }
+          e.target.classList.add('radio-selected');
+          placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
+          //Enlever bateau si placé
+          //recalculer position unavailable
 
-  shipButtonSelect(placingShip);
+
+    for (let shipButton of shipButtons) {
+      console.log(shipButton.classList);
+      if (shipButton.classList.contains('button-selected')) {
+        console.log('toto-2');
+        let htmlPlayer1Grid = document.getElementById('grid_p1'),
+            htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
+
+        for (let htmlPlayer1Row of htmlPlayer1Rows) {
+          console.log('toto-1');
+          let cells = htmlPlayer1Row.getElementsByClassName('cell');
+          for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('click', function() {
+              console.log('toto');
+              GAME.player.placeShip(
+                placingShip.name,
+                placingShip.rotation,
+                placingShip.row,
+                placingShip.column
+              );
+              console.log(GAME.player);
+              shipButton.style["visibility"] = "hidden";
+            });
+
+          }
+
+        }
+      }
+    }
+
+  });
+
+  }
+
+
+
+
+
+  // shipButtonSelect(placingShip);
   rotationButtonSelect(placingShip);
   //addEventListener blocks
 
 }
 // TODO : hide validate button if condition not full
-const shootingPhase = function(grid, bot, solo)
+const shootingPhase = function(solo)
 {
   //check if game ended
   if(!GAME.playerAlive || !GAME.enemyAlive) {
@@ -434,7 +467,7 @@ GAME.solo = function(difficulty)
   checkBonuses();
   removeAllGameEventListeners();
 
-  placingPhase();
+  placingPhase(true);
 }
 
 const mainReady = function() {
