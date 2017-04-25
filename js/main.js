@@ -50,7 +50,6 @@ const rotationButtonSelect = function(ship) {
 //
 const placingPhase = function(solo) {
   document.getElementById("gamecontainer").style["top"] = "-100vh";
-  console.log('placing phase...');
 
   let placingShip = {
     name: "",
@@ -70,12 +69,10 @@ const placingPhase = function(solo) {
           }
           e.target.classList.add('radio-selected');
           placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
-          console.log(placingShip.name);
           //recalculer position unavailable
 
 
     for (let shipButton of shipButtons) {
-      console.log(shipButton.classList);
       if (shipButton.classList.contains('radio-selected')) {
         let htmlPlayer1Grid = document.getElementById('grid_p1'),
             htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
@@ -90,7 +87,6 @@ const placingPhase = function(solo) {
                 placingShip.row,
                 placingShip.column
               );
-              console.log(GAME.player);
               shipButton.style["visibility"] = "hidden"; // remove ship-button if placed
             });
 
@@ -264,7 +260,6 @@ GAME.practice = function()
   shootingPhase(false);
 }
 GAME.solo = function(difficulty) {
-  console.log('solo' + difficulty);
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
 
