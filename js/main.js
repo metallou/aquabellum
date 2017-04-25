@@ -137,20 +137,17 @@ const checkBonuses = function()
 }
 
 const checkImpossibleCells = function() {
-  let htmlPlayer1Grid = document.getElementById('grid_p1'),
-  htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
-
-  for (let htmlPlayer1Row of htmlPlayer1Rows) {
-    let cells = htmlPlayer1Row.getElementsByClassName('cell');
-    for (let i = 0; i < cells.length; i++) {
-      cells[i].classList.remove('impossible');
-      if (cells[i].classList.contains('ship')) {
-        cells[i].classList.add('impossible');
+  let blocks;
+  const rows = document.getElementById('grid_p1').getElementsByClassName('row');
+  for(let y=0; y<rows.length; y++) {
+    blocks = rows.item(y).getElementsByClassName("cell");
+    for(let x=0; x<blocks.length; x++) {
+      if(GAME.player.grid[y][x].getState()!="unknown" || GAME.player.grid[y][x].hasShip()) {
+        blocks.item(x).classList.add("impossible");
       }
     }
   }
 }
-
 
 const rotationButtonSelect = function(ship) {
   document.getElementById("rotation").addEventListener('click', function(e) {
@@ -161,70 +158,77 @@ const rotationButtonSelect = function(ship) {
 // TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
 //
 const placingPhase = function(solo) {
-  document.getElementById("gamecontainer").style["top"] = "-100vh";
+  //reset board
+  removeAllGameEventListeners();
 
+  let elem;
+  let row;
   let placingShip = {
     name: "",
     rotation: false,
-    row: 0,
-    column: 0
-  };
+    row: null,
+    column: null
+  }
+  const cells = document.getElementById("grid_p1").getElementsByClassName("cell");
+  const rows = document.getElementById("grid_p1").getElementsByClassName("row");
+  const ships = document.getElementsByClassName("ship-button");
+  const validate = document.getElementById("SELFBOARD").getElementsByClassName("validate")[0];
 
-  // shipButtonSelect :
+  //update board
+  updateGrid(GAME.enemy.grid.grid, "grid_p2");
+  updateGrid(GAME.player.grid, "grid_p1");
+  document.getElementById("gamecontainer").style["top"] = "-100vh";
+  checkSpecialShots();
+  checkMaluses();
+  checkBonuses();
+
+  document.getElementById("rotation").addEventListener('click', function(e) {
+    placingShip.rotation = !placingShip.rotation;
+    checkImpossibleCells();
+  });
+
   const shipButtons = document.getElementsByClassName('ship-button');
   for (let shipButton of shipButtons) {
     shipButton.addEventListener('click', function(e)
         {
-          checkImpossibleCells();
-          for (shipButton of shipButtons) {
-            shipButton.classList.remove('button-selected');
+          for (shipButton of shipButtons) shipButton.classList.remove('button-selected');
+          e.target.classList.add('button-selected');
+          if(!GAME.player.ships.searchShip(e.target.name).isOnGrid()) {
+              placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
+              checkImpossibleCells();
           }
-          e.target.classList.add('radio-selected');
-          placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
-          //Enlever bateau si placé
-          //recalculer position unavailable
-
-
-    for (let shipButton of shipButtons) {
-      console.log(shipButton.classList);
-      if (shipButton.classList.contains('button-selected')) {
-        console.log('toto-2');
-        let htmlPlayer1Grid = document.getElementById('grid_p1'),
-            htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
-
-        for (let htmlPlayer1Row of htmlPlayer1Rows) {
-          console.log('toto-1');
-          let cells = htmlPlayer1Row.getElementsByClassName('cell');
-          for (let i = 0; i < cells.length; i++) {
-            cells[i].addEventListener('click', function() {
-              console.log('toto');
-              GAME.player.placeShip(
-                placingShip.name,
-                placingShip.rotation,
-                placingShip.row,
-                placingShip.column
-              );
-              console.log(GAME.player);
-              shipButton.style["visibility"] = "hidden";
-            });
-
-          }
-
-        }
-      }
+        });
     }
 
-  });
 
+  for(let y=0; y<rows.length; y++) {
+    row = rows.item(y).getElementsByClassName("cell");
+    for(let x=0; x<row.length; x++) {
+      row.item(x).addEventListener("click", function(e)
+          {
+            if(e.target.classList.contains("cell")) {
+              if(placingShip.name!="") {
+                for(let ship of ships) {
+                  if(ship.name==placingShip.name) ship.classList.add("ship-placed");
+                }
+                GAME.player.placeShip(
+                  placingShip.name, placingShip.rotation, y,x
+                );
+                placingShip.name = "";
+                displayShips(GAME.player.ships.ships);
+              }
+            }
+          });
+    }
   }
+  validate.addEventListener("click", function()
+      {
+        if(GAME.player.ships.allShipsPlaced()) {
+          displayShips(GAME.player.ships.ships);
+          shootingPhase(solo);
+        }
+      });
 
-
-
-
-
-  // shipButtonSelect(placingShip);
-  rotationButtonSelect(placingShip);
-  //addEventListener blocks
 
 }
 // TODO : hide validate button if condition not full
@@ -448,8 +452,7 @@ GAME.practice = function()
   displayShips(GAME.player.ships.ships);
   shootingPhase(false);
 }
-GAME.solo = function(difficulty)
-{
+GAME.solo = function(difficulty) {
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
   GAME.canUseBONUSmove = false;
@@ -468,6 +471,9 @@ GAME.solo = function(difficulty)
   removeAllGameEventListeners();
 
   placingPhase(true);
+  //IA.placeShips(GAME.player);
+  //displayShips(GAME.player.ships.ships);
+  //shootingPhase(true);
 }
 
 const mainReady = function() {

@@ -846,6 +846,7 @@ class Grid
     }
 
     let ship = this.ships.searchShip(name);
+    ship.rotation = rotation;
     let blocks = [];
     for(let i=0; i<ship.getLength(); i++) {
       if(rotation) {

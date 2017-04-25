@@ -44,7 +44,7 @@ class Check
 {
 static def(object)
 {
-if(object===null) throw Erro("null");
+if(object===null) throw Error("null");
 if(object===undefined) throw Error("undefined");
 }
 static list(object, list)

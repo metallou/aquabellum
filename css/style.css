@@ -175,9 +175,10 @@ main, aside, .gameboard
 {
   background-color: green;
 }
-.gamebuttons .ship-button.button-selected,
+.gamebuttons .ship-button.button-selected
 {
   background-color: yellow;
+  border-color: green;
 }
 .gamebuttons .ship-button.impossible,
 {
