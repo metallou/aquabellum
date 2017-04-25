@@ -217,9 +217,9 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
+          gridO.ships.resetSpecialShots();
           const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
           hit = Shot.flareShot(grid, blocks[i]) || hit;
-          ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
             ship.reveal();
@@ -261,9 +261,9 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
+          gridO.ships.resetSpecialShots();
           const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
           hit = Shot.normalShot(grid, blocks[i]) || hit;
-          ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
             ship.reveal();
@@ -304,6 +304,7 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
+          gridO.ships.resetSpecialShots();
           for(let block of blocks) {
             hit = Shot.normalShot(grid, block) || hit;
             if(block.hasShip()) break;
@@ -352,11 +353,11 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
+          gridO.ships.resetSpecialShots();
           blocks.forEach(function(element, index, array)
               {
                 hit = Shot.flareShot(grid, element) || hit;
               });
-          ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
             ship.reveal();
@@ -400,11 +401,11 @@ class Shot
       if(ship.specialShot.canUse()) {
         //can shoot
         if(blocks.length>0) {
+          gridO.ships.resetSpecialShots();
           blocks.forEach(function(element, index, array)
               {
                 hit = Shot.normalShot(grid, element) || hit;
               });
-          ship.specialShot.reset();
           //reveal if malus
           if(ship.cantTouchThis()) {
             ship.reveal();
@@ -882,6 +883,9 @@ class Grid
     }
 
     attackMode(this, block, gridO);
+    console.log(gridO);
+    console.log(gridO.ships);
+    gridO.ships.updateSpecialShots(true);
 
     const chance = parseInt(Math.random()*1000);
     if(affectedBy(this.owner, "MALUSrevealblock") && chance%10===0) {
@@ -913,7 +917,7 @@ class Grid
       if(blocks.length) {
         const i = parseInt(Math.random()*1000*blocks.length)%blocks.length;
         const j = parseInt(Math.random()*1000*blocks[i].length)%blocks[i].length;
-        Shot.flareShot(this, this.grid[i][j]);
+        Shot.flareShot(this, gridO.grid[i][j]);
       }
     }
 

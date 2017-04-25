@@ -3,8 +3,8 @@
 const toggleOption = function(option)
 {
   const id = option.getElementsByTagName("span")[0].id;
-  option.classList.toggle("optionselected");
-  if(option.classList.contains("optionselected")) {
+  option.classList.toggle("option-selected");
+  if(option.classList.contains("option-selected")) {
     localStorage.setItem(id, "on");
     if(id==="music") {
       const musics = document.getElementsByClassName("MUSIC");
@@ -77,7 +77,7 @@ const initOptions = function()
     str = localStorage.getItem(keys.item(i).id);
     if(keys.item(i).classList.contains("KOO")) {
       if(str==="on") {
-        keys.item(i).parentNode.classList.add("optionselected");
+        keys.item(i).parentNode.classList.add("option-selected");
       }
       if(keys.item(i).id==="music" || keys.item(i).id==="sound") {
         const sounds = document.getElementsByClassName(keys.item(i).id.toUpperCase());

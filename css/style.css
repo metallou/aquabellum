@@ -127,7 +127,7 @@ main, aside, .gameboard
 {
   flex-direction: column;
 }
-#ship-buttons, #malusbuttons
+#ship-buttons, #malus-buttons
 {
   order: 1;
 }
@@ -135,22 +135,77 @@ main, aside, .gameboard
 {
   order: 2;
 }
-#shotbuttons, #bonusbuttons
+#shot-buttons, #bonus-buttons
 {
   order: 3;
 }
 #ship-buttons {
-  width: 180px;
+  width: 200px;
 }
-#ship-buttons > div {
-  position: relative;
-  height: 50px;
-  width: 0;
-}
-
-#ship-buttons .ship-button
+.gamebuttons div
 {
-  transform: rotate(90deg);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  text-align: right;
+}
+#ship-buttons div
+{
+  justify-content: flex-end;
+}
+#shot-buttons div
+{
+  justify-content: flex-start;
+}
+.gamebuttons button.ship-button, .gamebuttons #rotation
+{
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  border: 5px solid blue;
+}
+.gamebuttons .ship-button
+{
+  background-image: url("../media/img/directionRIGHT.png");
+  background-size: cover;
+}
+.gamebuttons .ship-button.possible,
+{
+  background-color: green;
+}
+.gamebuttons .ship-button.button-selected,
+{
+  background-color: yellow;
+}
+.gamebuttons .ship-button.impossible,
+{
+  background-color: black;
+}
+.gamebuttons .shot-button.button-selected circle,
+.gamebuttons .bonus-button.button-selected circle
+{
+  stroke: yellow;
+}
+.gamebutton .shot-button.possible circle,
+.gamebutton .bonus-button.possible circle
+{
+  stroke: blue;
+}
+.gamebutton .malus-button circle
+{
+  stroke: red;
+}
+.gamebuttons .shot-button.impossible circle,
+.gamebuttons .bonus-button.impossible circle
+{
+  stroke: black;
+}
+.gamebuttons .ship-button.ship-placed
+{
+  background-color: red;
+  background-image: url("../media/img/directionLEFT.png");
 }
 
 .commands {
@@ -169,11 +224,6 @@ main, aside, .gameboard
   padding: 0;
   background-color: #ADD8E6;
   width: 100px;
-}
-
-.ship-button.radio-selected {
-  box-shadow: inset 0 0 5px black;
-  background-color: #76D8E6;
 }
 
 section
@@ -359,11 +409,21 @@ sub
   border: 1px solid black;
   border-radius: 50%;
   background-color: rgb(255,255,0);
+  text-align: center;
+  line-height: 16px;
   font-size: 16px;
   font-weight: bold;
   color: black;
   text-shadow: none;
   box-sizing: border-box;
+}
+.gamebuttons sub
+{
+  width: 50px;
+  height: 50px;
+  margin-left: -50px;
+  font-size: 30px;
+  line-height: 50px;
 }
 .info
 {
@@ -406,24 +466,24 @@ sub
   stroke-width: 5;
   fill: rgb(255,255,255);
 }
-.optionselected .ring
-{
-  stroke: rgb(0,0,255);
-}
-#bonus .optionselected .ring
-{
-  stroke: rgb(0,255,0);
-}
-#malus .optionselected .ring
-{
-  stroke: rgb(255,0,0);
-}
 .cross
 {
   stroke: none;
   fill: rgb(255,0,0);
 }
-.optionselected .cross
+.option-selected .ring
+{
+  stroke: rgb(0,0,255);
+}
+#bonus .option-selected .ring
+{
+  stroke: rgb(0,255,0);
+}
+#malus .option-selected .ring, .malus-selected .ring
+{
+  stroke: rgb(255,0,0);
+}
+.option-selected .cross, .malus-selected .cross
 {
   display: none;
 }
@@ -680,17 +740,14 @@ figure img
   width: 100px;
 }
 
-.ship-button.radio-selected {
-  box-shadow: inset 0 0 5px black;
-  background-color: #76D8E6;
-}
-.shot-button.button-selected
-{
-  box-shadow: inset 0 0 5px black;
-  background-color: #76D8E6;
-  background-color: #000000;
-}
 .grid .row .cell.cell-selected
 {
   border-color: yellow;
+}
+.gridShip
+{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
 }

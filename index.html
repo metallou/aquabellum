@@ -155,16 +155,6 @@
                   i
                 </sub>
                 </p>
-                <p class="OPTIONKEY">
-                <span class="KOO" id="BONUScritical"></span>
-                <svg width="50px" height="50px">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
-                <sub>
-                  i
-                </sub>
-                </p>
               </article>
             </section>
             <section id="malus">
@@ -872,17 +862,103 @@
           <button class="commandbuttons exit">EXIT</button>
           <button class="commandbuttons validate">FIRE</button>
           <button class="commandbuttons change" name="SELF">CHANGE</button>
-          <div id="malusbuttons" class="gamebuttons">
-            <button name="special" class="malus-button">Special</button>
-            <button name="block" class="malus-button">Block</button>
-            <button name="ship" class="malus-button">Ship</button>
+          <div id="malus-buttons" class="gamebuttons">
+                <svg width="50px" height="50px" id="reveal" class="malus-button">
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+                </svg>
+                <svg width="50px" height="50px" id="revealblock" class="malus-button">
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+                </svg>
+                <svg width="50px" height="50px" id="revealship" class="malus-button">
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+                </svg>
           </div>
-          <div id="shotbuttons" class="gamebuttons">
-            <button name="destroyer" class="shot-button">Destroyer</button>
-            <button name="cruiser" class="shot-button">Cruiser</button>
-            <button name="submarine" class="shot-button">Submarine</button>
-            <button name="battleship" class="shot-button">Battleship</button>
-            <button name="carrier" class="shot-button">Carrier</button>
+          <div id="shot-buttons" class="gamebuttons">
+            <div>
+              <svg width="50px" height="50px" id="destroyer" class="shot-button">
+                <circle class="ring" />
+                <line x1="25" x2="25" y1="7" y2="43" stroke="black" stroke-width="3" />
+                <g transform="translate(25,18)">
+                  <g transform="translate(-8,0)">
+                    <path d="M-5,0 q5,-15 10,0 Z" stroke="none" fill="rgb(100,100,100)" />
+                    <rect x="-5" y="0" width="10" height="17" stroke="none" fill="black" />
+                  </g>
+                  <g transform="translate(8,0)">
+                    <line x1="-5" x2="5" y1="16" y2="16" stroke="black" stroke-width="2" />
+                    <line x1="-2" x2="-2" y1="16" y2="7" stroke="black" stroke-width="2" />
+                    <line x1="-2" x2="5" y1="7" y2="0" stroke="rgb(100,100,100)" stroke-width="1" />
+                    <circle cx="5" cy="0" r="1" stroke="none" fill="rgb(100,100,100)" />
+                    <path d="M-4,-2 Q-5,10 7,9 Z" stroke="none" fill="rgb(100,100,100)" />
+
+                  </g>
+                </g>
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+              </svg>
+              <sub style="display: none"></sub>
+            </div>
+            <div>
+              <svg width="50px" height="50px" id="cruiser" class="shot-button">
+                <circle class="ring" />
+                <line x1="25" x2="25" y1="7" y2="43" stroke="black" stroke-width="3" />
+                <g transform="translate(25,18)">
+                  <g transform="translate(-8,0)">
+                    <path d="M-5,0 q5,-15 10,0 Z" stroke="none" fill="rgb(100,100,100)" />
+                    <rect x="-5" y="0" width="10" height="17" stroke="none" fill="black" />
+                  </g>
+                  <g transform="translate(8,0)">
+                    <path d="M-5,0 q5,-15 10,0 Z" stroke="none" fill="rgb(100,100,100)" />
+                    <rect x="-5" y="0" width="10" height="17" stroke="none" fill="black" />
+                  </g>
+                </g>
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+              </svg>
+              <sub style="display: none"></sub>
+            </div>
+            <div>
+              <svg width="50px" height="50px" id="submarine" class="shot-button">
+                <circle class="ring" />
+                <g transform="translate(25,10)">
+                  <path d="M-5,3 q5,-5 10,0 v10 l-1,10 h3 v3 h-14 v-3 h3 l-1,-10 Z" stroke="none" fill="black" />
+                  <line x1="0" x2="0" y1="26" y2="27" stroke="rgb(100,100,100)" stroke-width="4" fill="none" />
+                  <line x1="-5" x2="5" y1="28" y2="28" stroke="rgb(100,100,100)" stroke-width="2" fill="none" />
+                  <line x1="-5" x2="5" y1="5" y2="5" stroke="rgb(150,150,150)" stroke-width="1" fill="none" />
+                  <line x1="-5" x2="5" y1="15" y2="15" stroke="rgb(150,150,150)" stroke-width="1" fill="none" />
+                </g>
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+              </svg>
+              <sub style="display: none"></sub>
+            </div>
+            <div>
+              <svg width="50px" height="50px" id="battleship" class="shot-button">
+                <circle class="ring" />
+                <g transform="translate(25,25)">
+                  <path d="M-1,-15 h2 l2,7 v3 l7,2 v3 h-7 l-1,10 h3 v2 h-10 v-2 h3 l-1,-10 h-7 v-3 l7,-2 v-3 Z" stroke="none" fill="black" />
+                  <path d="M-1,-12 h2 l2,3 h-6 Z" stroke="none" fill="rgb(150,150,150)" />
+                  <line x1="-10" x2="10" y1="-12" y2="8" stroke="rgb(100,100,100)" stroke-width="3" />
+                  <line x1="-10" x2="10" y1="8" y2="-12" stroke="rgb(100,100,100)" stroke-width="3" />
+                  <circle cx="0" cy="-2" r="2" stroke="none" fill="black" />
+                </g>
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+              </svg>
+              <sub style="display: none"></sub>
+            </div>
+            <div>
+              <svg width="50px" height="50px" id="carrier" class="shot-button">
+                <circle class="ring" />
+                <g transform="translate(25,10)">
+                  <path d="M0,0 l3,7 v3 l10,12 h-10 l-1,2 h-4 l-1,-2 h-10 l10,-12 v-3 Z" stroke="none" fill="black" />
+                  <path d="M0,3 l2,3 h-4 Z" stroke="none" fill="rgb(150,150,150)" />
+                  <line x1="3" x2="3" y1="10" y2="22" stroke="rgb(100,100,100)" stroke-width="1" />
+                  <line x1="-3" x2="-3" y1="10" y2="22" stroke="rgb(100,100,100)" stroke-width="1" />
+                  <line x1="0" x2="0" y1="18" y2="22" stroke="rgb(100,100,100)" stroke-width="1" />
+                </g>
+                <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+              </svg>
+              <sub style="display: none"></sub>
+            </div>
           </div>
           <div id="grid_p2" class="grid">
             <div class="row">
@@ -923,13 +999,13 @@
             </div>
             <div class="row">
               <div class="cell"></div>
-              <div class="cell ship">bateau</div>
-              <div class="cell ship"></div>
-              <div class="cell hit">touché</div>
-              <div class="cell sunk">coulé</div>
-              <div class="cell unavalaible">pas dispo</div>
-              <div class="cell">occupé</div>
-              <div class="cell impossible">impossible</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
               <div class="cell"></div>
               <div class="cell"></div>
             </div>
@@ -1012,63 +1088,81 @@
           <button class="commandbuttons validate">FIRE</button>
           <button class="commandbuttons change" name="ENEMY">CHANGE</button>
           <div id="ship-buttons" class="gamebuttons">
-            <button id="rotation" name="rotation">ROTATION</button>
             <div>
               <img
-              class="ship-button"
-              name="destroyer"
+              alt="arrow"
+              src="media/img/directionRIGHT.png"
+              width="30px"
+              height="30px"
+              />
+              <button id="rotation">
+                <img
+                alt="arrow"
+                src="media/img/rotate.png"
+                width="30px"
+                height="30px"
+                />
+              </button>
+            </div>
+            <div>
+              <img
               alt="destroyer"
-              src="media/img/ships/destroyer.png"
-              width="30px"
-              height="60px"
+              src="media/img/ships/destroyerRIGHT.png"
+              width="60px"
+              height="30px"
               />
+              <button class="ship-button" name="destroyer"></button>
             </div>
             <div>
               <img
-              class="ship-button"
-              name="cruiser"
               alt="cruiser"
-              src="media/img/ships/cruiser.png"
-              width="30px"
-              height="90px"
+              src="media/img/ships/cruiserRIGHT.png"
+              width="90px"
+              height="30px"
               />
+              <button class="ship-button" name="cruiser"></button>
             </div>
             <div>
               <img
-              class="ship-button"
-              name="submarine"
               alt="submarine"
-              src="media/img/ships/submarine.png"
-              width="30px"
-              height="90px"
+              src="media/img/ships/submarineRIGHT.png"
+              width="90px"
+              height="30px"
               />
+              <button class="ship-button" name="submarine"></button>
             </div>
             <div>
               <img
-              class="ship-button"
-              name="battleship"
               alt="batleship"
-              src="media/img/ships/battleship.png"
-              width="30px"
-              height="120px"
+              src="media/img/ships/battleshipRIGHT.png"
+              width="120px"
+              height="30px"
               />
+              <button class="ship-button" name="battleship"></button>
             </div>
             <div>
               <img
-              class="ship-button"
-              name="carrier"
               alt="carrier"
-              src="media/img/ships/carrier.png"
-              width="30px"
-              height="150px"
+              src="media/img/ships/carrierRIGHT.png"
+              width="150px"
+              height="30px"
               />
+              <button class="ship-button" name="carrier"></button>
             </div>
           </div>
-          <div id="bonusbuttons" class="gamebuttons">
-            <button name="move" class="bonus-button">Move</button>
-            <button name="repair" class="bonus-button">Repair</button>
-            <button name="shild" class="bonus-button">Shield</button>
-            <button name="critical" class="bonus-button">Critical</button>
+          <div id="bonus-buttons" class="gamebuttons">
+                <svg width="50px" height="50px" id="move" class="bonus-button">
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+                </svg>
+                <svg width="50px" height="50px" id="repair" class="bonus-button">
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+                </svg>
+                <svg width="50px" height="50px" id="shield" class="bonus-button">
+                  <circle class="ring" />
+                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+                </svg>
           </div>
           <div id="grid_p1" class="grid">
             <div class="row">
@@ -1109,13 +1203,13 @@
             </div>
             <div class="row">
               <div class="cell"></div>
-              <div class="cell ship">bateau</div>
-              <div class="cell ship"></div>
-              <div class="cell hit">touché</div>
-              <div class="cell sunk">coulé</div>
-              <div class="cell unavalaible">pas dispo</div>
-              <div class="cell">occupé</div>
-              <div class="cell impossible">impossible</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
               <div class="cell"></div>
               <div class="cell"></div>
             </div>
