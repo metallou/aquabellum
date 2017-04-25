@@ -13,10 +13,11 @@ const updateGrid = function(grid, id)
     }
   }
 }
+// for prevent events to activate in the wrong phase :
 const removeEventListeners = function(id)
 {
   const element = document.getElementById(id);
-  const clone = element.cloneNode(true);
+  const clone = element.cloneNode(true); // Effect : clone remove event listeners
   element.parentNode.replaceChild(clone, element);
 }
 
@@ -61,7 +62,8 @@ const rotationButtonSelect = function(ship) {
     checkImpossibleCells();
   });
 }
-
+// TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
+//
 const placingPhase = function(grid, bot, solo) {
   document.getElementById("gamecontainer").style["top"] = "-100vh";
 
@@ -78,6 +80,7 @@ const placingPhase = function(grid, bot, solo) {
   //addEventListener blocks
 
 }
+// TODO : hide validate button if condition not full
 const shootingPhase = function(grid, bot, solo)
 {
   if(!GAME.playerAlive || !GAME.enemyAlive) {
@@ -95,7 +98,7 @@ const shootingPhase = function(grid, bot, solo)
     div: null
   }
 
-  let blocks;
+  let blocks; // 1 row (controller)
   const cells = document.getElementById("grid_p2").getElementsByClassName("cell");
   const rows = document.getElementById("grid_p2").getElementsByClassName("row");
   for(let y=0; y<rows.length; y++) {
@@ -163,8 +166,10 @@ const shootingPhase = function(grid, bot, solo)
           removeEventListeners("grid_p2");
           removeEventListeners("shotbuttons");
 
+// TODO : AFFICHER CHARGE COUPS SPECIAUX
+
           GAME.enemyAlive = bot.grid.fireAt(block, shot, grid);
-          if(solo) GAME.playerALive = bot.attack(grid, bot.grid);
+          if(solo && GAME.enemyAlive) GAME.playerAlive = bot.attack(grid, bot.grid);
 
           updateGrid(bot.grid.grid, "grid_p2");
           updateGrid(grid.grid, "grid_p1");
@@ -185,7 +190,6 @@ GAME.practice = function()
   let bot = new Bot("easy");
   bot.setGrid();
 
-  placingPhase(grid, bot);
   shootingPhase(grid, bot, false);
 }
 GAME.solo = function(difficulty) {
