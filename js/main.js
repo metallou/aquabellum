@@ -37,21 +37,6 @@ const checkImpossibleCells = function() {
 }
 
 const shipButtonSelect = function(ship) {
-  const shipButtons = document.getElementsByClassName('ship-button');
-  for (let shipButton of shipButtons) {
-    shipButton.addEventListener('click', function(e)
-        {
-          checkImpossibleCells();
-          for (shipButton of shipButtons) {
-            shipButton.classList.remove('radio-selected');
-          }
-          e.target.classList.add('radio-selected');
-          ship.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
-
-          //Enlever bateau si placé
-          //recalculer position unavailable
-        });
-  }
 }
 
 const rotationButtonSelect = function(ship) {
@@ -65,6 +50,7 @@ const rotationButtonSelect = function(ship) {
 //
 const placingPhase = function(solo) {
   document.getElementById("gamecontainer").style["top"] = "-100vh";
+  console.log('placing phase...');
 
   let placingShip = {
     name: "",
@@ -73,8 +59,60 @@ const placingPhase = function(solo) {
     column: 0
   };
 
+  // shipButtonSelect :
+  const shipButtons = document.getElementsByClassName('ship-button');
+  for (let shipButton of shipButtons) {
+    shipButton.addEventListener('click', function(e)
+        {
+          checkImpossibleCells();
+          for (shipButton of shipButtons) {
+            shipButton.classList.remove('radio-selected');
+          }
+          e.target.classList.add('radio-selected');
+          placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
+          console.log(placingShip.name);
+          //Enlever bateau si placé
+          //recalculer position unavailable
 
-  shipButtonSelect(placingShip);
+
+    for (let shipButton of shipButtons) {
+      console.log(shipButton.classList);
+      if (shipButton.classList.contains('radio-selected')) {
+        console.log('toto-2');
+        let htmlPlayer1Grid = document.getElementById('grid_p1'),
+            htmlPlayer1Rows = htmlPlayer1Grid.getElementsByClassName('row');
+
+        for (let htmlPlayer1Row of htmlPlayer1Rows) {
+          console.log('toto-1');
+          let cells = htmlPlayer1Row.getElementsByClassName('cell');
+          for (let i = 0; i < cells.length; i++) {
+            cells[i].addEventListener('click', function() {
+              console.log('toto');
+              GAME.player.placeShip(
+                placingShip.name,
+                placingShip.rotation,
+                placingShip.row,
+                placingShip.column
+              );
+              console.log(GAME.player);
+              shipButton.style["visibility"] = "hidden";
+            });
+
+          }
+
+        }
+      }
+    }
+
+  });
+
+  }
+
+
+
+
+
+  // shipButtonSelect(placingShip);
   rotationButtonSelect(placingShip);
   //addEventListener blocks
 
@@ -85,7 +123,7 @@ const shootingPhase = function(solo)
   //check if game ended
   if(!GAME.playerAlive || !GAME.enemyAlive) {
     if(GAME.playerAlive) playSound("victory");
-    if(GAME.enemyAlive) playSound("defaat");
+    if(GAME.enemyAlive) playSound("defeat");
     document.getElementById("wrapper").style["display"] = "";
     document.getElementById("gamewrapper").style["display"] = "none";
     return;
@@ -231,6 +269,7 @@ GAME.practice = function()
   shootingPhase(false);
 }
 GAME.solo = function(difficulty) {
+  console.log('solo' + difficulty);
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
 
@@ -239,11 +278,10 @@ GAME.solo = function(difficulty) {
   GAME.enemy.setGrid();
 
   placingPhase(true);
-  shootingPhase(true);
+  // shootingPhase(true);
 }
 
 const mainReady = function() {
-  placingPhase(true);
   const changeButtons = document.getElementsByClassName("change");
   for(let changeButton of changeButtons) {
     changeButton.addEventListener("click", function(e)
