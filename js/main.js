@@ -58,13 +58,12 @@ const rotationButtonSelect = function(ship) {
   document.getElementById("rotation").addEventListener('click', function(e) {
     console.info(ship);
     ship.rotation = !ship.rotation;
-    removeImpossibleCells();
     checkImpossibleCells();
   });
 }
 // TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
 //
-const placingPhase = function(grid, bot, solo) {
+const placingPhase = function(solo) {
   document.getElementById("gamecontainer").style["top"] = "-100vh";
 
   let placingShip = {
@@ -81,7 +80,7 @@ const placingPhase = function(grid, bot, solo) {
 
 }
 // TODO : hide validate button if condition not full
-const shootingPhase = function(grid, bot, solo)
+const shootingPhase = function(solo)
 {
   //check if game ended
   if(!GAME.playerAlive || !GAME.enemyAlive) {
@@ -239,11 +238,12 @@ GAME.solo = function(difficulty) {
   GAME.enemy = new Bot(difficulty);
   GAME.enemy.setGrid();
 
-  placingPhase();
+  placingPhase(true);
   shootingPhase(true);
 }
 
 const mainReady = function() {
+  placingPhase(true);
   const changeButtons = document.getElementsByClassName("change");
   for(let changeButton of changeButtons) {
     changeButton.addEventListener("click", function(e)
