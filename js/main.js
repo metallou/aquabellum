@@ -135,37 +135,47 @@ const shootingPhase = function(grid, bot, solo)
   const validate = document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0];
   validate.addEventListener("click", function()
       {
-        for(let special of specials) special.classList.remove("button-selected");
         if(shootingBlock.block) {
           let block = shootingBlock.block;
           let shot;
+		  let sound;
+		  let timeout = 100;
           switch(shootingBlock.special) {
             case "destroyer":
               shot = Shot.destroyerShot;
+			  sound = "destroyerShot";
               break;
             case "cruiser":
               shot = Shot.cruiserShot;
+			  sound = "cruiserShot";
               break;
             case "submarine":
               shot = Shot.submarineShot;
+			  sound = "submarineShot";
               break;
             case "battleship":
               shot = Shot.battleshipShot;
+			  sound = "battleshipShot";
               break;
             case "carrier":
               shot = Shot.carrierShot;
+			  sound = "carrierShot";
+			  timeout = 6000;
               break;
             default:
               shot = Shot.normalShot;
+			  sound = "normalShot";
           }
+		  if(!affectedBy("self", "sound")) timeout = 100;
           shootingBlock.div.classList.remove("cell-selected");
           shootingBlock.div = null;
           shootingBlock.block = null;
-          for(let special of specials) special.classList.remove("button-selected");
           shootingBlock.special = "";
+          for(let special of specials) special.classList.remove("button-selected");
           removeEventListeners("grid_p2");
           removeEventListeners("shotbuttons");
 
+<<<<<<< HEAD
 // TODO : AFFICHER CHARGE COUPS SPECIAUX
 
           GAME.enemyAlive = bot.grid.fireAt(block, shot, grid);
@@ -174,6 +184,21 @@ const shootingPhase = function(grid, bot, solo)
           updateGrid(bot.grid.grid, "grid_p2");
           updateGrid(grid.grid, "grid_p1");
           shootingPhase(grid, bot, solo);
+=======
+		  playSound(sound);
+		  setTimeout(function()
+		  {
+			GAME.enemyAlive = bot.grid.fireAt(block, shot, grid);
+			if(solo && GAME.enemyAlive) GAME.playerALive = bot.attack(grid, bot.grid);
+
+			updateGrid(bot.grid.grid, "grid_p2");
+			updateGrid(grid.grid, "grid_p1");
+			setTimeout(function()
+			{
+				shootingPhase(grid, bot, solo);
+			}, 1000);
+		  }, timeout);
+>>>>>>> 71afe227aa7a60e8572c19ae82c5d2c4fb6c008a
         } else {
 
         }
