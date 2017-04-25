@@ -98,6 +98,7 @@ html,body
   height: 100vh;
   position: relative;
   background-size: cover;
+  background-image: url('../media/img/sea_background.jpg');
 }
 #wrapper
 {
