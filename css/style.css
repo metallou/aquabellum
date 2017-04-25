@@ -145,6 +145,7 @@ main, aside, .gameboard
 #ship-buttons > div {
   position: relative;
   height: 50px;
+  width: 0;
 }
 
 #ship-buttons .ship-button
@@ -173,7 +174,6 @@ main, aside, .gameboard
 .ship-button.radio-selected {
   box-shadow: inset 0 0 5px black;
   background-color: #76D8E6;
-  position: absolute;
 }
 
 section

@@ -13,10 +13,11 @@ const updateGrid = function(grid, id)
     }
   }
 }
+// for prevent events to activate in the wrong phase :
 const removeEventListeners = function(id)
 {
   const element = document.getElementById(id);
-  const clone = element.cloneNode(true);
+  const clone = element.cloneNode(true); // Effect : clone remove event listeners
   element.parentNode.replaceChild(clone, element);
 }
 
@@ -61,7 +62,8 @@ const rotationButtonSelect = function(ship) {
     checkImpossibleCells();
   });
 }
-
+// TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
+//
 const placingPhase = function(grid, bot, solo) {
   document.getElementById("gamecontainer").style["top"] = "-100vh";
 
@@ -78,6 +80,7 @@ const placingPhase = function(grid, bot, solo) {
   //addEventListener blocks
 
 }
+// TODO : hide validate button if condition not full
 const shootingPhase = function(grid, bot, solo)
 {
   //check if game ended
