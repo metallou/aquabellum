@@ -917,37 +917,6 @@ class Grid
       }
     }
 
-    //this.visualise();
     return this.ships.stillAlive();
-  }
-  visualise()
-  {
-    let str = "";
-    for(let i in this.grid) {
-      for(let j in this.grid[i]) {
-        switch(this.grid[i][j].getState()) {
-          case "unknown":
-            str += ".";
-            break;
-          case "empty":
-            str += ":";
-            break;
-          case "miss":
-            str += "m";
-            break;
-          case "ship":
-            str += "S";
-            break;
-          case "hit":
-            str += "x";
-            break;
-          case "sunk":
-            str += "X";
-            break;
-        }
-      }
-      str += "\n";
-    }
-    console.log(str);
   }
 }

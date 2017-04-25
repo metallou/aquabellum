@@ -39,7 +39,7 @@
           <path d="M30,20  h10" stroke="white" stroke-width="1" stroke-dasharray="2,2" fill="none" />
           <path d="M20,2 v56" stroke="white" stroke-width="1" stroke-dasharray="2,2" fill="none" />
           <g transform="translate(35,40)">
-            <rect x="0" y="0" width="20" height="20" fill="white" stroke="black" stroke-width="2" />
+            <rect x="0" y="0" width="20" height="20" fill="rgb(125,125,125)" stroke="black" stroke-width="2" />
             <g transform="translate(10,10)">
               <g transform="scale(1,1)">
                 <path d="M-6,-3 v-4 h4" stroke="black" stroke-width="2" fill="none" />
@@ -65,8 +65,8 @@
     <path d="M28,0 v60" stroke="white" stroke-width="1" fill="none" />
     <path d="M20,-2 v64" stroke="white" stroke-width="1" stroke-dasharray="2,2" fill="none" />
     <g transform="translate(45,35)">
-      <rect x="-10" y="-30" width="20" height="50" fill="white" stroke="black" stroke-width="3" />
-      <rect x="-10" y="-30" width="20" height="10" fill="white" stroke="black" stroke-width="3" />
+      <rect x="-10" y="-30" width="20" height="50" fill="rgb(125,125,125)" stroke="black" stroke-width="3" />
+      <rect x="-10" y="-30" width="20" height="10" fill="rgb(50,50,50)" stroke="black" stroke-width="3" />
       <path d="M-15,-5 l5,-5 h20 l5,5 v10 l-5,5 h-20 l-5,-5 Z" fill="white" stroke="black" stroke-width="3" />
       <g transform="scale(1,1)">
         <path d="M3,-8 q0,10 10,10" fill="black" stroke="none" />
@@ -92,7 +92,7 @@
           <path d="M30,20  h10" stroke="white" stroke-width="1" stroke-dasharray="2,2" fill="none" />
           <path d="M20,2 v56" stroke="white" stroke-width="1" stroke-dasharray="2,2" fill="none" />
           <g transform="translate(35,40)">
-            <rect x="0" y="0" width="20" height="20" fill="white" stroke="black" stroke-width="2" />
+            <rect x="0" y="0" width="20" height="20" fill="rgb(125,125,125)" stroke="black" stroke-width="2" />
             <g transform="translate(10,10)">
               <g transform="scale(1,1)">
                 <path d="M-6,-3 v-4 h4" stroke="black" stroke-width="2" fill="none" />

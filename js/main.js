@@ -27,7 +27,7 @@ const checkImpossibleCells = function() {
   for (let htmlPlayer1Row of htmlPlayer1Rows) {
     let cells = htmlPlayer1Row.getElementsByClassName('cell');
     for (let i = 0; i < cells.length; i++) {
-    cells[i].classList.remove('impossible');
+      cells[i].classList.remove('impossible');
       if (cells[i].classList.contains('ship')) {
         cells[i].classList.add('impossible');
       }
@@ -80,33 +80,55 @@ const placingPhase = function(grid, bot, solo) {
 }
 const shootingPhase = function(grid, bot, solo)
 {
+  //check if game ended
   if(!GAME.playerAlive || !GAME.enemyAlive) {
+    if(GAME.playerAlive) playSound("victory");
+    if(GAME.enemyAlive) playSound("defaat");
     document.getElementById("wrapper").style["display"] = "";
     document.getElementById("gamewrapper").style["display"] = "none";
     return;
   }
-  document.getElementById("gamecontainer").style["top"] = "0vh";
-  updateGrid(bot.grid.grid, "grid_p2");
-  updateGrid(grid.grid, "grid_p1");
 
+  let row;
+  let cells;
+  let rows;
+  let specials;
+  let validate;
   let shootingBlock = {
     special: "",
-    block: null,
-    div: null
+    block: null
   }
 
-  let blocks;
-  const cells = document.getElementById("grid_p2").getElementsByClassName("cell");
-  const rows = document.getElementById("grid_p2").getElementsByClassName("row");
+  //reset board
+  cells = document.getElementById("grid_p2").getElementsByClassName("cell");
+  rows = document.getElementById("grid_p2").getElementsByClassName("row");
+  specials = document.getElementsByClassName("shot-button");
+  validate = document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0];
+  for(let cell of cells) cell.classList.remove("cell-selected");
+  for(let special of specials) special.classList.remove("button-selected");
+  removeEventListeners("grid_p1");
+  removeEventListeners("grid_p2");
+  removeEventListeners("bonusbuttons");
+  removeEventListeners("shotbuttons");
+  cells = document.getElementById("grid_p2").getElementsByClassName("cell");
+  rows = document.getElementById("grid_p2").getElementsByClassName("row");
+  specials = document.getElementsByClassName("shot-button");
+  validate = document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0];
+
+  //update board
+  updateGrid(GAME.enemy.grid.grid, "grid_p2");
+  updateGrid(GAME.player.grid, "grid_p1");
+  document.getElementById("gamecontainer").style["top"] = "0vh";
+
+  //select target
   for(let y=0; y<rows.length; y++) {
-    blocks = rows.item(y).getElementsByClassName("cell");
-    for(let x=0; x<blocks.length; x++) {
-      blocks[x].addEventListener("click", function(e)
+    row = rows.item(y).getElementsByClassName("cell");
+    for(let x=0; x<row.length; x++) {
+      row.item(x).addEventListener("click", function(e)
           {
             for(let cell of cells) cell.classList.remove("cell-selected");
-            if(bot.grid.grid[y][x].canBeShotAt()) {
-              shootingBlock.block = bot.grid.grid[y][x];
-              shootingBlock.div = e.target;
+            if(GAME.enemy.grid.grid[y][x].canBeShotAt()) {
+              shootingBlock.block = GAME.enemy.grid.grid[y][x];
               e.target.classList.add("cell-selected");
             } else {
 
@@ -115,7 +137,7 @@ const shootingPhase = function(grid, bot, solo)
     }
   }
 
-  const specials = document.getElementsByClassName("shot-button");
+  //select special shot
   for(let special of specials) {
     special.addEventListener("click", function(e)
         {
@@ -129,62 +151,64 @@ const shootingPhase = function(grid, bot, solo)
         });
   }
 
-  const validate = document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0];
+  //FIRE
   validate.addEventListener("click", function()
       {
         if(shootingBlock.block) {
           let block = shootingBlock.block;
           let shot;
-		  let sound;
-		  let timeout = 100;
+          let sound;
+          let timeout = 100;
           switch(shootingBlock.special) {
             case "destroyer":
               shot = Shot.destroyerShot;
-			  sound = "destroyerShot";
+              sound = "destroyerShot";
               break;
             case "cruiser":
               shot = Shot.cruiserShot;
-			  sound = "cruiserShot";
+              sound = "cruiserShot";
               break;
             case "submarine":
               shot = Shot.submarineShot;
-			  sound = "submarineShot";
+              sound = "submarineShot";
               break;
             case "battleship":
               shot = Shot.battleshipShot;
-			  sound = "battleshipShot";
+              sound = "battleshipShot";
               break;
             case "carrier":
               shot = Shot.carrierShot;
-			  sound = "carrierShot";
-			  timeout = 6000;
+              sound = "carrierShot";
+              timeout = 6000;
               break;
             default:
               shot = Shot.normalShot;
-			  sound = "normalShot";
+              sound = "normalShot";
           }
-		  if(!affectedBy("self", "sound")) timeout = 100;
-          shootingBlock.div.classList.remove("cell-selected");
-          shootingBlock.div = null;
+          if(!affectedBy("self", "sound")) timeout = 100;
           shootingBlock.block = null;
           shootingBlock.special = "";
+
+          for(let cell of cells) cell.classList.remove("cell-selected");
           for(let special of specials) special.classList.remove("button-selected");
+          removeEventListeners("grid_p1");
           removeEventListeners("grid_p2");
+          removeEventListeners("bonusbuttons");
           removeEventListeners("shotbuttons");
 
-		  playSound(sound);
-		  setTimeout(function()
-		  {
-			GAME.enemyAlive = bot.grid.fireAt(block, shot, grid);
-			if(solo && GAME.enemyAlive) GAME.playerALive = bot.attack(grid, bot.grid);
+          playSound(sound);
+          setTimeout(function()
+              {
+                GAME.enemyAlive = GAME.enemy.grid.fireAt(block, shot, GAME.player);
+                if(solo && GAME.enemyAlive) GAME.playerALive = GAME.enemy.attack(GAME.player, GAME.enemy.grid);
 
-			updateGrid(bot.grid.grid, "grid_p2");
-			updateGrid(grid.grid, "grid_p1");
-			setTimeout(function()
-			{
-				shootingPhase(grid, bot, solo);
-			}, 1000);
-		  }, timeout);
+                updateGrid(GAME.enemy.grid.grid, "grid_p2");
+                updateGrid(GAME.player.grid, "grid_p1");
+                setTimeout(function()
+                    {
+                      shootingPhase(solo);
+                    }, 1000);
+              }, timeout);
         } else {
 
         }
@@ -197,23 +221,23 @@ GAME.practice = function()
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
 
-  let grid = new Grid("self");
-  let bot = new Bot("easy");
-  bot.setGrid();
+  GAME.player = new Grid("self");
+  IA.placeShips(GAME.player);
+  GAME.enemy = new Bot("easy");
+  GAME.enemy.setGrid();
 
-  placingPhase(grid, bot);
-  shootingPhase(grid, bot, false);
+  shootingPhase(false);
 }
 GAME.solo = function(difficulty) {
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
 
-  let grid = new Grid("self");
-  let bot = new Bot(difficulty);
-  bot.setGrid();
+  GAME.player = new Grid("self");
+  GAME.enemy = new Bot(difficulty);
+  GAME.enemy.setGrid();
 
-  placingPhase(grid, bot);
-  shootingPhase(grid, bot, true);
+  placingPhase();
+  shootingPhase(true);
 }
 
 const mainReady = function() {
@@ -230,6 +254,11 @@ const mainReady = function() {
   for(let exitButton of exitButtons) {
     exitButton.addEventListener("click", function(e)
         {
+          GAME.player = null;
+          GAME.enemy = null;
+          GAME.playerAlive = false;
+          GAME.enemyALive = false;
+          playSound("defeat");
           document.getElementById("wrapper").style["display"] = "";
           document.getElementById("gamewrapper").style["display"] = "none";
         });
