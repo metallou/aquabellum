@@ -175,16 +175,7 @@ const shootingPhase = function(grid, bot, solo)
           removeEventListeners("grid_p2");
           removeEventListeners("shotbuttons");
 
-<<<<<<< HEAD
-// TODO : AFFICHER CHARGE COUPS SPECIAUX
-
-          GAME.enemyAlive = bot.grid.fireAt(block, shot, grid);
-          if(solo && GAME.enemyAlive) GAME.playerAlive = bot.attack(grid, bot.grid);
-
-          updateGrid(bot.grid.grid, "grid_p2");
-          updateGrid(grid.grid, "grid_p1");
-          shootingPhase(grid, bot, solo);
-=======
+          // TODO : AFFICHER CHARGE COUPS SPECIAUX
 		  playSound(sound);
 		  setTimeout(function()
 		  {
@@ -198,7 +189,6 @@ const shootingPhase = function(grid, bot, solo)
 				shootingPhase(grid, bot, solo);
 			}, 1000);
 		  }, timeout);
->>>>>>> 71afe227aa7a60e8572c19ae82c5d2c4fb6c008a
         } else {
 
         }
