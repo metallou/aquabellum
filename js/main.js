@@ -52,9 +52,10 @@ const removeShips = function()
   for(let i=gridShips.length-1; i>=0; i--) gridShips.item(i).parentNode.removeChild(gridShips.item(i));
   for(let i=shipCells.length-1; i>=0; i--) shipCells.item(i).classList.remove("shipPlaced");
 }
-const displayShips = function(ships)
+const displayShips = function()
 {
   removeShips();
+  const ships = GAME.player.ships.ships;
 
   let pos;
   let row;
@@ -199,6 +200,9 @@ const checkImpossibleCells = function(placingShip) {
 const placingPhase = function(solo) {
   //reset board
   removeAllGameEventListeners();
+  document.getElementById("ship-buttons").style["visibility"] = "";
+  document.getElementById("SELFBOARD").getElementsByClassName("change")[0].style["display"] = "none";
+  document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
 
   let elem;
   let row;
@@ -242,8 +246,13 @@ const placingPhase = function(solo) {
             elem.classList.remove("ship-placed");
           }
           placingShip.name = elem.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
-          displayShips(GAME.player.ships.ships);
+          displayShips();
           checkImpossibleCells(placingShip);
+          if(GAME.player.ships.allShipsPlaced()) {
+            document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "";
+          } else {
+            document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
+          }
         });
     }
 
@@ -263,9 +272,14 @@ const placingPhase = function(solo) {
                     placingShip.name = "";
                   }
                 }
-                displayShips(GAME.player.ships.ships);
+                displayShips();
                 checkImpossibleCells(placingShip);
               }
+            }
+            if(GAME.player.ships.allShipsPlaced()) {
+              document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "";
+            } else {
+              document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
             }
           });
     }
@@ -273,7 +287,6 @@ const placingPhase = function(solo) {
   validate.addEventListener("click", function()
       {
         if(GAME.player.ships.allShipsPlaced()) {
-          displayShips(GAME.player.ships.ships);
           shootingPhase(solo);
         }
       });
@@ -312,10 +325,15 @@ const shootingPhase = function(solo)
   //update board
   updateGrid(GAME.enemy.grid.grid, "grid_p2");
   updateGrid(GAME.player.grid, "grid_p1");
+  document.getElementById("ship-buttons").style["visibility"] = "hidden";
+  document.getElementById("SELFBOARD").getElementsByClassName("change")[0].style["display"] = "";
+  document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
+  document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
   document.getElementById("gamecontainer").style["top"] = "0vh";
   checkSpecialShots();
   checkMaluses();
   checkBonuses();
+  displayShips();
 
   //select target
   for(let y=0; y<rows.length; y++) {
@@ -325,10 +343,15 @@ const shootingPhase = function(solo)
           {
             for(let cell of cells) cell.classList.remove("cell-selected");
             if(GAME.enemy.grid.grid[y][x].canBeShotAt()) {
-              shootingBlock.block = GAME.enemy.grid.grid[y][x];
-              e.target.classList.add("cell-selected");
-            } else {
-
+              if(shootingBlock.block===GAME.enemy.grid.grid[y][x]) {
+                shootingBlock.block = null;
+                e.target.classList.remove("cell-selected");
+                document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
+              } else {
+                shootingBlock.block = GAME.enemy.grid.grid[y][x];
+                e.target.classList.add("cell-selected");
+                document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0].style["display"] = "";
+              }
             }
           });
     }
@@ -354,6 +377,8 @@ const shootingPhase = function(solo)
   validate.addEventListener("click", function()
       {
         if(shootingBlock.block) {
+          document.getElementById("ENEMYBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
+
           let block = shootingBlock.block;
           let shot;
           let sound;
@@ -424,8 +449,10 @@ const shootingPhase = function(solo)
           if(elem.classList.contains("option-selected") && shootingBlock.bonus!=elem.id) {
             shootingBlock.bonus = elem.id;
             elem.classList.add("button-selected");
+            document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "";
           } else {
             shootingBlock.bonus = "";
+            document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
           }
         });
   }
@@ -471,6 +498,7 @@ const shootingPhase = function(solo)
         }
 
         if(valid) {
+          document.getElementById("SELFBOARD").getElementsByClassName("validate")[0].style["display"] = "none";
           GAME["canUseBONUS"+shootingBlock.bonus] = false;
           shootingBlock.bonus = "";
           bonus();
@@ -498,7 +526,6 @@ GAME.practice = function()
   checkBonuses();
   removeAllGameEventListeners();
 
-  displayShips(GAME.player.ships.ships);
   shootingPhase(false);
 }
 GAME.solo = function(difficulty) {
@@ -519,10 +546,7 @@ GAME.solo = function(difficulty) {
   checkBonuses();
   removeAllGameEventListeners();
 
-  //placingPhase(true);
-  IA.placeShips(GAME.player);
-  displayShips(GAME.player.ships.ships);
-  shootingPhase(true);
+  placingPhase(true);
 }
 
 const mainReady = function() {
@@ -530,7 +554,9 @@ const mainReady = function() {
   for(let changeButton of changeButtons) {
     changeButton.addEventListener("click", function(e)
         {
-          let offset = document.getElementById(e.target.name+"BOARD").offsetTop;
+          let elem = e.target;
+          while(!elem.classList.contains("change")) elem = elem.parentNode;
+          let offset = document.getElementById(elem.name+"BOARD").offsetTop;
           offset = 100*parseInt(Math.round(offset/window.innerHeight));
           document.getElementById("gamecontainer").style["top"] = (-offset)+"vh";
         });

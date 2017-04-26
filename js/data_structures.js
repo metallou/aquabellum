@@ -7,7 +7,6 @@ const affectedBy = function(owner, key)
     Check.string(key);
   }
 
-  return localStorage.getItem(key)==="on";
   return (owner==="self" || owner==="other") && localStorage.getItem(key)==="on";
 }
 

@@ -859,9 +859,15 @@
     <div id="gamewrapper" style="display:none">
       <div id="gamecontainer">
         <div id="ENEMYBOARD" class="gameboard">
-          <button class="commandbuttons exit">EXIT</button>
-          <button class="commandbuttons validate">FIRE</button>
-          <button class="commandbuttons change" name="SELF">CHANGE</button>
+          <button class="commandbuttons exit">
+            <img alt="exit" src="media/img/exit.png" width="50px" height="50px" />
+          </button>
+          <button class="commandbuttons validate">
+            <img alt="fire" src="media/img/fire.png" width="50px" height="50px" />
+          </button>
+          <button class="commandbuttons change" name="SELF">
+            <img alt="change" src="media/img/directionDOWN.png" width="50px" height="50px" />
+          </button>
           <div id="malus-buttons" class="gamebuttons">
             <svg width="50px" height="50px" id="reveal" class="malus-button">
               <circle class="ring" />
@@ -1084,10 +1090,16 @@
           </div>
         </div>
         <div id="SELFBOARD" class="gameboard">
-          <button class="commandbuttons exit">EXIT</button>
-          <button class="commandbuttons validate">FIRE</button>
-          <button class="commandbuttons change" name="ENEMY">CHANGE</button>
-          <div id="ship-buttons" class="gamebuttons">
+          <button class="commandbuttons exit">
+            <img alt="exit" src="media/img/exit.png" width="50px" height="50px" />
+          </button>
+          <button class="commandbuttons validate">
+            <img alt="validate" src="media/img/validate.png" width="50px" height="50px" />
+          </button>
+          <button class="commandbuttons change" name="ENEMY">
+            <img alt="change" src="media/img/directionUP.png" width="50px" height="50px" />
+          </button>
+          <div id="ship-buttons" class="gamebuttons" style="visibility:hidden">
             <button id="rotation"></button>
             <button class="ship-button" name="destroyer">
               <img
