@@ -10,7 +10,7 @@ const playSound = function(file)
 const playGameTransition = function(videofile, audiofile, func)
 {
   if(localStorage.getItem("transition")==="on") {
-    playSound(audiofile);
+    if(audiofile) playSound(audiofile);
     const video = document.createElement("video");
     video.setAttribute("src", "media/video/"+videofile+".mp4");
     document.body.appendChild(video);
@@ -160,13 +160,18 @@ const readyEvents = function()
   initOptions();
   initStats();
 
-  ////UP, UP, DOWN, DOWN, LEFT, RIGHT, LEFT, RIGHT
-  let k = [38, 38, 40, 40, 37, 39, 37, 39];
-  let n = 0;
+  // KONAMI: UP|UP|DOWN|DOWN|LEFT|RIGHT|LEFT|RIGHT
+  const inputKonami = [38, 38, 40, 40, 37, 39, 37, 39];
+  // NYANCAT: N|Y|A|N|C|A|T
+  const inputNyanCat = [78,89,65,78,67,65,84];
+  // Hell: S|I|X|S|I|X|S|I|X
+  const inputHell = [83,73,88,83,73,88,83,73,88];
+
+  let inputs = [];
   document.addEventListener("keydown", function(e) {
-    if(e.keyCode===k[n++]) {
-      if(n===k.length) {
-        n = 0;
+    if(e.keyCode===inputKonami[inputs[0]++]) {
+      if(inputs[0]===inputKonami.length) {
+        inputs[0] = 0;
         if(KONAMI) {
           KONAMI = false;
           document.body.classList.remove("KONAMI");
@@ -176,10 +181,33 @@ const readyEvents = function()
           document.body.classList.add("KONAMI");
           playSound("konami_on");
         }
-        return false;
       }
     } else {
-      n = 0;
+      inputs[0] = 0;
+    }
+    if(e.keyCode===inputNyanCat[inputs[1]++]) {
+      if(inputs[1]===inputNyanCat.length) {
+        inputs[1] = 0;
+        playGameTransition("nyancat", null, function(){});
+      }
+    } else {
+      inputs[1] = 0;
+    }
+    if(e.keyCode===inputHell[inputs[2]++]) {
+      if(inputs[2]===inputHell.length) {
+        inputs[2] = 0;
+        if(HELL) {
+          HELL = false;
+          document.body.classList.remove("HELL");
+          playSound("hell_off");
+        } else {
+          HELL = true;
+          document.body.classList.add("HELL");
+          playSound("hell_on");
+        }
+      }
+    } else {
+      inputs[2] = 0;
     }
   });
 

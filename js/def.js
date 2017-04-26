@@ -2,6 +2,7 @@
 
 const DEBUG = true;
 let KONAMI = false;
+let HELL = false;
 const GAME = {};
 
 const TYPES = {

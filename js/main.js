@@ -1,5 +1,9 @@
 "use strict";
 
+const canBotAttack = function()
+{
+  return GAME.soloMode && GAME.playerAlive && GAME.enemyAlive;
+}
 const updateGrid = function(grid, id)
 {
   const IHM = document.getElementById(id);
@@ -195,7 +199,7 @@ const checkImpossibleCells = function(placingShip) {
   }
 }
 
-const placingPhase = function(solo) {
+const placingPhase = function() {
   //reset board
   removeAllGameEventListeners();
   document.getElementById("ship-buttons").style["visibility"] = "";
@@ -285,13 +289,13 @@ const placingPhase = function(solo) {
   validate.addEventListener("click", function()
       {
         if(GAME.player.ships.allShipsPlaced()) {
-          shootingPhase(solo);
+          shootingPhase();
         }
       });
 
 
 }
-const shootingPhase = function(solo)
+const shootingPhase = function()
 {
   //check if game ended
   if(!GAME.playerAlive || !GAME.enemyAlive) {
@@ -421,14 +425,15 @@ const shootingPhase = function(solo)
                 if(GAME.shield) {
                   GAME.shield = false;
                 } else {
-                  if(solo && GAME.enemyAlive) GAME.playerAlive = GAME.enemy.attack(GAME.player, GAME.enemy.grid);
+                  if(canBotAttack()) GAME.playerAlive = GAME.enemy.attack(GAME.player, GAME.enemy.grid);
+                  if(HELL && canBotAttack()) GAME.playerAlive = GAME.enemy.attack(GAME.player, GAME.enemy.grid);
                 }
 
                 updateGrid(GAME.enemy.grid.grid, "grid_p2");
                 updateGrid(GAME.player.grid, "grid_p1");
                 setTimeout(function()
                     {
-                      shootingPhase(solo);
+                      shootingPhase();
                     }, 1000);
               }, timeout);
         } else {
@@ -463,7 +468,7 @@ const shootingPhase = function(solo)
             bonus = function()
             {
               if(GAME.canUseBONUSmove) {
-                placingPhase(solo);
+                placingPhase();
               }
             };
             valid = true;
@@ -507,6 +512,7 @@ GAME.practice = function()
 {
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
+  GAME.soloMode = false;
   GAME.canUseBONUSmove = false;
   GAME.canUseBONUSrepair = false;
   GAME.canUseBONUSshield = false;
@@ -528,6 +534,7 @@ GAME.practice = function()
 GAME.solo = function(difficulty) {
   GAME.playerAlive = true;
   GAME.enemyAlive = true;
+  GAME.soloMode = true;
   GAME.canUseBONUSmove = false;
   GAME.canUseBONUSrepair = false;
   GAME.canUseBONUSshield = false;
