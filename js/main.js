@@ -195,8 +195,6 @@ const checkImpossibleCells = function(placingShip) {
   }
 }
 
-// TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
-//
 const placingPhase = function(solo) {
   //reset board
   removeAllGameEventListeners();
@@ -293,7 +291,6 @@ const placingPhase = function(solo) {
 
 
 }
-// TODO : hide validate button if condition not full
 const shootingPhase = function(solo)
 {
   //check if game ended
