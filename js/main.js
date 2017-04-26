@@ -98,20 +98,20 @@ const checkSpecialShots = function()
   const specials = document.getElementById("shot-buttons").getElementsByClassName("shot-button");
   const subs = document.getElementById("shot-buttons").getElementsByTagName("sub");
   for(let i=0; i<specials.length; i++) {
-    if(affectedBy("self", "SHOT"+specials.item(i).id)) {
-      specials.item(i).classList.add("option-selected");
-      subs.item(i).style["display"] = "";
+    specials.item(i).classList.remove("option-selected");
+    specials.item(i).classList.remove("possible");
+    subs.item(i).style["display"] = "none";
+    subs.item(i).innerHTML = "0";
+    if(GAME.player.ships.searchShip(specials.item(i).id).stillAlive()) {
+      if(affectedBy("self", "SHOT"+specials.item(i).id)) {
+        specials.item(i).classList.add("option-selected");
+        subs.item(i).style["display"] = "";
+      }
     }
     if(array[i]>0 && specials.item(i).classList.contains("option-selected")) {
-      specials.item(i).classList.add("impossible");
-      specials.item(i).classList.remove("possible");
+      specials.item(i).classList.add("possible");
       subs.item(i).style["display"] = "";
       subs.item(i).innerHTML = array[i];
-    } else {
-      specials.item(i).classList.remove("impossible");
-      specials.item(i).classList.add("possible");
-      subs.item(i).style["display"] = "none";
-      subs.item(i).innerHTML = 0;
     }
   }
 }
@@ -343,7 +343,7 @@ const shootingPhase = function(solo)
           for(let special of specials) special.classList.remove("button-selected");
           elem = e.target;
           while(!elem.classList.contains("shot-button")) elem = elem.parentNode;
-          if(elem.classList.contains("option-selected") && shootingBlock.special!=elem.id) {
+          if(elem.classList.contains("possible") && shootingBlock.special!=elem.id) {
             shootingBlock.special = elem.id;
             elem.classList.add("button-selected");
           } else {
@@ -401,7 +401,7 @@ const shootingPhase = function(solo)
                 if(GAME.shield) {
                   GAME.shield = false;
                 } else {
-                  if(solo && GAME.enemyAlive) GAME.playerALive = GAME.enemy.attack(GAME.player, GAME.enemy.grid);
+                  if(solo && GAME.enemyAlive) GAME.playerAlive = GAME.enemy.attack(GAME.player, GAME.enemy.grid);
                 }
 
                 updateGrid(GAME.enemy.grid.grid, "grid_p2");
@@ -521,10 +521,10 @@ GAME.solo = function(difficulty) {
   checkBonuses();
   removeAllGameEventListeners();
 
-  placingPhase(true);
-  //IA.placeShips(GAME.player);
-  //displayShips(GAME.player.ships.ships);
-  //shootingPhase(true);
+  //placingPhase(true);
+  IA.placeShips(GAME.player);
+  displayShips(GAME.player.ships.ships);
+  shootingPhase(true);
 }
 
 const mainReady = function() {

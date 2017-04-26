@@ -89,41 +89,42 @@ class Block
   }
   canWelcomeShip()
   {
-    if(this.getState()==="ship") return true;
-    if(this.getState()==="hit") return true;
-    if(this.getState()==="unknown") return true;
+    if(this.isEqualTo("ship")) return true;
+    if(this.isEqualTo("hit")) return true;
+    if(this.isEqualTo("unknown")) return true;
     return false;
   }
   canGoThrough()
   {
-    if(this.getState()==="unknown") return true;
-    if(this.getState()==="empty") return true;
-    if(this.getState()==="miss") return true;
-    if(this.getState()==="ship") return true;
+    if(this.isEqualTo("unknown")) return true;
+    if(this.isEqualTo("empty")) return true;
+    if(this.isEqualTo("miss")) return true;
+    if(this.isEqualTo("ship")) return true;
     return false;
   }
   canBeShotAt()
   {
-    if(this.getState()=="unknown") return true;
-    if(this.getState()==="ship") return true;
+    if(this.isEqualTo("unknown")) return true;
+    if(this.isEqualTo("ship")) return true;
     return false;
   }
   mustBeLookedAt()
   {
-    if(this.getState()==="ship") return true;
-    if(this.getState()==="hit") return true;
+    if(this.isEqualTo("ship")) return true;
+    if(this.isEqualTo("hit")) return true;
     return false;
   }
   shouldNotBeLookedAt()
   {
-    if(this.getState()==="miss") return true;
-    if(this.getState()==="sunk") return true;
+    if(this.isEqualTo("miss")) return true;
+    if(this.isEqualTo("empty")) return true;
+    if(this.isEqualTo("sunk")) return true;
     return false;
   }
   onHighwayToHell()
   {
-    if(this.getState()==="hit") return true;
-    if(this.getState()==="sunk") return true;
+    if(this.isEqualTo("hit")) return true;
+    if(this.isEqualTo("sunk")) return true;
     return false;
   }
   getState()
@@ -870,14 +871,15 @@ class Grid
       }
     }
   }
-  searchTarget()
+  searchTargets()
   {
+    let targets = [];
     for(let i in this.grid) {
       for(let j in this.grid[i]) {
-        if(this.grid[i][j].mustBeLookedAt()) return this.grid[i][j];
+        if(this.grid[i][j].mustBeLookedAt()) targets.push(this.grid[i][j]);
       }
     }
-    return null;
+    return targets;
   }
   fireAt(block, attackMode, gridO)
   {

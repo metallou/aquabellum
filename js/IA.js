@@ -86,7 +86,7 @@ class IA {
           }
         });
 
-    let target;
+    let targets = [];
     let proba = 0;
     let tmpproba;
     for(let i in grid.grid) {
@@ -94,160 +94,215 @@ class IA {
         tmpproba = grid.grid[i][j].getProba();
         if(tmpproba>proba) {
           proba = tmpproba;
-          target = grid.grid[i][j];
+          targets = [];
         }
+        if(tmpproba>=proba) targets.push(grid.grid[i][j]);
       }
     }
     grid.resetProbas();
 
-    return target;
+    const i = parseInt(Math.random()*1000*targets.length)%targets.length;
+    return targets[0];
   }
 
-  static huntTargetEasy(grid, block)
+  static huntTargetEasy(grid, cells)
   {
     if(DEBUG) {
       Check.grid(grid);
-      Check.block(block);
+      Check.array(cells);
+      cells.forEach(function(element, index, array)
+          {
+            Check.instance(element, Block);
+          });
     }
 
-    let target;
-    const pos = block.getPos();
-
-    target = block;
-    for(let y=pos.row; y>=0 && !target.shouldNotBeLookedAt(); y--) {
-      target = grid.grid[y][pos.column];
-      if(target.canBeShotAt()) return target;
-    }
-    target = block;
-    for(let y=pos.row; y<10 && !target.shouldNotBeLookedAt(); y++) {
-      target = grid.grid[y][pos.column];
-      if(target.canBeShotAt()) return target;
-    }
-    target = block;
-    for(let x=pos.column; x>=0 && !target.shouldNotBeLookedAt(); x--) {
-      target = grid.grid[pos.row][x];
-      if(target.canBeShotAt()) return target;
-    }
-    target = block;
-    for(let x=pos.column; x<10 && !target.shouldNotBeLookedAt(); x++) {
-      target = grid.grid[pos.row][x];
-      if(target.canBeShotAt()) return target;
-    }
-  }
-  static huntTargetMedium(grid, block)
-  {
-    if(DEBUG) {
-      Check.grid(grid);
-      Check.block(block);
-    }
-
-    return IA.huntTargetEasy(grid, block);
-  }
-  static huntTargetHard(grid, block)
-  {
-    if(DEBUG) {
-      Check.grid(grid);
-      Check.block(block);
-    }
-
-    let pos = block.getPos();
-    let blocks;
-    let length;
-
-    grid.ships.ships.forEach(function(element,index,array)
+    let blocks = [];
+    cells.forEach(function(element, index, array)
         {
-          if(element.stillAlive()) {
-            length = element.getLength();
-            for(let x=(pos.row-length); x<=(pos.row+length); x++) {
-              if(x>=0 && x<=(10-length)) {
-                blocks = [];
-                for(let i=0; i<length; i++) {
-                  blocks.push(grid.grid[x+i][pos.column]);
-                }
-                if(element.canWelcomeShipOver(element.name, blocks)) {
-                  blocks.forEach(function(element2,index2,array2)
-                      {
-                        element2.addProba();
-                      });
-                }
+          let tmp;
+          let radius = 4;
+          if(!grid.ships.searchShip("carrier").stillAlive) radius = 3;
+          if(!grid.ships.searchShip("battleship").stillAlive) radius = 2;
+          if(!grid.ships.searchShip("cruiser").stillAlive && !grid.ships.searchShip("submarine").stillAlive) radius = 1;
+          const pos = element.getPos();
+          for(let y=pos.row-1; y>=(pos.row-radius); y--) {
+            if(y>=0) {
+              tmp = grid.grid[y][pos.column];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
               }
+              if(tmp.shouldNotBeLookedAt()) break;
             }
-            for(let y=(pos.column-length); y<=(pos.column+length); y++) {
-              if(y>=0 && y<=(10-length)) {
-                blocks = [];
-                for(let i=0; i<length; i++) {
-                  blocks.push(grid.grid[pos.row][y+i]);
-                }
-                if(element.canWelcomeShipOver(element.name, blocks)) {
-                  blocks.forEach(function(element2,index2,array2)
-                      {
-                        element2.addProba();
-                      });
-                }
+          }
+          for(let y=pos.row+1; y<=(pos.row+radius); y++) {
+            if(y<=9) {
+              tmp = grid.grid[y][pos.column];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
               }
+              if(tmp.shouldNotBeLookedAt()) break;
+            }
+          }
+          for(let x=pos.column-1; x>=(pos.row-radius); x--) {
+            if(x>=0) {
+              tmp = grid.grid[pos.column][x];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
+              }
+              if(tmp.shouldNotBeLookedAt()) break;
+            }
+          }
+          for(let x=pos.column+1; x<=(pos.column+radius); x++) {
+            if(x<=9) {
+              tmp = grid.grid[pos.row][x];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
+              }
+              if(tmp.shouldNotBeLookedAt()) break;
             }
           }
         });
 
-    let target;
-    let tmptarget;
+
+    const targets = blocks;
+    const i = parseInt(Math.random()*1000*targets.length)%targets.length;
+    return targets[i];
+  }
+  static huntTargetMedium(grid, cells)
+  {
+    if(DEBUG) {
+      Check.grid(grid);
+      Check.array(cells);
+      cells.forEach(function(element, index, array)
+          {
+            Check.instance(element, Block);
+          });
+    }
+
+    return IA.huntTargetEasy(grid, cells);
+  }
+  static huntTargetHard(grid, cells)
+  {
+    if(DEBUG) {
+      Check.grid(grid);
+      Check.array(cells);
+      cells.forEach(function(element, index, array)
+          {
+            Check.instance(element, Block);
+          });
+    }
+
+    cells.forEach(function(e,i,a)
+        {
+          const pos = e.getPos();
+          grid.ships.ships.forEach(function(element,index,array)
+              {
+                let blocks;
+                if(element.stillAlive()) {
+                  const length = element.getLength();
+                  for(let x=(pos.row-length); x<=(pos.row+length); x++) {
+                    if(x>=0 && x<=(10-length)) {
+                      blocks = [];
+                      for(let i=0; i<length; i++) {
+                        blocks.push(grid.grid[x+i][pos.column]);
+                      }
+                      if(element.canWelcomeShipOver(blocks)) {
+                        blocks.forEach(function(element2,index2,array2)
+                            {
+                              element2.addProba();
+                            });
+                      }
+                    }
+                  }
+                  for(let y=(pos.column-length); y<=(pos.column+length); y++) {
+                    if(y>=0 && y<=(10-length)) {
+                      blocks = [];
+                      for(let i=0; i<length; i++) {
+                        blocks.push(grid.grid[pos.row][y+i]);
+                      }
+                      if(element.canWelcomeShipOver(blocks)) {
+                        blocks.forEach(function(element2,index2,array2)
+                            {
+                              element2.addProba();
+                            });
+                      }
+                    }
+                  }
+                }
+              });
+        });
+
+    let blocks = [];
+    cells.forEach(function(element, index, array)
+        {
+          let tmp;
+          let radius = 4;
+          if(!grid.ships.searchShip("carrier").stillAlive) radius = 3;
+          if(!grid.ships.searchShip("battleship").stillAlive) radius = 2;
+          if(!grid.ships.searchShip("cruiser").stillAlive && !grid.ships.searchShip("submarine").stillAlive) radius = 1;
+          const pos = element.getPos();
+          for(let y=pos.row-1; y>=(pos.row-radius); y--) {
+            if(y>=0) {
+              tmp = grid.grid[y][pos.column];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
+              }
+              if(tmp.shouldNotBeLookedAt()) break;
+            }
+          }
+          for(let y=pos.row+1; y<=(pos.row+radius); y++) {
+            if(y<=9) {
+              tmp = grid.grid[y][pos.column];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
+              }
+              if(tmp.shouldNotBeLookedAt()) break;
+            }
+          }
+          for(let x=pos.column-1; x>=(pos.row-radius); x--) {
+            if(x>=0) {
+              tmp = grid.grid[pos.column][x];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
+              }
+              if(tmp.shouldNotBeLookedAt()) break;
+            }
+          }
+          for(let x=pos.column+1; x<=(pos.column+radius); x++) {
+            if(x<=9) {
+              tmp = grid.grid[pos.row][x];
+              if(tmp.canBeShotAt()) {
+                if(!blocks.includes(tmp)) blocks.push(tmp);
+                break;
+              }
+              if(tmp.shouldNotBeLookedAt()) break;
+            }
+          }
+        });
+
+    let targets = [];
     let proba = 0;
     let tmpproba;
-    let x;
-    let y;
-
-    tmptarget = block;
-    for(let y=pos.row; y>=0 && !tmptarget.shouldNotBeLookedAt(); y--) {
-      tmptarget = grid.grid[y][pos.column];
-      if(tmptarget.canBeShotAt()) {
-        tmpproba = tmptarget.getProba();
-        if(tmpproba>proba) {
-          proba = tmpproba;
-          target = tmptarget;
-        }
-        break;
-      }
-    }
-    tmptarget = block;
-    for(let y=pos.row; y<10 && !tmptarget.shouldNotBeLookedAt(); y++) {
-      tmptarget = grid.grid[y][pos.column];
-      if(tmptarget.canBeShotAt()) {
-        tmpproba = tmptarget.getProba();
-        if(tmpproba>proba) {
-          proba = tmpproba;
-          target = tmptarget;
-        }
-        break;
-      }
-    }
-    tmptarget = block;
-    for(let x=pos.column; x>=0 && !tmptarget.shouldNotBeLookedAt(); x--) {
-      tmptarget = grid.grid[pos.row][x];
-      if(tmptarget.canBeShotAt()) {7
-        tmpproba = tmptarget.getProba();
-        if(tmpproba>proba) {
-          proba = tmpproba;
-          target = tmptarget;
-        }
-        break;
-      }
-    }
-    tmptarget = block;
-    for(let x=pos.column; x<10 && !tmptarget.shouldNotBeLookedAt(); x++) {
-      tmptarget = grid.grid[pos.row][x];
-      if(tmptarget.canBeShotAt()) {
-        tmpproba = tmptarget.getProba();
-        if(tmpproba>proba) {
-          proba = tmpproba;
-          target = tmptarget;
-        }
-        break;
-      }
-    }
-
+    blocks.forEach(function(element, index, array)
+        {
+          tmpproba = element.getProba();
+          if(tmpproba>proba) {
+            targets = [];
+            proba = tmpproba;
+          }
+          if(tmpproba>=proba) targets.push(element);
+        });
     grid.resetProbas();
 
-    return target;
+    const i = parseInt(Math.random()*1000*targets.length)%targets.length;
+    return targets[i];
   }
 
   static selectPlace(grid, ship)
@@ -348,16 +403,24 @@ class Bot extends IA
       Check.grid(gridS);
     }
 
-    const block = gridE.searchTarget();
     let target;
-    if(block===null) {
-      target = this.select(gridE);
-    } else {
-      if(block.isEqualTo("ship")) {
-        target = block;
+    const blocks = gridE.searchTargets();
+    const ships = blocks.filter(function(element)
+        {
+          return element.isEqualTo("ship");
+        });
+    const hits = blocks.filter(function(element)
+        {
+          return element.isEqualTo("hit");
+        });
+    if(ships.length===0) {
+      if(hits.length===0) {
+        target = this.select(gridE);
       } else {
-        target = this.hunt(gridE, block);
+        target = this.hunt(gridE, hits);
       }
+    } else {
+      target = ships[0];
     }
 
     return gridE.fireAt(target, Shot.normalShot, gridS);
