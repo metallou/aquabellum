@@ -167,7 +167,7 @@ const readyEvents = function()
   // Hell: S|I|X|S|I|X|S|I|X
   const inputHell = [83,73,88,83,73,88,83,73,88];
 
-  let inputs = [];
+  let inputs = [0,0,0];
   document.addEventListener("keydown", function(e) {
     if(e.keyCode===inputKonami[inputs[0]++]) {
       if(inputs[0]===inputKonami.length) {
