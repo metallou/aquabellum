@@ -37,8 +37,6 @@ const removeAllGameEventListeners = function()
     element.parentNode.replaceChild(clone, element);
   }
 
-  const cells = document.getElementsByClassName("cell");
-  for(let cell of cells) cell.classList = "cell";
   const ships = document.getElementsByClassName("ship-button");
   for(let ship of ships) ship.classList = "ship-button";
   const shots = document.getElementsByClassName("shot-button");
@@ -105,13 +103,13 @@ const checkSpecialShots = function()
     if(GAME.player.ships.searchShip(specials.item(i).id).stillAlive()) {
       if(affectedBy("self", "SHOT"+specials.item(i).id)) {
         specials.item(i).classList.add("option-selected");
-        subs.item(i).style["display"] = "";
+        if(array[i]===0) {
+          specials.item(i).classList.add("possible");
+        } else {
+          subs.item(i).style["display"] = "";
+          subs.item(i).innerHTML = array[i];
+        }
       }
-    }
-    if(array[i]>0 && specials.item(i).classList.contains("option-selected")) {
-      specials.item(i).classList.add("possible");
-      subs.item(i).style["display"] = "";
-      subs.item(i).innerHTML = array[i];
     }
   }
 }
