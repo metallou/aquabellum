@@ -557,6 +557,10 @@ class Ship
   {
     this.onGrid = true;
   }
+  unsetOnGrid()
+  {
+    this.onGrid = false;
+  }
   setOffGrid()
   {
     this.onGrid = false;
@@ -637,16 +641,15 @@ class Ship
           return element.canBeShotAt();
         });
   }
-  canWelcomeShipOver(name, blocks)
+  canWelcomeShipOver(blocks)
   {
     if(DEBUG) {
-      Check.name(name);
       Check.blocks(blocks, this.getLength());
     }
 
     return blocks.every(function(element, index, array)
         {
-          return element.canWelcomeShip();
+          return element.isEqualTo("unknown") && !element.hasShip();
         });
   }
   setShipOver(name, blocks)
@@ -772,10 +775,10 @@ class Ships
   {
     if(DEBUG) {
       Check.name(name);
-      Check.blocks(blocks, this.searchShip(name).getLength());
     }
 
-    return this.searchShip(name).canWelcomeShipOver(name, blocks);
+    if(blocks.length!=this.searchShip(name).getLength()) return false;
+    return this.searchShip(name).canWelcomeShipOver(blocks);
   }
   setShipOver(name, blocks)
   {
@@ -850,12 +853,13 @@ class Grid
     let blocks = [];
     for(let i=0; i<ship.getLength(); i++) {
       if(rotation) {
-        blocks.push(this.grid[row][column+i])
+        if(column+i<10) blocks.push(this.grid[row][column+i])
       } else {
-        blocks.push(this.grid[row+i][column])
+        if(row+i<10) blocks.push(this.grid[row+i][column])
       }
     }
 
+    if(blocks.length!=ship.getLength()) return false;
     return this.ships.setShipOver(name, blocks);
   }
   resetProbas()
@@ -884,8 +888,6 @@ class Grid
     }
 
     attackMode(this, block, gridO);
-    console.log(gridO);
-    console.log(gridO.ships);
     gridO.ships.updateSpecialShots(true);
 
     const chance = parseInt(Math.random()*1000);

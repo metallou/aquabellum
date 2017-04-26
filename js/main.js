@@ -49,8 +49,10 @@ const removeAllGameEventListeners = function()
 
 const removeShips = function()
 {
-  const gridShips = document.getElementsByClassName("gridShip");
+  const gridShips = document.getElementById("grid_p1").getElementsByClassName("gridShip");
+  const shipCells = document.getElementById("grid_p1").getElementsByClassName("shipPlaced");
   for(let i=gridShips.length-1; i>=0; i--) gridShips.item(i).parentNode.removeChild(gridShips.item(i));
+  for(let i=shipCells.length-1; i>=0; i--) shipCells.item(i).classList.remove("shipPlaced");
 }
 const displayShips = function(ships)
 {
@@ -136,25 +138,64 @@ const checkBonuses = function()
   }
 }
 
-const checkImpossibleCells = function() {
-  let blocks;
+const checkImpossibleCells = function(placingShip) {
+  let cells;
+
   const rows = document.getElementById('grid_p1').getElementsByClassName('row');
   for(let y=0; y<rows.length; y++) {
-    blocks = rows.item(y).getElementsByClassName("cell");
-    for(let x=0; x<blocks.length; x++) {
-      if(GAME.player.grid[y][x].getState()!="unknown" || GAME.player.grid[y][x].hasShip()) {
-        blocks.item(x).classList.add("impossible");
+    cells = rows.item(y).getElementsByClassName("cell");
+    for(let x=0; x<cells.length; x++) {
+      cells.item(x).classList.remove("unavailable");
+      if(GAME.player.grid[y][x].getState()!="unknown") {
+        cells.item(x).classList.add("impossible");
+      }
+      if(GAME.player.grid[y][x].hasShip()) {
+        cells.item(x).classList.add("shipPlaced");
       }
     }
   }
+
+  const blocks = {
+    blocks: [],
+    cells: []
+  };
+  if(placingShip.name!="") {
+    for(let y=0; y<rows.length; y++) {
+      cells = rows.item(y).getElementsByClassName("cell");
+      for(let x=0; x<cells.length; x++) {
+        cells.item(x).classList.add("unavailable");
+      }
+    }
+    const length = GAME.player.ships.searchShip(placingShip.name).getLength();
+      for(let y=0; y<10; y++) {
+        for(let x=0; x<10; x++) {
+          blocks.blocks = [];
+          blocks.cells = [];
+          for(let i=0; i<length; i++) {
+            if(placingShip.rotation) {
+              if((x+i)<10) {
+                blocks.blocks.push(GAME.player.grid[y][x+i]);
+                blocks.cells.push(rows.item(y).getElementsByClassName("cell").item(x+i));
+              }
+            } else {
+              if((y+i)<10) {
+                blocks.blocks.push(GAME.player.grid[y+i][x]);
+                blocks.cells.push(rows.item(y+i).getElementsByClassName("cell").item(x));
+              }
+            }
+          }
+          if(GAME.player.ships.canWelcomeShipOver(placingShip.name, blocks.blocks)) {
+            for(let cell of blocks.cells) cell.classList.remove("unavailable");
+          } else {
+            for(let cell of blocks.cells) {
+              if(!(cell.classList.contains("impossible") || cell.classList.contains("shipPlaced"))) cell.classList.add("unavailable");
+            }
+          }
+        }
+      }
+  }
 }
 
-const rotationButtonSelect = function(ship) {
-  document.getElementById("rotation").addEventListener('click', function(e) {
-    ship.rotation = !ship.rotation;
-    checkImpossibleCells();
-  });
-}
 // TODO : visibility hidden for button.change & made it visible again at the end of the placingPhase
 //
 const placingPhase = function(solo) {
@@ -165,9 +206,7 @@ const placingPhase = function(solo) {
   let row;
   let placingShip = {
     name: "",
-    rotation: false,
-    row: null,
-    column: null
+    rotation: false
   }
   const cells = document.getElementById("grid_p1").getElementsByClassName("cell");
   const rows = document.getElementById("grid_p1").getElementsByClassName("row");
@@ -184,38 +223,50 @@ const placingPhase = function(solo) {
 
   document.getElementById("rotation").addEventListener('click', function(e) {
     placingShip.rotation = !placingShip.rotation;
-    checkImpossibleCells();
+    if(placingShip.rotation) {
+      document.getElementById("rotation").classList.add("rotate");
+    } else {
+      document.getElementById("rotation").classList.remove("rotate");
+    }
+    checkImpossibleCells(placingShip);
   });
 
   const shipButtons = document.getElementsByClassName('ship-button');
   for (let shipButton of shipButtons) {
     shipButton.addEventListener('click', function(e)
         {
+          elem = e.target;
+          while(!elem.classList.contains("ship-button")) elem = elem.parentNode;
           for (shipButton of shipButtons) shipButton.classList.remove('button-selected');
-          e.target.classList.add('button-selected');
-          if(!GAME.player.ships.searchShip(e.target.name).isOnGrid()) {
-              placingShip.name = e.target.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
-              checkImpossibleCells();
+          elem.classList.add('button-selected');
+          if(GAME.player.ships.searchShip(elem.name).isOnGrid()) {
+            GAME.player.ships.unsetShip(elem.name);
+            elem.classList.remove("ship-placed");
           }
+          placingShip.name = elem.name;  // DEFINE [placingShip] NAME IN [placingPhase] FUNCTION
+          displayShips(GAME.player.ships.ships);
+          checkImpossibleCells(placingShip);
         });
     }
 
 
+  let placed;
   for(let y=0; y<rows.length; y++) {
     row = rows.item(y).getElementsByClassName("cell");
     for(let x=0; x<row.length; x++) {
       row.item(x).addEventListener("click", function(e)
           {
-            if(e.target.classList.contains("cell")) {
+            if(e.target.classList.contains("cell") && !(e.target.classList.contains("unavailable") || e.target.classList.contains("impossible"))) {
               if(placingShip.name!="") {
+                placed = GAME.player.placeShip(placingShip.name, placingShip.rotation, y,x);
                 for(let ship of ships) {
-                  if(ship.name==placingShip.name) ship.classList.add("ship-placed");
+                  if(placed && ship.name==placingShip.name) {
+                    ship.classList.add("ship-placed");
+                    placingShip.name = "";
+                  }
                 }
-                GAME.player.placeShip(
-                  placingShip.name, placingShip.rotation, y,x
-                );
-                placingShip.name = "";
                 displayShips(GAME.player.ships.ships);
+                checkImpossibleCells(placingShip);
               }
             }
           });

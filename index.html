@@ -863,18 +863,18 @@
           <button class="commandbuttons validate">FIRE</button>
           <button class="commandbuttons change" name="SELF">CHANGE</button>
           <div id="malus-buttons" class="gamebuttons">
-                <svg width="50px" height="50px" id="reveal" class="malus-button">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
-                <svg width="50px" height="50px" id="revealblock" class="malus-button">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
-                <svg width="50px" height="50px" id="revealship" class="malus-button">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
+            <svg width="50px" height="50px" id="reveal" class="malus-button">
+              <circle class="ring" />
+              <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+            </svg>
+            <svg width="50px" height="50px" id="revealblock" class="malus-button">
+              <circle class="ring" />
+              <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+            </svg>
+            <svg width="50px" height="50px" id="revealship" class="malus-button">
+              <circle class="ring" />
+              <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+            </svg>
           </div>
           <div id="shot-buttons" class="gamebuttons">
             <div>
@@ -1088,81 +1088,66 @@
           <button class="commandbuttons validate">FIRE</button>
           <button class="commandbuttons change" name="ENEMY">CHANGE</button>
           <div id="ship-buttons" class="gamebuttons">
-            <div>
+            <button id="rotation"></button>
+            <button class="ship-button" name="destroyer">
               <img
-              alt="arrow"
-              src="media/img/directionRIGHT.png"
-              width="30px"
-              height="30px"
-              />
-              <button id="rotation">
-                <img
-                alt="arrow"
-                src="media/img/rotate.png"
-                width="30px"
-                height="30px"
-                />
-              </button>
-            </div>
-            <div>
+                                        alt="destroyer"
+                                        src="media/img/ships/destroyerRIGHT.png"
+                                        width="60px"
+                                        height="30px"
+                                        />
+              <img class="arrow">
+            </button>
+            <button class="ship-button" name="cruiser">
               <img
-              alt="destroyer"
-              src="media/img/ships/destroyerRIGHT.png"
-              width="60px"
-              height="30px"
-              />
-              <button class="ship-button" name="destroyer"></button>
-            </div>
-            <div>
+                                        alt="cruiser"
+                                        src="media/img/ships/cruiserRIGHT.png"
+                                        width="90px"
+                                        height="30px"
+                                        />
+              <img class="arrow">
+            </button>
+            <button class="ship-button" name="submarine">
               <img
-              alt="cruiser"
-              src="media/img/ships/cruiserRIGHT.png"
-              width="90px"
-              height="30px"
-              />
-              <button class="ship-button" name="cruiser"></button>
-            </div>
-            <div>
+                                        alt="submarine"
+                                        src="media/img/ships/submarineRIGHT.png"
+                                        width="90px"
+                                        height="30px"
+                                        />
+              <img class="arrow">
+            </button>
+            <button class="ship-button" name="battleship">
               <img
-              alt="submarine"
-              src="media/img/ships/submarineRIGHT.png"
-              width="90px"
-              height="30px"
-              />
-              <button class="ship-button" name="submarine"></button>
-            </div>
-            <div>
+                                        alt="batleship"
+                                        src="media/img/ships/battleshipRIGHT.png"
+                                        width="120px"
+                                        height="30px"
+                                        />
+              <img class="arrow">
+            </button>
+            <button class="ship-button" name="carrier">
               <img
-              alt="batleship"
-              src="media/img/ships/battleshipRIGHT.png"
-              width="120px"
-              height="30px"
-              />
-              <button class="ship-button" name="battleship"></button>
-            </div>
-            <div>
-              <img
-              alt="carrier"
-              src="media/img/ships/carrierRIGHT.png"
-              width="150px"
-              height="30px"
-              />
-              <button class="ship-button" name="carrier"></button>
-            </div>
+                                        alt="carrier"
+                                        src="media/img/ships/carrierRIGHT.png"
+                                        width="150px"
+                                        height="30px"
+                                        />
+              <img class="arrow">
+            </button>
           </div>
           <div id="bonus-buttons" class="gamebuttons">
-                <svg width="50px" height="50px" id="move" class="bonus-button">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
-                <svg width="50px" height="50px" id="repair" class="bonus-button">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
-                <svg width="50px" height="50px" id="shield" class="bonus-button">
-                  <circle class="ring" />
-                  <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
-                </svg>
+            <svg width="50px" height="50px" id="move" class="bonus-button">
+              <circle class="ring" />
+              <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+            </svg>
+            <svg width="50px" height="50px" id="repair" class="bonus-button">
+              <circle class="ring" />
+              <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+            </svg>
+            <svg width="50px" height="50px" id="shield" class="bonus-button">
+              <circle class="ring" />
+              <path class="cross" d="M3,0 L25,22 L47,0 L50,3 L28,25 L50,47 L47,50 L25,28 L3,50 L0,47 L22,25 L0,3 Z" />
+            </svg>
           </div>
           <div id="grid_p1" class="grid">
             <div class="row">

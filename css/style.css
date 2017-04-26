@@ -128,6 +128,10 @@ main, aside, .gameboard
 {
   flex-direction: column;
 }
+.gamebuttons#ship-buttons
+{
+  align-items: flex-end;
+}
 #ship-buttons, #malus-buttons
 {
   order: 1;
@@ -140,9 +144,6 @@ main, aside, .gameboard
 {
   order: 3;
 }
-#ship-buttons {
-  width: 200px;
-}
 .gamebuttons div
 {
   display: flex;
@@ -151,39 +152,29 @@ main, aside, .gameboard
   width: 100%;
   text-align: right;
 }
-#ship-buttons div
-{
-  justify-content: flex-end;
-}
 #shot-buttons div
 {
   justify-content: flex-start;
 }
-.gamebuttons button.ship-button, .gamebuttons #rotation
+.gamebuttons #rotation
 {
   width: 50px;
   height: 50px;
   background-color: white;
   border-radius: 50%;
   border: 5px solid blue;
-}
-.gamebuttons .ship-button
-{
-  background-image: url("../media/img/directionRIGHT.png");
   background-size: cover;
 }
-.gamebuttons .ship-button.possible,
+.gamebuttons #rotation
 {
-  background-color: green;
+  background-image: url("../media/img/directionUP.png");
 }
-.gamebuttons .ship-button.button-selected
+.gamebuttons #rotation.rotate
 {
-  background-color: yellow;
-  border-color: green;
+  background-image: url("../media/img/directionRIGHT.png");
 }
-.gamebuttons .ship-button.impossible,
 {
-  background-color: black;
+  background-image: url("../media/img/rotation.png");
 }
 .gamebuttons .shot-button.button-selected circle,
 .gamebuttons .bonus-button.button-selected circle
@@ -204,10 +195,40 @@ main, aside, .gameboard
 {
   stroke: black;
 }
+.gamebuttons .ship-button
+{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid blue;
+}
+.gamebuttons .ship-button.possible,
+{
+  background-color: white;
+}
+.gamebuttons .ship-button.impossible,
+{
+  background-color: black;
+}
+.gamebuttons .ship-button.button-selected
+{
+  border-color: yellow;
+}
 .gamebuttons .ship-button.ship-placed
 {
-  background-color: red;
-  background-image: url("../media/img/directionLEFT.png");
+  border-color: red;
+}
+.gamebuttons .ship-button .arrow
+{
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  content: url("../media/img/directionRIGHT.png");
+}
+.gamebuttons .ship-button.ship-placed .arrow
+{
+  content: url("../media/img/directionLEFT.png");
 }
 
 .commands {
@@ -706,12 +727,14 @@ figure img
   background-color: transparent;
 }
 .grid .row .cell.empty {
-  background-color: empty;
+  background-color: white;
 }
 .grid .row .cell.miss {
   background-color: white;
 }
-.grid .row .cell.ship {
+.grid .row .cell.ship,
+.grid .row .cell.shipPlaced
+{
   background-color: yellow;
 }
 .grid .row .cell.hit {
@@ -721,7 +744,7 @@ figure img
   background-color: black;
 }
 
-.grid .row .cell.unavalaible {
+.grid .row .cell.unavailable {
   background-color: rgba(235, 70, 0, .7);
 }
 
@@ -742,6 +765,10 @@ figure img
   width: 100px;
 }
 
+.grid .row .cell:hover
+{
+  border-color: white;
+}
 .grid .row .cell.cell-selected
 {
   border-color: yellow;
